@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#ff8fb1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Cooky Farm">
+<link rel="manifest" href="manifest.json">
+<title>Cooky Farm · Mùa Đông Đà Lạt 🎄</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@500;700;800;900&family=Pixelify+Sans:wght@500;700&display=swap">
+<link rel="stylesheet" href="style.css?v=5">
+</head>
+<body>
+<div id="stage"><div id="frame">
+  <canvas id="cv" aria-label="Nông trại mùa đông Đà Lạt của Cooky"></canvas>
+
+  <!-- HUD -->
+  <div id="hud" hidden>
+    <div class="plate hl">
+      <div class="row">
+        <b class="pix big" id="hClock">06:00</b>
+        <div class="col">
+          <b id="hDay">Ngày 1 · Mùa Đông 🎄</b>
+          <span class="sm" id="hWx"></span>
+        </div>
+      </div>
+      <div class="row name-row">
+        <button class="name-tag" id="bRename" title="Đổi tên nhân vật">🐰 <span id="hName">Cooky</span> <small id="hLv">Lv.1</small> ✎</button>
+        <button class="quest-pill" id="bQuests" title="Nhiệm vụ & Cột mốc">📋 <span id="hQuestBadge">0/3</span></button>
+      </div>
+      <div class="stbar" title="Sức lực"><i id="hSt"></i><span id="hStT"></span></div>
+      <div class="order-mini" id="hOrderBox" title="Đơn hàng chuyến xe tuần">
+        <span id="hOrderTxt">📦 Đơn tuần: --</span>
+      </div>
+    </div>
+
+    <div class="plate hc">
+      <button class="tb" data-sp="0" title="Dừng (Space)">⏸</button>
+      <button class="tb" data-sp="1" title="Tốc độ thường">▶</button>
+      <button class="tb" data-sp="2" title="Nhanh x2">⏩</button>
+      <span class="sep"></span>
+      <button class="tb" id="bZoom" title="Đổi góc nhìn (Phím Z)">🔍</button>
+      <button class="tb" id="bFs" title="Toàn màn hình (Phím F)">⛶</button>
+      <button class="tb" id="bInstall" title="Thêm vào màn hình chính">📲</button>
+      <span class="sep"></span>
+      <button class="tb" id="bBell" title="Đài Radio 06.13 FM">📻</button>
+      <button class="tb" id="bSnd" title="Bật/tắt âm thanh">🔊</button>
+      <button class="tb" id="bHelp" title="Hướng dẫn">❔</button>
+    </div>
+
+    <!-- Thanh chuyển đổi Bản Đồ / Khu Vực -->
+    <div class="plate map-bar" id="mapBar"></div>
+
+    <div class="plate hr">
+      <div class="row">
+        <b class="pix big" id="hCash"></b>
+        <button class="fans" id="hFans" title="Lượng Fan yêu mến"></button>
+      </div>
+      <div class="gbar"><i id="hGoal"></i></div>
+      <div class="sm row"><span id="hGoalName">🪵 Mốc 1</span><span id="hGoalT"></span></div>
+      <div class="sm row bill-row"><span id="hBillTxt">🧾 Thuế tuần: --</span><span id="hStarTxt">⭐ 0 Sao Tím</span></div>
+      <button class="buy" id="bTicket" hidden>✨ Mở khóa Cột Mốc!</button>
+    </div>
+  </div>
+
+  <!-- Hotbar -->
+  <div id="bar" class="plate" hidden>
+    <div id="seeds"></div>
+    <span class="sep"></span>
+    <div class="acts-wrap">
+      <button class="act" id="bEat" title="Ăn cà rốt hồi sức (phím E)"><span>🥕</span><small>Ăn <b id="eatN">0</b></small></button>
+      <button class="act" id="bFert" title="Bón phân hữu cơ hồi 100% độ màu mỡ"><span>🌿</span><small>Phân <b id="fertN">0</b></small></button>
+      <button class="act" id="bFish" title="Ra hồ câu cá"><span>🎣</span><small>Câu cá</small></button>
+      <button class="act" id="bCook" title="Bếp bánh & chế biến"><span>🧁</span><small>Bếp</small></button>
+      <button class="act" id="bShop" title="Sạp nông sản, thú cưng & nâng cấp"><span>🛒</span><small>Sạp</small></button>
+      <button class="act" id="bGym" title="Tập gym tăng sức tối đa"><span>💪</span><small>Tập</small></button>
+      <button class="act" id="bSleep" title="Về nhà ngủ sang ngày mới"><span>🛏️</span><small>Ngủ</small></button>
+    </div>
+  </div>
+
+  <div id="toast" class="plate" hidden></div>
+
+  <!-- Multi-purpose Hub Panel -->
+  <div id="shop" class="plate panel" hidden>
+    <div class="phead">
+      <b id="shopTitle">🏡 Sạp Đà Lạt</b>
+      <div class="tabs">
+        <button data-tab="sell">🛒 Bán</button>
+        <button data-tab="seed">🌱 Hạt</button>
+        <button data-tab="cook">🧁 Bếp</button>
+        <button data-tab="pet">🐣 Thú & BT21</button>
+        <button data-tab="up">🛠️ Nâng cấp</button>
+        <button data-tab="goal">🗺️ Bản đồ & Mốc</button>
+        <button data-tab="army">💜 Bộ sưu tập</button>
+      </div>
+      <button class="x" id="shopX" aria-label="Đóng">✕</button>
+    </div>
+    <div class="pbody" id="shopBody"></div>
+    <div class="pfoot" id="shopFoot"></div>
+  </div>
+
+  <!-- Modal -->
+  <div id="modal" hidden>
+    <div class="mbox plate">
+      <div class="mic" id="mIc"></div>
+      <h2 id="mT"></h2>
+      <div class="md" id="mD"></div>
+      <div class="mbtns" id="mB"></div>
+    </div>
+  </div>
+
+  <!-- Title -->
+  <div id="title">
+    <div class="tcard plate">
+      <canvas id="tcv" width="560" height="560"></canvas>
+      <div class="tinfo">
+        <div class="tag">❄️ Mùa Đông Đà Lạt 💜</div>
+        <h1>Cooky Farm</h1>
+        <h3>🎄 Nông Trại Trên Đồi Thông 🌸</h3>
+        <p>Trồng trọt, chăm bón đất đai, làm bánh mùa đông, mở đường sang các vùng đất mới quanh Đà Lạt (<b>Thung Lũng Hoa, Đồi Trà Cầu Đất, Đỉnh Langbiang Săn Mây</b>) và đồng hành cùng những người bạn <b>BT21</b> đáng yêu!</p>
+
+        <div class="char-box">
+          <div class="row">
+            <label for="inpName">🏷️ Tên nhân vật:</label>
+            <div class="diff-row" id="diffSel">
+              <button type="button" class="diff-btn" data-d="chill">🌸 Thư giãn</button>
+              <button type="button" class="diff-btn on" data-d="normal">🔥 Thử thách</button>
+              <button type="button" class="diff-btn" data-d="hard">💜 Khó</button>
+            </div>
+          </div>
+          <div class="name-inp-row">
+            <input id="inpName" type="text" maxlength="16" value="Cooky" placeholder="Nhập tên nhân vật..." autocomplete="off">
+            <button class="dice-btn" id="bRandName" type="button" title="Tên ngẫu nhiên">🎲</button>
+          </div>
+        </div>
+
+        <div class="tbtns">
+          <button class="big-btn" id="bNew">🌱 Bắt đầu chơi mới</button>
+          <button class="big-btn alt" id="bCont" hidden>▶ Tiếp tục</button>
+          <button class="big-btn mint" id="bInstallTitle">📲 Thêm vào MH chính / Phóng to</button>
+        </div>
+        <ul class="how">
+          <li>🗺️ Đạt mốc tiền để <b>di chuyển sang vùng đất mới</b> và khai hoang thêm những cánh đồng mới!</li>
+          <li>🌾 Chăm sóc độ màu mỡ đất, hoàn thành chuyến xe nông sản hàng tuần và nâng cấp nông cụ.</li>
+          <li>💜 Tặng quà kết thân với Koya, RJ, Shooky, Mang, Chimmy, Tata & Van trên nông trại!</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div id="rot">📱 Xoay ngang điện thoại để quan sát nông trại rộng và rõ nhất nhé!</div>
+</div></div>
+<script src="game.js?v=5"></script>
+</body>
+</html>
