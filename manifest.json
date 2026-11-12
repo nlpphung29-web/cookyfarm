@@ -1,0 +1,25 @@
+{
+  "name": "Cooky Farm · Mùa Giáng Sinh Đà Lạt Pastel",
+  "short_name": "Cooky Farm",
+  "description": "Game nông trại Pastel Noel Đà Lạt cùng Cooky BT21 & ARMY Easter Eggs",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#35253a",
+  "theme_color": "#ff8fb1",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='42' fill='%23ffe5ee'/%3E%3Ccircle cx='96' cy='112' r='52' fill='%23ffb3cc' stroke='%23523244' stroke-width='6'/%3E%3Cellipse cx='72' cy='46' rx='16' ry='36' transform='rotate(-8 72 46)' fill='%23ffb3cc' stroke='%23523244' stroke-width='6'/%3E%3Cellipse cx='72' cy='50' rx='8' ry='22' transform='rotate(-8 72 50)' fill='%23fff4c8'/%3E%3Cellipse cx='120' cy='56' rx='17' ry='28' transform='rotate(24 120 56)' fill='%23ffb3cc' stroke='%23523244' stroke-width='6'/%3E%3Ccircle cx='78' cy='108' r='7' fill='%233b2030'/%3E%3Ccircle cx='114' cy='108' r='7' fill='%233b2030'/%3E%3Cpath d='M62 90 L70 84 L88 96 L84 100 Z' fill='%233b2030'/%3E%3Cpath d='M106 94 L124 94' stroke='%233b2030' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='110' fill='%23ffe5ee'/%3E%3Ccircle cx='256' cy='298' r='138' fill='%23ffb3cc' stroke='%23523244' stroke-width='16'/%3E%3Cellipse cx='192' cy='122' rx='42' ry='96' transform='rotate(-8 192 122)' fill='%23ffb3cc' stroke='%23523244' stroke-width='16'/%3E%3Cellipse cx='192' cy='132' rx='22' ry='58' transform='rotate(-8 192 132)' fill='%23fff4c8'/%3E%3Cellipse cx='320' cy='148' rx='45' ry='74' transform='rotate(24 320 148)' fill='%23ffb3cc' stroke='%23523244' stroke-width='16'/%3E%3Ccircle cx='208' cy='288' r='18' fill='%233b2030'/%3E%3Ccircle cx='304' cy='288' r='18' fill='%233b2030'/%3E%3Cpath d='M165 240 L186 224 L234 256 L224 266 Z' fill='%233b2030'/%3E%3Cpath d='M282 250 L330 250' stroke='%233b2030' stroke-width='16' stroke-linecap='round'/%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
