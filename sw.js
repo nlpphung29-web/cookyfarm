@@ -1,4 +1,4 @@
-const CACHE = 'cooky-farm-v3';
+const CACHE = 'cooky-farm-v4';
 self.addEventListener('install', e => {
   self.skipWaiting();
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(['./', './index.html', './style.css', './game.js', './manifest.json']).catch(() => {})));

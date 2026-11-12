@@ -1,10 +1,10 @@
 'use strict';
 /* =========================================================
-   COOKY FARM · Mùa Giáng Sinh Đà Lạt Pastel 🌸🎄
-   ARMY Edition — PWA, Zoom, Hardcore Challenges & Easter Eggs
+   COOKY FARM · Nông Trại Mùa Đông Đà Lạt 🎄
+   BT21 Authentic Art · 4 Expansion Zones · Balanced Farm Economy
    ========================================================= */
 const W = 960, H = 640, T = 60, COLS = 8, ROWS = 4, FX = 236, FY = 246;
-const DAYS = 30, SAVE = 'cookyFarm.pastel.v3';
+const DAYS = 30, SAVE = 'cookyFarm.dalat.v4';
 const EMOJI = '"Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif';
 const FONT = '"Be Vietnam Pro",system-ui,sans-serif';
 const $ = s => document.querySelector(s);
@@ -14,84 +14,212 @@ const pick = a => a[Math.floor(Math.random() * a.length)];
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 
-/* ---------- Game Data ---------- */
+/* ---------- Authentic BT21 SVG Illustrations ---------- */
+function bt21Svg(id) {
+  switch (id) {
+    case 'koya': // RM: Koala xanh dương, tai tròn lớn lông trắng, mũi tím to, mắt nhắm ngủ
+      return `<svg viewBox="0 0 64 64">
+        <circle cx="13" cy="24" r="11" fill="#6ec3f5" stroke="#365c7d" stroke-width="2.6"/>
+        <circle cx="13" cy="24" r="5.5" fill="#fff"/>
+        <circle cx="51" cy="24" r="11" fill="#6ec3f5" stroke="#365c7d" stroke-width="2.6"/>
+        <circle cx="51" cy="24" r="5.5" fill="#fff"/>
+        <ellipse cx="32" cy="35" rx="20" ry="17" fill="#6ec3f5" stroke="#365c7d" stroke-width="2.6"/>
+        <path d="M19 31 Q23 35 27 31" fill="none" stroke="#2b2440" stroke-width="2.6" stroke-linecap="round"/>
+        <path d="M37 31 Q41 35 45 31" fill="none" stroke="#2b2440" stroke-width="2.6" stroke-linecap="round"/>
+        <ellipse cx="32" cy="37" rx="5.2" ry="6.8" fill="#6f52b8" stroke="#2b2440" stroke-width="2.2"/>
+        <path d="M29 47 Q32 49.5 35 47" fill="none" stroke="#2b2440" stroke-width="2.2" stroke-linecap="round"/>
+      </svg>`;
+    case 'rj': // Jin: Alpaca trắng lông xù như mây, quàng khăn đỏ cam, miệng :3
+      return `<svg viewBox="0 0 64 64">
+        <ellipse cx="22" cy="14" rx="5" ry="9" transform="rotate(-12 22 14)" fill="#fff" stroke="#5c4742" stroke-width="2.5"/>
+        <ellipse cx="42" cy="14" rx="5" ry="9" transform="rotate(12 42 14)" fill="#fff" stroke="#5c4742" stroke-width="2.5"/>
+        <path d="M15 26 C10 22,12 15,19 17 C24 11,40 11,45 17 C52 15,54 22,49 26 C55 31,54 41,47 44 C45 50,19 50,17 44 C10 41,9 31,15 26 Z" fill="#fff" stroke="#5c4742" stroke-width="2.5" stroke-linejoin="round"/>
+        <circle cx="24" cy="30" r="2.7" fill="#2d2220"/><circle cx="40" cy="30" r="2.7" fill="#2d2220"/>
+        <path d="M21 24 L26 25 M43 24 L38 25" stroke="#5c4742" stroke-width="2" stroke-linecap="round"/>
+        <ellipse cx="19" cy="34" rx="3.2" ry="1.8" fill="#ffb3c6"/><ellipse cx="45" cy="34" rx="3.2" ry="1.8" fill="#ffb3c6"/>
+        <circle cx="32" cy="33" r="2" fill="#2d2220"/>
+        <path d="M28 36.5 Q30 39 32 36.5 Q34 39 36 36.5" fill="none" stroke="#2d2220" stroke-width="2.2" stroke-linecap="round"/>
+        <rect x="17" y="45" width="30" height="7" rx="3.5" fill="#f2545b" stroke="#5c4742" stroke-width="2.2"/>
+        <path d="M35 50 L39 59 L31 59 Z" fill="#f2545b" stroke="#5c4742" stroke-width="2" stroke-linejoin="round"/>
+      </svg>`;
+    case 'shooky': // Suga: Bánh quy sô-cô-la tròn nâu, hạt choco, lông mày xếch, cười rộng lộ răng trắng
+      return `<svg viewBox="0 0 64 64">
+        <circle cx="32" cy="34" r="20" fill="#a66a38" stroke="#4a2a10" stroke-width="2.6"/>
+        <circle cx="20" cy="21" r="2.3" fill="#593416"/><circle cx="44" cy="22" r="2" fill="#593416"/>
+        <circle cx="17" cy="38" r="2" fill="#593416"/><circle cx="46" cy="40" r="2.4" fill="#593416"/><circle cx="33" cy="18" r="1.8" fill="#593416"/>
+        <path d="M20 25 L28 28 M44 25 L36 28" stroke="#361c08" stroke-width="2.8" stroke-linecap="round"/>
+        <circle cx="25" cy="32" r="2.6" fill="#261305"/><circle cx="39" cy="32" r="2.6" fill="#261305"/>
+        <path d="M22 38 Q32 49 42 38 Z" fill="#591f16" stroke="#261305" stroke-width="2.2" stroke-linejoin="round"/>
+        <path d="M24 38.5 L40 38.5 L39 42 L25 42 Z" fill="#fff"/>
+      </svg>`;
+    case 'mang': // J-Hope: Chú ngựa nhảy múa xanh tím, bờm tím trên đầu, mũi hình trái tim màu hồng tím
+      return `<svg viewBox="0 0 64 64">
+        <path d="M24 16 L20 7 L29 12 L34 6 L38 13 L45 9 L41 17 Z" fill="#7b4ec4" stroke="#382466" stroke-width="2.2" stroke-linejoin="round"/>
+        <ellipse cx="19" cy="17" rx="4.5" ry="7.5" transform="rotate(-18 19 17)" fill="#7998f2" stroke="#382466" stroke-width="2.4"/>
+        <ellipse cx="45" cy="17" rx="4.5" ry="7.5" transform="rotate(18 45 17)" fill="#7998f2" stroke="#382466" stroke-width="2.4"/>
+        <ellipse cx="32" cy="35" rx="19" ry="16.5" fill="#7998f2" stroke="#382466" stroke-width="2.5"/>
+        <circle cx="23" cy="30" r="3" fill="#221838"/><circle cx="41" cy="30" r="3" fill="#221838"/>
+        <circle cx="24" cy="29" r="1" fill="#fff"/><circle cx="42" cy="29" r="1" fill="#fff"/>
+        <path d="M32 46 C22 40,23 32,29 34 C31 35,32 37,32 37 C32 37,33 35,35 34 C41 32,42 40,32 46 Z" fill="#e85d99" stroke="#382466" stroke-width="2.2" stroke-linejoin="round"/>
+      </svg>`;
+    case 'chimmy': // Jimin: Cún con mặc hoodie vàng tươi, hai tai đen rủ xuống hai bên, thè lưỡi hồng
+      return `<svg viewBox="0 0 64 64">
+        <ellipse cx="32" cy="34" rx="21" ry="18.5" fill="#ffd93d" stroke="#594312" stroke-width="2.6"/>
+        <ellipse cx="12" cy="35" rx="5.2" ry="11.5" transform="rotate(10 12 35)" fill="#2b262d" stroke="#1a161b" stroke-width="2.2"/>
+        <ellipse cx="52" cy="35" rx="5.2" ry="11.5" transform="rotate(-10 52 35)" fill="#2b262d" stroke="#1a161b" stroke-width="2.2"/>
+        <ellipse cx="32" cy="36" rx="14.5" ry="12.5" fill="#fff" stroke="#594312" stroke-width="2.2"/>
+        <circle cx="26" cy="33" r="2.5" fill="#2b262d"/><circle cx="38" cy="33" r="2.5" fill="#2b262d"/>
+        <ellipse cx="21" cy="37" rx="2.8" ry="1.6" fill="#ffb3c6"/><ellipse cx="43" cy="37" rx="2.8" ry="1.6" fill="#ffb3c6"/>
+        <circle cx="32" cy="36" r="2" fill="#2b262d"/>
+        <path d="M28 39.5 Q30 41.5 32 39.5 Q34 41.5 36 39.5" fill="none" stroke="#2b262d" stroke-width="2" stroke-linecap="round"/>
+        <ellipse cx="34.2" cy="42.2" rx="2.3" ry="2.8" fill="#ff6b8b" stroke="#2b262d" stroke-width="1.6"/>
+      </svg>`;
+    case 'tata': // V: Đầu trái tim đỏ tươi, lông mày vàng nâu, môi vàng kem, thân xanh chấm bi vàng
+      return `<svg viewBox="0 0 64 64">
+        <rect x="22" y="45" width="20" height="13" rx="6" fill="#2f66d0" stroke="#2b1820" stroke-width="2.2"/>
+        <circle cx="27" cy="51" r="2.2" fill="#ffd166"/><circle cx="37" cy="53" r="2.2" fill="#ffd166"/>
+        <path d="M32 49 C12 37,8 17,21 13 C27 11,31 16,32 20 C33 16,37 11,43 13 C56 17,52 37,32 49 Z" fill="#f03a47" stroke="#2b1820" stroke-width="2.6" stroke-linejoin="round"/>
+        <path d="M21 25 L28 26.5 M43 25 L36 26.5" stroke="#d9a14a" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="25" cy="31" r="2.5" fill="#2b1820"/><circle cx="39" cy="31" r="2.5" fill="#2b1820"/>
+        <ellipse cx="32" cy="38.5" rx="6.5" ry="3.2" fill="#ffd166" stroke="#2b1820" stroke-width="2"/>
+        <line x1="26.5" y1="38.5" x2="37.5" y2="38.5" stroke="#2b1820" stroke-width="1.6"/>
+      </svg>`;
+    case 'van': // ARMY: Robot vũ trụ nửa trắng nửa xám, chóp nhọn trên đầu, mắt O và X
+      return `<svg viewBox="0 0 64 64">
+        <path d="M32 8 L27 17 L37 17 Z" fill="#f5f7fa" stroke="#363d4a" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M32 16 A19 19 0 0 0 32 54 Z" fill="#f5f7fa"/>
+        <path d="M32 16 A19 19 0 0 1 32 54 Z" fill="#9aa5b8"/>
+        <circle cx="32" cy="35" r="19" fill="none" stroke="#363d4a" stroke-width="2.6"/>
+        <line x1="32" y1="16" x2="32" y2="54" stroke="#363d4a" stroke-width="2"/>
+        <circle cx="23" cy="34" r="3.6" fill="none" stroke="#363d4a" stroke-width="2.5"/>
+        <path d="M38 31 L44 37 M44 31 L38 37" stroke="#363d4a" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="27" y1="43" x2="37" y2="43" stroke="#363d4a" stroke-width="2.4" stroke-linecap="round"/>
+      </svg>`;
+    default:
+      return `<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="20" fill="#ffb3cc"/></svg>`;
+  }
+}
+
+/* ---------- Game Data (Balanced Core Farming Economy) ---------- */
 const CROPS = {
-  carrot:  { n: 'Cà rốt',       e: '🥕', seed: 6,  days: 2, price: 13, xp: 3 },
-  cabbage: { n: 'Bắp cải',      e: '🥬', seed: 12, days: 3, price: 25, xp: 5 },
-  sweet:   { n: 'Khoai mật',    e: '🍠', seed: 16, days: 3, price: 32, xp: 6 },
-  tomato:  { n: 'Cà chua',      e: '🍅', seed: 18, days: 4, price: 42, xp: 7 },
-  corn:    { n: 'Bắp sữa',      e: '🌽', seed: 24, days: 4, price: 52, xp: 8 },
-  straw:   { n: 'Dâu Đà Lạt',   e: '🍓', seed: 48, days: 5, price: 50, regrow: 2, xp: 10 },
-  snowfl:  { n: 'Hoa Tuyết',    e: '❄️', seed: 68, days: 5, price: 74, regrow: 3, fans: 12, xp: 14 },
-  melon:   { n: 'Dưa lưới',     e: '🍈', seed: 85, days: 7, price: 195, xp: 20 },
+  carrot:  { n: 'Cà rốt',           e: '🥕', seed: 8,   days: 2, price: 14,  xp: 3,  reqLv: 1 },
+  cabbage: { n: 'Bắp cải Đà Lạt',   e: '🥬', seed: 14,  days: 3, price: 25,  xp: 5,  reqLv: 1 },
+  sweet:   { n: 'Khoai mật',        e: '🍠', seed: 20,  days: 3, price: 36,  xp: 6,  reqLv: 2 },
+  tomato:  { n: 'Cà chua bi',       e: '🍅', seed: 28,  days: 4, price: 50,  xp: 8,  reqLv: 3 },
+  corn:    { n: 'Bắp sữa',          e: '🌽', seed: 38,  days: 4, price: 68,  xp: 10, reqLv: 4 },
+  straw:   { n: 'Dâu Tây Đà Lạt',   e: '🍓', seed: 68,  days: 5, price: 54,  regrow: 3, xp: 12, reqLv: 5 },
+  rose:    { n: 'Hoa Hồng Nhung',   e: '🌹', seed: 85,  days: 5, price: 155, xp: 15, reqLv: 6, reqZone: 'highland', fans: 6 },
+  snowfl:  { n: 'Hoa Tuyết',        e: '❄️', seed: 125, days: 6, price: 105, regrow: 3, fans: 10, xp: 18, reqLv: 7, reqZone: 'highland' },
+  melon:   { n: 'Dưa Lưới Hoàng Kim', e: '🍈', seed: 155, days: 7, price: 295, xp: 24, reqLv: 8 },
 };
 const CK = Object.keys(CROPS);
 
+// Đặc sản thu hoạch từ 4 Khu vực mở rộng
+const SPECIALS = {
+  bouquet:   { n: 'Giỏ Hoa Cao Nguyên', e: '💐', price: 48 },
+  honey:     { n: 'Mật Ong Hoa Thông',  e: '🍯', price: 85 },
+  persimmon: { n: 'Hồng Treo Gió',      e: '🏮', price: 145 },
+  arabica:   { n: 'Cà Phê Arabica',     e: '☕', price: 165 },
+};
+const SK = Object.keys(SPECIALS);
+
 const FISH = {
-  carp:   { n: 'Cá chép hồng',    e: '🐟', price: 32, w: 42 },
-  shrimp: { n: 'Tôm pha lê',      e: '🦐', price: 50, w: 30 },
-  salmon: { n: 'Cá hồi Đà Lạt',   e: '🍣', price: 76, w: 18 },
-  star:   { n: 'Sao biển băng',   e: '🌟', price: 135, w: 7,  fans: 25 },
-  tuna:   { n: 'Cá Ngừ Super Tuna', e: '🦈', price: 320, w: 3, fans: 80 },
+  carp:   { n: 'Cá chép suối',      e: '🐟', price: 18, w: 46 },
+  shrimp: { n: 'Tôm suối lạnh',     e: '🦐', price: 28, w: 30 },
+  salmon: { n: 'Cá hồi Đà Lạt',     e: '🍣', price: 45, w: 16 },
+  star:   { n: 'Sao biển băng',     e: '🌟', price: 75, w: 6,  fans: 12 },
+  tuna:   { n: 'Cá Ngừ Super Tuna', e: '🦈', price: 95, w: 2,  fans: 25 },
 };
 const FK = Object.keys(FISH);
 
 const RECIPES = [
-  { id: 'juice',  n: 'Sinh tố Cà rốt',    e: '🥤', req: { carrot: 2 }, price: 46, st: 40, fans: 5,  d: 'Uống hồi +40⚡ hoặc bán lời cao' },
-  { id: 'roast',  n: 'Khoai mật nướng',   e: '🍯', req: { sweet: 2 },  price: 92, st: 60, fans: 10, d: 'Ấm bụng mùa đông: hồi +60⚡' },
-  { id: 'cake',   n: 'Bánh kem Dâu Noel', e: '🍰', req: { straw: 2, corn: 1 }, price: 215, st: 75, fans: 35, d: 'Đặc sản Giáng Sinh +35💜 khi làm' },
-  { id: 'hotpot', n: 'Lẩu Cá Hồi Đà Lạt', e: '🍲', req: { salmon: 1, cabbage: 1, tomato: 1 }, price: 245, st: 85, fans: 45, d: 'Nồi lẩu nghi ngút khói +45💜' },
-  { id: 'tea',    n: 'Trà Hoa Tuyết',     e: '☕', req: { snowfl: 1, straw: 1 }, price: 310, st: 70, fans: 70, d: 'Thức uống viral khắp Đà Lạt +70💜' },
+  { id: 'juice',  n: 'Sinh tố Cà rốt',      e: '🥤', req: { carrot: 2 }, price: 36,  st: 32, fans: 3,  d: 'Hồi +32⚡ hoặc bán lời hơn nông sản thô' },
+  { id: 'roast',  n: 'Khoai mật nướng',     e: '🍠', req: { sweet: 2 },  price: 90,  st: 48, fans: 6,  d: 'Ấm bụng mùa đông: hồi +48⚡' },
+  { id: 'cake',   n: 'Bánh kem Dâu Đà Lạt', e: '🍰', req: { straw: 2, corn: 1 }, price: 215, st: 65, fans: 16, d: 'Bánh kem dâu tươi thơm lừng (+16💜)' },
+  { id: 'hotpot', n: 'Lẩu Cá Hồi Phố Núi',  e: '🍲', req: { salmon: 1, cabbage: 2, tomato: 1 }, price: 185, st: 75, fans: 20, d: 'Nồi lẩu nghi ngút khói (+20💜)' },
+  { id: 'tea',    n: 'Trà Hoa Tuyết Mật Ong', e: '🍵', req: { snowfl: 1, honey: 1 }, price: 245, st: 70, fans: 28, d: 'Đặc sản cao cấp kết hợp Hoa Tuyết & Mật Ong (+28💜)' },
+];
+
+// 4 Khu vực mở rộng trên bản đồ khi đạt mốc doanh thu nông trại
+const EXPANSIONS = [
+  {
+    id: 'highland', e: '🍓', n: 'Khu 1: Đồi Hoa & Dâu Cao Nguyên',
+    reqEarn: 350, cost: 220, cd: 2, prod: 'bouquet',
+    x: 356, y: 76, w: 238, h: 118, pos: { x: 475, y: 212 },
+    d: 'Yêu cầu tổng doanh thu đạt 350k. Mở khóa hạt giống 🌹 Hoa Hồng & ❄️ Hoa Tuyết, đồng thời thu hoạch 💐 Giỏ Hoa Cao Nguyên (48k) mỗi 2 ngày!'
+  },
+  {
+    id: 'apiary', e: '🐝', n: 'Khu 2: Thung Lũng Ong Mật Hoa Thông',
+    reqEarn: 950, cost: 520, cd: 2, prod: 'honey',
+    x: 748, y: 242, w: 192, h: 170, pos: { x: 752, y: 330 },
+    d: 'Yêu cầu tổng doanh thu đạt 950k. Xây 3 Tổ Ong bên rừng thông: mỗi 2 ngày (khi có trồng cây trên ruộng) thu hoạch 🍯 Mật Ong Hoa Thông (85k)!'
+  },
+  {
+    id: 'orchard', e: '🍑', n: 'Khu 3: Vườn Hồng Treo Gió Đà Lạt',
+    reqEarn: 2400, cost: 1200, cd: 3, prod: 'persimmon',
+    x: 236, y: 500, w: 484, h: 122, pos: { x: 478, y: 506 },
+    d: 'Yêu cầu tổng doanh thu đạt 2,4tr. Mở vườn hồng cổ thụ phía Nam: mỗi 3 ngày thu hoạch 🏮 Hồng Treo Gió Thượng Hạng (145k)!'
+  },
+  {
+    id: 'cloudcafe', e: '☕', n: 'Khu 4: Quán Cà Phê Săn Mây Đồi Thông',
+    reqEarn: 5500, cost: 2600, cd: 2, prod: 'arabica',
+    x: 748, y: 428, w: 192, h: 192, pos: { x: 752, y: 520 },
+    d: 'Yêu cầu tổng doanh thu đạt 5,5tr. Xây Quán Cà Phê Săn Mây (+12% giá bán toàn nông trại) & thu hoạch ☕ Cà Phê Arabica (165k) mỗi 2 ngày!'
+  },
 ];
 
 const PETS = [
-  { id: 'chick', e: '🐥', n: 'Gà Kem Bông',       cost: 260,  d: 'Khi được cho ăn: sáng hôm sau tặng +40k trứng hồng.' },
-  { id: 'sheep', e: '🐑', n: 'Cừu Bông RJ Mini',  cost: 480,  d: 'Khi được cho ăn: sáng hôm sau tặng +75k len pastel & +15💜.' },
-  { id: 'cat',   e: '🐱', n: 'Mèo Tuyết Lil Meow',cost: 650,  d: 'Khi được cho ăn: bắt sạch sâu bọ, đuổi quạ & +25💜.' },
-  { id: 'deer',  e: '🦌', n: 'Tuần Lộc Mũi Hồng', cost: 1050, d: 'Khi được cho ăn: tặng +115k & 2 hạt giống lễ hội mỗi sáng.' },
+  { id: 'chick', e: '🐥', n: 'Gà Kem Bông',        cost: 280,  d: 'Khi được cho ăn: sáng hôm sau đẻ trứng bán được +18k.' },
+  { id: 'sheep', e: '🐑', n: 'Cừu Bông Đồi Thông', cost: 520,  d: 'Khi được cho ăn: sáng hôm sau thu hoạch len +32k & +6💜.' },
+  { id: 'cat',   e: '🐱', n: 'Mèo Tuyết Lil Meow', cost: 740,  d: 'Khi được cho ăn: bắt sạch sâu bọ trên ruộng, đuổi quạ & +10💜.' },
+  { id: 'deer',  e: '🦌', n: 'Tuần Lộc Mũi Hồng',  cost: 1250, d: 'Khi được cho ăn: sáng hôm sau tặng +45k & 1 hạt giống ngẫu nhiên.' },
 ];
 
 const UPS = [
-  { id: 'can',    e: '🚿', n: 'Bình tưới Pastel',       cost: 190,  d: 'Tưới cây chỉ tốn 1⚡ thay vì 2⚡.' },
-  { id: 'hoe',    e: '⛏️', n: 'Cuốc nhẹ Hàn Quốc',      cost: 190,  d: 'Cuốc đất chỉ tốn 2⚡ thay vì 4⚡.' },
-  { id: 'rod',    e: '🎣', n: 'Cần câu Super Tuna',     cost: 280,  d: 'Câu cá tốn 4⚡, tăng tỉ lệ câu trúng Cá hồi, Hộp quà & Super Tuna!' },
-  { id: 'heater', e: '🔥', n: 'Lò Sưởi Đồi Thông',      cost: 360,  d: 'Chống đóng băng 50% ô ruộng khi trời có Sương muối 🥶.' },
-  { id: 'scare',  e: '⛄', n: 'Người Tuyết Canh Vườn',  cost: 340,  d: 'Giữ vườn khỏi Shooky, giảm 60% quạ đen & +10💜/ngày.' },
-  { id: 'sign',   e: '🪧', n: 'Cổng Hoa Pastel',        cost: 550,  d: 'Nông trại nổi tiếng: +12% giá bán mọi mặt hàng.' },
-  { id: 'koya',   e: '🐨', n: 'Thuê Koya phụ việc',     cost: 450,  d: 'Mỗi tối tự hái ô chín (lương 35k/ngày, đôi khi ngủ gật).' },
-  { id: 'green',  e: '🏡', n: 'Nhà Kính Pha Lê',        cost: 980,  d: 'Miễn nhiễm Sương muối & Mưa đá, giảm 70% sâu, +10% thu hoạch đôi.' },
-  { id: 'sprk',   e: '💦', n: 'Phun Sương Tự Động',     cost: 1550, d: 'Mỗi sáng tự động tưới đẫm toàn bộ cánh đồng.' },
+  { id: 'can',    e: '🚿', n: 'Bình Tưới Phun Sương',  cost: 220,  d: 'Tưới cây chỉ tốn 1⚡ thay vì 2⚡.' },
+  { id: 'hoe',    e: '⛏️', n: 'Cuốc Thép Nhẹ',         cost: 220,  d: 'Cuốc đất chỉ tốn 2⚡ thay vì 4⚡.' },
+  { id: 'rod',    e: '🎣', n: 'Cần Câu Tre Đà Lạt',    cost: 340,  d: 'Giảm thể lực câu cá & tăng tỉ lệ câu được Cá hồi!' },
+  { id: 'scare',  e: '⛄', n: 'Người Tuyết Canh Vườn', cost: 390,  d: 'Giảm 65% quạ đen phá hoại & giữ vườn an toàn.' },
+  { id: 'heater', e: '🔥', n: 'Lò Sưởi Đồi Thông',     cost: 460,  d: 'Chống đóng băng 50% ô ruộng khi trời có Sương muối 🥶.' },
+  { id: 'koya',   e: '🐨', n: 'Nhờ Koya Phụ Thu Hoạch',cost: 580,  d: 'Mỗi tối tự hái các ô chín (phí 25k/ngày, đôi khi ngủ gật).' },
+  { id: 'sign',   e: '🪧', n: 'Cổng Hoa Nông Trại',    cost: 680,  d: 'Nông trại uy tín: +8% giá bán mọi mặt hàng.' },
+  { id: 'green',  e: '🏡', n: 'Nhà Kính Pha Lê',       cost: 1350, d: 'Miễn nhiễm Sương muối đóng băng, giảm 70% sâu & +6% tỉ lệ thu hoạch đôi.' },
+  { id: 'sprk',   e: '💦', n: 'Hệ Thống Tưới Tự Động', cost: 2100, d: 'Mỗi sáng tự động tưới đẫm toàn bộ cánh đồng.' },
 ];
 
+// 6 Cột mốc phát triển dài hạn (Không phát tiền miễn phí quá đà, tập trung buff cho Farm)
 const MILES = [
-  { id: 'concert', cost: 5000,   stars: 1, e: '🎫', n: 'Mốc 1: Vé Winter Concert Seoul',    d: 'Cần 5tr & 1⭐ Sao Tím. Mở khóa Chế Độ Vĩnh Cửu & +10% giá bán.', income: 65,  fans: 20 },
-  { id: 'cafe',    cost: 15000,  stars: 2, e: '☕', n: 'Mốc 2: Tiệm Trà Bánh Đồi Thông',    d: 'Cần 15tr & 2⭐ Sao Tím. Thu lời thụ động +210k & +40💜 mỗi sáng!', income: 210, fans: 40 },
-  { id: 'villa',   cost: 35000,  stars: 4, e: '🏰', n: 'Mốc 3: Biệt Thự Hồng Pastel',      d: 'Cần 35tr & 4⭐ Sao Tím. +50⚡ Sức tối đa, +15% giá bán & +350k/ngày.', income: 350, fans: 65 },
-  { id: 'park',    cost: 75000,  stars: 6, e: '🎡', n: 'Mốc 4: Công Viên Tuyết Wonderland', d: 'Cần 75tr & 6⭐ Sao Tím. Vòng quay pastel: +650k & +130💜 mỗi sáng!', income: 650, fans: 130 },
-  { id: 'legend',  cost: 150000, stars: 9, e: '👑', n: 'Mốc 5: Huyền Thoại Đồi Thông Tím',  d: 'Cần 150tr & 9⭐ Sao Tím. Đỉnh cao Borahae: +1.300k/ngày & +30% giá bán!', income: 1300, fans: 280 },
+  { id: 'barn',    cost: 380,   stars: 1, e: '🪵', n: 'Mốc 1: Kho Nông Sản Gỗ Thông',    d: 'Cần 380k & 1⭐ Sao Tím. Nông sản chín lâu hỏng hơn (+2 ngày) & +4% giá bán.' },
+  { id: 'sleigh',  cost: 950,   stars: 2, e: '🛷', n: 'Mốc 2: Xe Tuần Lộc Giao Hàng',    d: 'Cần 950k & 2⭐ Sao Tím. Tăng +20% tiền thưởng mọi Đơn hàng tuần & +5% giá bán.' },
+  { id: 'concert', cost: 2200,  stars: 3, e: '🎫', n: 'Mốc 3: Vé Winter Concert Seoul',  d: 'Cần 2,2tr & 3⭐ Sao Tím. Mở khóa Chế Độ Vĩnh Cửu (Endless) & +6% giá bán.' },
+  { id: 'train',   cost: 4800,  stars: 5, e: '🚂', n: 'Mốc 4: Chuyến Tàu Cổ Đà Lạt',     d: 'Cần 4,8tr & 5⭐ Sao Tím. Đưa du khách tới tham quan: +20💜/ngày & +8% giá bán.' },
+  { id: 'villa',   cost: 9500,  stars: 7, e: '🏰', n: 'Mốc 5: Biệt Thự Đồi Thông',       d: 'Cần 9,5tr & 7⭐ Sao Tím. +35⚡ Sức tối đa, hồi đầy sức mỗi sáng & +10% giá bán.' },
+  { id: 'legend',  cost: 18000, stars: 10,e: '👑', n: 'Mốc 6: Huyền Thoại Nông Trại',    d: 'Cần 18tr & 10⭐ Sao Tím. Đỉnh cao Đà Lạt: +15% giá bán & hiệu ứng Sao Đêm Vĩnh Cửu!' },
 ];
 
+// Hội bạn thân BT21 với tạo hình và tính cách chuẩn xác
 const FRIENDS = [
-  { id: 'rj',     e: '🦙', n: 'RJ (Jin)',       fav: 'Cà rốt & Bánh',    buff: 'Mỗi cấp: +4⚡ hồi sức khi ăn sáng' },
-  { id: 'chimmy', e: '🐶', n: 'Chimmy (Jimin)', fav: 'Bắp sữa & Dâu',    buff: 'Mỗi cấp: +3% giá bán nông sản' },
-  { id: 'koya',   e: '🐨', n: 'Koya (RM)',      fav: 'Hoa Tuyết',        buff: 'Mỗi cấp: giảm tỉ lệ cỏ dại mọc' },
-  { id: 'shooky', e: '🍪', n: 'Shooky (Suga)',  fav: 'Khoai mật nướng',  buff: 'Mỗi cấp: tăng cơ hội thu hoạch x2' },
-  { id: 'mang',   e: '🐴', n: 'Mang (J-Hope)',  fav: 'Sinh tố & Trà',    buff: 'Mỗi cấp: +15% fan khi Livestream' },
-  { id: 'tata',   e: '💜', n: 'Tata (V)',       fav: 'Cà rốt cầu vồng',  buff: 'Mỗi cấp: tăng cơ hội ra cây Cầu Vồng' },
-  { id: 'van',    e: '🤖', n: 'Van (ARMY)',     fav: 'Cá hồi Đà Lạt',    buff: 'Mỗi cấp: giảm 5% giá mở ô đất & thuế' },
+  { id: 'rj',     n: 'RJ (Jin)',       role: 'Alpaca trắng quàng khăn đỏ mê ẩm thực',   buff: 'Mỗi cấp: +3⚡ hồi sức khi ăn Cà rốt & món bếp' },
+  { id: 'chimmy', n: 'Chimmy (Jimin)', role: 'Cún con áo hoodie vàng tai đen đáng yêu',  buff: 'Mỗi cấp: +2% giá bán mọi nông sản thu hoạch' },
+  { id: 'koya',   n: 'Koya (RM)',      role: 'Koala xanh dương mũi tím thông thái',      buff: 'Mỗi cấp: giảm 12% tỉ lệ cỏ dại mọc mỗi đêm' },
+  { id: 'shooky', n: 'Shooky (Suga)',  role: 'Bánh quy sô-cô-la nhỏ tinh nghịch',        buff: 'Mỗi cấp: +2% cơ hội thu hoạch x2 sản lượng' },
+  { id: 'mang',   n: 'Mang (J-Hope)',  role: 'Chú ngựa vũ công mũi trái tim hồng tím',   buff: 'Mỗi cấp: +10% lượng Fan nhận được khi Livestream' },
+  { id: 'tata',   n: 'Tata (V)',       role: 'Hoàng tử đầu trái tim đỏ thân chấm bi',    buff: 'Mỗi cấp: tăng cơ hội nảy mầm Cà rốt Cầu Vồng' },
+  { id: 'van',    n: 'Van (ARMY)',     role: 'Robot hộ vệ vũ trụ nửa trắng nửa xám',     buff: 'Mỗi cấp: giảm 5% chi phí mở ô đất & thuế tuần' },
 ];
 
+// 10 Kỷ vật sưu tầm ARMY (Thưởng kỷ niệm nhỏ gọn, tập trung giá trị sưu tầm)
 const RELICS = [
   { id: 'bomb',    e: '💣', n: 'ARMY Bomb Ver.4',       d: 'Bí mật: Bấm vào nút 💜 Fan trên góc phải 7 lần liên tiếp hoặc đạt 1.306💜.' },
-  { id: 'mikro',   e: '🌌', n: 'Tinh Cầu Mikrokosmos',  d: 'Bí mật: Bấm vào Sao băng Tím xuất hiện trên trời lúc 06:13 sáng hoặc 18:13 tối.' },
+  { id: 'mikro',   e: '🌌', n: 'Tinh Cầu Mikrokosmos',  d: 'Bí mật: Bấm vào Sao băng xuất hiện trên trời lúc 06:13 sáng hoặc 18:13 tối.' },
   { id: 'tuna',    e: '🦈', n: 'Cúp Vàng Super Tuna',   d: 'Bí mật: Câu trúng Cá Ngừ Đại Dương Super Tuna (참치!) ở Hồ Tuyết.' },
   { id: 'glove',   e: '🥊', n: 'Găng Tay Hồng Golden',  d: 'Bí mật: Tập Gym nâng Sức lực tối đa đạt từ 130⚡ trở lên.' },
-  { id: 'spring',  e: '🌸', n: 'Cành Hoa Spring Day',   d: 'Bí mật: Thu hoạch ❄️ Hoa Tuyết Noel tổng cộng 5 lần.' },
+  { id: 'spring',  e: '🌸', n: 'Cành Hoa Spring Day',   d: 'Bí mật: Mở Khu Đồi Hoa và thu hoạch ❄️ Hoa Tuyết đủ 5 lần.' },
   { id: 'whale',   e: '🐋', n: 'Cá Voi Tím Whalien 52', d: 'Bí mật: Đi câu cá ở Hồ Tuyết sau 18:00 tối vào ngày Sương mù hoặc Tuyết.' },
-  { id: 'soop',    e: '🪑', n: 'Ghế Gỗ In The Soop',    d: 'Bí mật: Mở rộng nông trại đạt từ 22 ô đất trở lên.' },
-  { id: 'cake7',   e: '🎂', n: 'Bánh Kem 7WithYou',     d: 'Bí mật: Tự tay làm đủ 7 món bánh/trà trong Bếp Bánh Pastel.' },
-  { id: 'radio',   e: '📻', n: 'Băng Cassette 0613',    d: 'Bí mật: Trả lời đúng 3 câu đố BTS trên Đài Radio ARMY.' },
-  { id: 'borahae', e: '💜', n: 'Trái Tim Borahae OT7',  d: 'Bí mật: Đạt tổng cộng 21 cấp thân thiết với hội bạn BT21.' },
+  { id: 'soop',    e: '🪑', n: 'Ghế Gỗ In The Soop',    d: 'Bí mật: Khai hoang mở rộng nông trại đạt từ 20 ô đất trở lên.' },
+  { id: 'cake7',   e: '🎂', n: 'Bánh Kem 7WithYou',     d: 'Bí mật: Tự tay làm đủ 7 món ăn/thức uống trong Bếp Bánh.' },
+  { id: 'radio',   e: '📻', n: 'Băng Cassette 0613',    d: 'Bí mật: Trả lời đúng 3 câu đố BTS trên Đài Radio 06.13 FM.' },
+  { id: 'borahae', e: '💜', n: 'Trái Tim Borahae OT7',  d: 'Bí mật: Đạt tổng cộng 21 cấp thân thiết với hội bạn thân BT21.' },
 ];
 
 const TRIVIA = [
@@ -99,51 +227,52 @@ const TRIVIA = [
   { q: 'Nhân vật thỏ hồng cơ bắp Cooky trong BT21 do thành viên nào sáng tạo?', a: ['Jimin', 'Jungkook', 'Jin'], ok: 1 },
   { q: 'Câu nói nổi tiếng "Borahae" (I Purple You 💜) do ai tạo ra?', a: ['V (Kim Taehyung)', 'RM', 'Suga'], ok: 0 },
   { q: 'Bài hát câu cá vui nhộn gây bão toàn cầu của anh cả Jin tên là gì?', a: ['Super Salmon', 'Super Tuna (참치)', 'Ocean Boy'], ok: 1 },
-  { q: 'Trong vũ trụ BT21, chú lạc đà alpaca trắng mê nấu ăn tên là gì?', a: ['Koya', 'Chimmy', 'RJ'], ok: 2 },
+  { q: 'Trong vũ trụ BT21, chú lạc đà alpaca trắng quàng khăn đỏ tên là gì?', a: ['Koya', 'Chimmy', 'RJ'], ok: 2 },
   { q: 'Chiếc gậy cổ vũ chính thức của cộng đồng fan BTS có tên gọi là gì?', a: ['Purple Stick', 'ARMY Bomb', 'Bangtan Light'], ok: 1 },
-  { q: 'Nhân vật bánh quy nhỏ tinh nghịch sợ sữa nhất trong BT21 là ai?', a: ['Shooky', 'Mang', 'Tata'], ok: 0 },
+  { q: 'Nhân vật bánh quy sô-cô-la nhỏ tinh nghịch sợ sữa nhất trong BT21 là ai?', a: ['Shooky', 'Mang', 'Tata'], ok: 0 },
   { q: 'Ca khúc tiếng Anh đầu tiên giúp BTS đạt #1 Billboard Hot 100 là bài nào?', a: ['Butter', 'Dynamite', 'Boy With Luv'], ok: 1 },
-  { q: 'Chú koala xanh dương hay ngủ gật và có đôi tai tháo rời được tên là gì?', a: ['Koya', 'Van', 'Mang'], ok: 0 },
-  { q: 'Chương trình thực tế nghỉ dưỡng giữa rừng cây của BTS có tên là gì?', a: ['Bon Voyage', 'In The Soop', 'Run Dalat'], ok: 1 },
+  { q: 'Chú koala xanh dương có chiếc mũi tím và đôi tai tháo rời được tên là gì?', a: ['Koya', 'Van', 'Mang'], ok: 0 },
+  { q: 'Chú cún mặc áo hoodie vàng với hai chiếc tai đen dài trong BT21 là ai?', a: ['Chimmy', 'RJ', 'Cooky'], ok: 0 },
 ];
 
 const BADGES = [
-  { id: 'harv10',  e: '🌱', n: 'Mầm Xanh Đầu Tiên',   d: 'Thu hoạch đủ 10 lần',        reward: 90,  c: s => s.stats.harv >= 10 },
-  { id: 'harv80',  e: '🧺', n: 'Bàn Tay Vàng',        d: 'Thu hoạch đủ 80 lần',        reward: 350, c: s => s.stats.harv >= 80 },
-  { id: 'fish5',   e: '🎣', n: 'Cần Thủ Hồ Sương',    d: 'Câu được 5 con cá',          reward: 130, c: s => s.stats.fish >= 5 },
-  { id: 'fish25',  e: '🐳', n: 'Vua Hồ Xuân Hương',   d: 'Câu được 25 con cá',         reward: 450, c: s => s.stats.fish >= 25 },
-  { id: 'cook5',   e: '🧁', n: 'Đầu Bếp Bánh Ngọt',   d: 'Chế biến 5 món ăn/thức uống',reward: 180, c: s => s.stats.cook >= 5 },
-  { id: 'cook25',  e: '👩‍🍳', n: 'Nghệ Nhân Trà Bánh',  d: 'Chế biến 25 món',            reward: 550, c: s => s.stats.cook >= 25 },
-  { id: 'ord3',    e: '📦', n: 'Chuyến Xe Đúng Hẹn',  d: 'Giao thành công 3 Đơn hàng tuần', reward: 400, c: s => (s.stats.orders || 0) >= 3 },
-  { id: 'plotAll', e: '🚜', n: 'Đại Điền Chủ Đà Lạt', d: 'Mở khóa toàn bộ 32 ô ruộng', reward: 800, c: s => s.plots.every(p => p.s !== 'locked') },
-  { id: 'fan2k',   e: '💜', n: 'Idol Đồi Thông',      d: 'Đạt 2.000 Fan theo dõi',     reward: 300, c: s => s.fans >= 2000 },
-  { id: 'fan10k',  e: '🌟', n: 'Ngôi Sao Triệu Tim',  d: 'Đạt 10.000 Fan theo dõi',    reward: 900, c: s => s.fans >= 10000 },
-  { id: 'rel5',    e: '💎', n: 'Nhà Sưu Tầm ARMY',    d: 'Tìm thấy 5 Kỷ vật bí mật ARMY', reward: 600, c: s => Object.keys(s.relics || {}).length >= 5 },
-  { id: 'mile1',   e: '🎫', n: 'Giấc Mơ Seoul',       d: 'Mở khóa Cột Mốc 1 (Vé Concert)', reward: 500, c: s => s.miles.concert },
+  { id: 'harv15',  e: '🌱', n: 'Mầm Xanh Đầu Tiên',   d: 'Thu hoạch đủ 15 vụ nông sản',     reward: 35,  c: s => s.stats.harv >= 15 },
+  { id: 'harv100', e: '🧺', n: 'Bàn Tay Vàng',        d: 'Thu hoạch đủ 100 vụ nông sản',    reward: 140, c: s => s.stats.harv >= 100 },
+  { id: 'exp1',    e: '🍓', n: 'Bước Chân Mở Cõi',    d: 'Mở khóa Khu vực mới đầu tiên',    reward: 60,  c: s => Object.keys(s.exp || {}).length >= 1 },
+  { id: 'expAll',  e: '🗺️', n: 'Chủ Đồi Thông Đà Lạt',d: 'Mở khóa toàn bộ 4 Khu vực mới',  reward: 320, c: s => Object.keys(s.exp || {}).length >= 4 },
+  { id: 'cook8',   e: '🧁', n: 'Đầu Bếp Phố Núi',     d: 'Chế biến 8 món ăn/thức uống',     reward: 65,  c: s => s.stats.cook >= 8 },
+  { id: 'ord3',    e: '📦', n: 'Chuyến Xe Đúng Hẹn',  d: 'Giao thành công 3 Đơn hàng tuần', reward: 120, c: s => (s.stats.orders || 0) >= 3 },
+  { id: 'ord8',    e: '🚚', n: 'Đối Tác Vàng Đà Lạt', d: 'Giao thành công 8 Đơn hàng tuần', reward: 280, c: s => (s.stats.orders || 0) >= 8 },
+  { id: 'plotAll', e: '🚜', n: 'Đại Điền Chủ',        d: 'Khai hoang đủ 32 ô ruộng chính',  reward: 260, c: s => s.plots.every(p => p.s !== 'locked') },
+  { id: 'lv8',     e: '⭐', n: 'Nông Dân Lão Luyện',  d: 'Đạt Cấp độ Nông trại Lv.8',       reward: 180, c: s => (s.lv || 1) >= 8 },
+  { id: 'fan2k',   e: '💜', n: 'Nông Trại Nổi Tiếng', d: 'Đạt 2.000 Fan theo dõi',          reward: 110, c: s => s.fans >= 2000 },
+  { id: 'rel5',    e: '💎', n: 'Nhà Sưu Tầm ARMY',    d: 'Khám phá 5 Kỷ vật bí mật ARMY',   reward: 90,  c: s => Object.keys(s.relics || {}).length >= 5 },
+  { id: 'mile3',   e: '🎫', n: 'Giấc Mơ Winter Concert', d: 'Đạt Cột Mốc 3 (Vé Concert)',   reward: 200, c: s => s.miles.concert },
 ];
 
 const WX = {
-  snow:  { e: '❄️', n: 'Tuyết Noel (+10% giá)' },
+  snow:  { e: '❄️', n: 'Tuyết rơi (+8% giá)' },
   sun:   { e: '☀️', n: 'Nắng đông ấm' },
-  rain:  { e: '🌧️', n: 'Mưa phùn' },
-  fog:   { e: '🌫️', n: 'Sương hồng Đà Lạt' },
+  rain:  { e: '🌧️', n: 'Mưa phùn Đà Lạt' },
+  fog:   { e: '🌫️', n: 'Sương mù phố núi' },
   frost: { e: '🥶', n: 'Sương muối đóng băng!' },
 };
+
 const ZONES = {
   house: { x: 26,  y: 52,  w: 175, h: 155, n: '🛏️ Về nhà nghỉ ngơi', pos: { x: 112, y: 214 } },
-  radio: { x: 185, y: 140, w: 42,  h: 58,  n: '📻 Đài Radio ARMY',    pos: { x: 196, y: 214 } },
+  radio: { x: 185, y: 140, w: 42,  h: 58,  n: '📻 Đài Radio 06.13 FM', pos: { x: 196, y: 214 } },
   gym:   { x: 228, y: 126, w: 120, h: 80,  n: '💪 Góc tập Gym',       pos: { x: 286, y: 214 } },
-  cook:  { x: 610, y: 92,  w: 128, h: 112, n: '🧁 Bếp Bánh Pastel',   pos: { x: 674, y: 214 } },
-  stall: { x: 754, y: 60,  w: 184, h: 148, n: '🛒 Sạp Giáng Sinh',    pos: { x: 846, y: 214 } },
+  cook:  { x: 610, y: 92,  w: 128, h: 112, n: '🧁 Bếp Bánh Đà Lạt',   pos: { x: 674, y: 214 } },
+  stall: { x: 754, y: 60,  w: 184, h: 148, n: '🛒 Sạp Nông Sản',      pos: { x: 846, y: 214 } },
   lake:  { x: 24,  y: 468, w: 184, h: 124, n: '🎣 Hồ Tuyết (Câu cá)', pos: { x: 185, y: 492 } },
 };
-const CUTE_NAMES = ['Cooky', 'Kookie 🐰', 'Thỏ Kem Hồng', 'Bắp Tay Pastel', 'Mochi Đà Lạt', 'Thỏ Tuyết Noel', 'Út Cưng JK', 'Borahae 0613'];
-const IDLE = ['Đà Lạt mùa Noel đẹp quá 🌸', 'Nhớ kiểm tra Đơn hàng tuần nha 📦', 'Canh 06:13 ngắm sao băng tím nhé 🌠', 'Ra hồ săn cá Super Tuna thôi! 🦈', 'Đất bạc màu nhớ bón phân 🌿 nha!', 'I Purple You~ 💜', 'Tuyết hồng rơi kìa~ ❄️'];
+const CUTE_NAMES = ['Cooky', 'Kookie 🐰', 'Thỏ Hồng JK', 'Mochi Đà Lạt', 'Thỏ Tuyết', 'Út Cưng JK', 'Borahae 0613', 'Nông Dân Kook'];
+const IDLE = ['Đà Lạt mùa đông trong lành quá 🌲', 'Chăm đất tốt mới thu hoạch lời cao 🌾', 'Đủ mốc doanh thu mở thêm khu vực mới nha 🗺️', 'Nhớ chuẩn bị hàng cho Chuyến xe tuần 📦', 'Đất dưới 60% màu mỡ sẽ bị giảm giá bán 🌿', 'Hội bạn thân BT21 đang dạo quanh nông trại kìa 💜'];
 
 /* ---------- State ---------- */
 let S = null, speed = 1, paused = false, sndOn = true, selDiff = 'normal';
 let titleOpen = true, shopOpen = false, shopTab = 'sell', fertMode = false, viewMode = 0;
-let queue = [], cur = null, hover = null, idleT = 10, hudT = 0, crowT = 18, fanClicks = 0;
+let queue = [], cur = null, hover = null, idleT = 10, hudT = 0, crowT = 20, fanClicks = 0;
 let deferredPrompt = null;
 const ck = { x: 112, y: 214, face: 1, t: 0, act: 0, icon: '', iconT: 0, bub: '', bubT: 0, eat: 0, lift: 0, fish: 0, walk: false };
 const star613 = { active: false, x: 0, y: 80, vx: 55 };
@@ -151,21 +280,22 @@ const parts = [], floats = [], drops = [];
 
 function newState(customName, diff = 'normal') {
   const plots = [];
+  // Khởi đầu chỉ mở 6 ô đất ở giữa (cột 3..5, hàng 1..2) để người chơi cày cuốc mở rộng dần!
   for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++)
-    plots.push({ s: (c >= 2 && c < 6 && r < 3) ? 'grass' : 'locked', crop: null, g: 0, w: true, dry: 0, ripe: false, rd: 0, dead: false, weed: false, bug: false, ice: false, crow: 0, fert: 100, rainbow: false });
+    plots.push({ s: (c >= 3 && c <= 4 && r >= 0 && r <= 2) ? 'grass' : 'locked', crop: null, g: 0, w: true, dry: 0, ripe: false, rd: 0, dead: false, weed: false, bug: false, ice: false, crow: 0, fert: 100, rainbow: false });
   const o = (ks, v) => Object.fromEntries(ks.map(c => [c, v]));
-  const startCash = diff === 'chill' ? 240 : diff === 'hard' ? 95 : 140;
+  const startCash = diff === 'chill' ? 120 : diff === 'hard' ? 50 : 75;
   const st = {
     name: (customName || 'Cooky').trim() || 'Cooky',
     diff,
-    day: 1, min: 360, cash: startCash, st: 100, maxSt: 100, fans: 20, stars: 0, xp: 0, lv: 1,
-    fert: 3,
+    day: 1, min: 360, cash: startCash, st: 100, maxSt: 100, fans: 15, stars: 0, xp: 0, lv: 1,
+    fert: 2,
     endless: false,
     plots,
-    seeds: Object.assign(o(CK, 0), { carrot: 6, sweet: 2 }),
-    inv: Object.assign(o(CK, 0), o(FK, 0), o(RECIPES.map(r => r.id), 0), { carrot: 2, rainbow: 0 }),
+    seeds: Object.assign(o(CK, 0), { carrot: 4, cabbage: 1 }),
+    inv: Object.assign(o(CK, 0), o(SK, 0), o(FK, 0), o(RECIPES.map(r => r.id), 0), { carrot: 2, rainbow: 0 }),
     sel: 'carrot',
-    up: {}, pets: {}, petFed: {}, miles: {}, badges: {}, relics: {}, codes: {},
+    up: {}, pets: {}, petFed: {}, miles: {}, exp: {}, expDay: {}, badges: {}, relics: {}, codes: {},
     fr: o(FRIENDS.map(f => f.id), 1),
     frGiftDay: {},
     triviaDay: 0, starDay: 0,
@@ -178,24 +308,35 @@ function newState(customName, diff = 'normal') {
     stats: { earn: 0, harv: 0, fish: 0, cook: 0, ev: 0, orders: 0, snowfl: 0, trivia: 0 },
     over: false
   };
-  st.plots[COLS * 1 + 2].weed = true;
-  st.plots[COLS * 2 + 5].weed = true;
-  if (diff !== 'chill') st.plots[COLS * 0 + 4].weed = true;
+  st.plots[COLS * 0 + 3].weed = true;
+  st.plots[COLS * 2 + 4].weed = true;
   rollQuests(st);
   makeOrder(st);
   return st;
 }
 
+function xpNeed(lv = S?.lv || 1) {
+  return Math.round(55 + lv * 50 + Math.pow(lv, 1.55) * 16);
+}
+
+function canUseSeed(k, st = S) {
+  const c = CROPS[k];
+  if (!c) return false;
+  if ((st.lv || 1) < (c.reqLv || 1)) return false;
+  if (c.reqZone && !(st.exp && st.exp[c.reqZone])) return false;
+  return true;
+}
+
 function makeOrder(st = S) {
   const tier = Math.floor((st.day - 1) / 5) + 1;
   const due = tier * 5;
-  const mul = st.diff === 'hard' ? 1.3 : st.diff === 'chill' ? 0.75 : 1;
+  const mul = st.diff === 'hard' ? 1.25 : st.diff === 'chill' ? 0.8 : 1;
   const templates = [
-    { n: 'Chuyến Xe Nông Sản Đầu Mùa', req: { carrot: Math.round(5 * mul), cabbage: Math.round(2 * mul) }, cash: 260, fan: 60 },
-    { n: 'Đơn Đặt Hàng Tiệm Bánh Seoul', req: { straw: Math.round(3 * mul), sweet: Math.round(3 * mul), juice: 1 }, cash: 480, fan: 110 },
-    { n: 'Tiệc Giáng Sinh HYBE Labels', req: { cake: 1, salmon: Math.round(2 * mul), corn: Math.round(3 * mul) }, cash: 720, fan: 160 },
-    { n: 'Lễ Hội Mùa Đông Gangnam', req: { tea: 1, hotpot: 1, snowfl: Math.round(2 * mul) }, cash: 980, fan: 220 },
-    { n: 'Đại Tiệc Concert Borahae', req: { melon: Math.round(2 * mul), cake: 2, tea: 1 }, cash: 1350, fan: 320 },
+    { n: 'Chuyến Xe Nông Sản Đầu Mùa', req: { carrot: Math.max(3, Math.round(4 * mul)), cabbage: Math.max(2, Math.round(2 * mul)) }, cash: 95, fan: 25 },
+    { n: 'Đơn Hàng Phiên Chợ Phố Núi', req: { sweet: Math.round(3 * mul), tomato: Math.round(2 * mul), juice: 1 }, cash: 175, fan: 40 },
+    { n: 'Đơn Đặt Hàng Tiệm Bánh Đà Lạt', req: { corn: Math.round(3 * mul), straw: Math.round(2 * mul), roast: 1 }, cash: 280, fan: 65 },
+    { n: 'Chuyến Xe Lễ Hội Mùa Đông', req: { cake: 1, straw: Math.round(3 * mul), tomato: Math.round(3 * mul) }, cash: 420, fan: 95 },
+    { n: 'Tiệc Giáng Sinh Đồi Thông', req: { cake: 1, hotpot: 1, melon: Math.round(2 * mul) }, cash: 650, fan: 140 },
   ];
   const tp = templates[Math.min(templates.length - 1, tier - 1)];
   st.order = { tier, due, n: tp.n, req: { ...tp.req }, cash: tp.cash, fan: tp.fan, done: false };
@@ -207,34 +348,39 @@ function canDeliverOrder() {
 }
 
 function deliverOrder() {
-  if (!canDeliverOrder()) { toast('Chưa đủ vật phẩm trong kho để giao Đơn hàng tuần!'); SFX.err(); return; }
+  if (!canDeliverOrder()) { toast('Chưa đủ nông sản/món ăn trong kho để giao Đơn hàng tuần!'); SFX.err(); return; }
   Object.entries(S.order.req).forEach(([k, q]) => S.inv[k] -= q);
   S.order.done = true;
   S.stars = (S.stars || 0) + 1;
   S.stats.orders = (S.stats.orders || 0) + 1;
-  earn(S.order.cash); addFans(S.order.fan); addXp(30);
+  const sleighBonus = S.miles?.sleigh ? 1.2 : 1;
+  const cash = Math.round(S.order.cash * sleighBonus);
+  earn(cash); addFans(S.order.fan); addXp(22);
   SFX.jingle();
-  toast(`📦 Giao thành công <b>${S.order.n}</b>! Nhận <b>+${fmt(S.order.cash)}, +${S.order.fan}💜 & +1⭐ Sao Tím</b>!`, 4000);
+  toast(`📦 Giao thành công <b>${S.order.n}</b>! Nhận <b>+${fmt(cash)}, +${S.order.fan}💜 & +1⭐ Sao Tím</b>!`, 4000);
   checkBadges(); renderShop(); updateHud(); save();
 }
 
 function weeklyBill() {
-  if (!S || S.diff === 'chill') return Math.round(60 + S.bought * 8);
-  const base = S.diff === 'hard' ? 160 : 115;
-  const perPlot = S.diff === 'hard' ? 22 : 15;
+  if (!S) return 50;
+  if (S.diff === 'chill') return Math.round(35 + S.bought * 5);
+  const base = S.diff === 'hard' ? 95 : 65;
+  const perPlot = S.diff === 'hard' ? 14 : 9;
+  const expCount = Object.keys(S.exp || {}).length;
   const disc = 1 - ((S.fr?.van || 1) - 1) * .05;
-  return Math.round((base + S.bought * perPlot) * disc);
+  return Math.round((base + S.bought * perPlot + expCount * 25) * disc);
 }
 
+// Easter Egg Relics: Thưởng kỷ niệm nhỏ gọn để giữ cân bằng kinh tế Farm
 function unlockRelic(id) {
   if (!S || S.relics[id]) return;
   const r = RELICS.find(x => x.id === id);
   if (!r) return;
   S.relics[id] = true;
-  S.maxSt += 10; S.st = Math.min(S.maxSt, S.st + 20);
-  earn(150); addFans(80);
+  S.maxSt += 3; S.st = Math.min(S.maxSt, S.st + 10);
+  earn(15); addFans(20);
   SFX.jingle();
-  toast(`💎 Khám phá Easter Egg ARMY: <b>${r.e} ${r.n}</b>! (+150k, +80💜, +10⚡ tối đa & +4% giá bán!)`, 4500);
+  toast(`💎 Sưu tầm Kỷ vật ARMY: <b>${r.e} ${r.n}</b>! (+15k kỷ niệm, +20💜, +3⚡ & +1% giá bán)`, 4200);
   checkBadges(); save();
 }
 
@@ -243,7 +389,7 @@ function checkRelics() {
   if (S.fans >= 1306) unlockRelic('bomb');
   if (S.maxSt >= 130) unlockRelic('glove');
   if ((S.stats.snowfl || 0) >= 5) unlockRelic('spring');
-  if (S.plots.filter(p => p.s !== 'locked').length >= 22) unlockRelic('soop');
+  if (S.plots.filter(p => p.s !== 'locked').length >= 20) unlockRelic('soop');
   if ((S.stats.cook || 0) >= 7) unlockRelic('cake7');
   if ((S.stats.trivia || 0) >= 3) unlockRelic('radio');
   if (Object.values(S.fr || {}).reduce((a, b) => a + b, 0) >= 21) unlockRelic('borahae');
@@ -251,12 +397,12 @@ function checkRelics() {
 
 function rollQuests(st = S) {
   const pool = [
-    { id: 'harv', n: 'Thu hoạch 4 ô nông sản',   goal: 4, cur: 0, rCash: 85,  rFan: 25, e: '🧺' },
-    { id: 'water',n: 'Tưới hoặc chăm 5 ô ruộng', goal: 5, cur: 0, rCash: 65,  rFan: 20, e: '💧' },
-    { id: 'fish', n: 'Câu cá ở Hồ Tuyết 2 lần',  goal: 2, cur: 0, rCash: 100, rFan: 30, e: '🎣' },
-    { id: 'cook', n: 'Chế biến 1 món ở Bếp Bánh',goal: 1, cur: 0, rCash: 110, rFan: 35, e: '🧁' },
-    { id: 'sell', n: 'Bán hàng tại Sạp 4 món',   goal: 4, cur: 0, rCash: 95,  rFan: 25, e: '🛒' },
-    { id: 'gym',  n: 'Tập Gym rèn thể lực 1 lần',goal: 1, cur: 0, rCash: 80,  rFan: 25, e: '💪' },
+    { id: 'harv', n: 'Thu hoạch 4 ô nông sản',    goal: 4, cur: 0, rCash: 28, rFan: 12, e: '🧺' },
+    { id: 'water',n: 'Tưới hoặc chăm 6 ô ruộng',  goal: 6, cur: 0, rCash: 22, rFan: 10, e: '💧' },
+    { id: 'fish', n: 'Câu cá ở Hồ Tuyết 2 lần',   goal: 2, cur: 0, rCash: 30, rFan: 12, e: '🎣' },
+    { id: 'cook', n: 'Chế biến 1 món ở Bếp Bánh', goal: 1, cur: 0, rCash: 35, rFan: 15, e: '🧁' },
+    { id: 'sell', n: 'Bán 5 nông sản tại Sạp',    goal: 5, cur: 0, rCash: 32, rFan: 12, e: '🛒' },
+    { id: 'gym',  n: 'Tập Gym rèn thể lực 1 lần', goal: 1, cur: 0, rCash: 25, rFan: 10, e: '💪' },
   ];
   st.quests = shuffle(pool).slice(0, 3).map(q => ({ ...q, done: false }));
 }
@@ -268,9 +414,11 @@ function progQuest(id, n = 1) {
       q.cur = Math.min(q.goal, q.cur + n);
       if (q.cur >= q.goal) {
         q.done = true;
-        earn(q.rCash); addFans(q.rFan); addXp(15);
+        const mul = S.miles?.sleigh ? 1.2 : 1;
+        const rc = Math.round(q.rCash * mul);
+        earn(rc); addFans(q.rFan); addXp(10);
         SFX.win();
-        toast(`📋 Hoàn thành nhiệm vụ "${q.n}": <b>+${fmt(q.rCash)} & +${q.rFan}💜</b>!`);
+        toast(`📋 Hoàn thành nhiệm vụ "${q.n}": <b>+${fmt(rc)} & +${q.rFan}💜</b>!`);
       }
     }
   });
@@ -278,11 +426,14 @@ function progQuest(id, n = 1) {
 
 function addXp(n) {
   S.xp = (S.xp || 0) + n;
-  const needXp = S.lv * 45;
-  if (S.xp >= needXp) {
-    S.xp -= needXp; S.lv++; S.maxSt += 5; S.st = Math.min(S.maxSt, S.st + 20);
+  let need = xpNeed(S.lv);
+  while (S.xp >= need) {
+    S.xp -= need; S.lv++; S.maxSt += 4; S.st = Math.min(S.maxSt, S.st + 15);
+    need = xpNeed(S.lv);
     SFX.win();
-    float(ck.x, ck.y - 96, `🎉 Lên cấp Lv.${S.lv}! (+5⚡)`, '#9362cc');
+    const newCrops = CK.filter(k => CROPS[k].reqLv === S.lv).map(k => `${CROPS[k].e} ${CROPS[k].n}`).join(', ');
+    float(ck.x, ck.y - 96, `🎉 Lên cấp Lv.${S.lv}! (+4⚡)`, '#9362cc');
+    if (newCrops) toast(`🌱 Lên <b>Cấp ${S.lv}</b>! Đã mở khóa hạt giống mới: <b>${newCrops}</b>!`, 4200);
   }
   checkRelics(); checkBadges();
 }
@@ -292,9 +443,9 @@ function checkBadges() {
   BADGES.forEach(b => {
     if (!S.badges[b.id] && b.c(S)) {
       S.badges[b.id] = true;
-      earn(b.reward); addFans(30);
+      earn(b.reward); addFans(15);
       SFX.win();
-      toast(`🏅 Đạt huy hiệu <b>${b.e} ${b.n}</b>! Thưởng nóng <b>+${fmt(b.reward)}</b>!`);
+      toast(`🏅 Đạt thành tựu <b>${b.e} ${b.n}</b>! Thưởng <b>+${fmt(b.reward)}</b>!`);
     }
   });
 }
@@ -310,26 +461,31 @@ const hhmm = m => { m = Math.min(1439, Math.floor(m)); return String(Math.floor(
 const tcx = i => FX + (i % COLS) * T + T / 2, tcy = i => FY + ((i / COLS) | 0) * T + T / 2;
 
 function itemInfo(k) {
-  if (k === 'rainbow') return { n: 'Cà rốt cầu vồng', e: '🌈', price: 420 };
+  if (k === 'rainbow') return { n: 'Cà rốt cầu vồng', e: '🌈', price: 165 };
   if (CROPS[k]) return CROPS[k];
+  if (SPECIALS[k]) return SPECIALS[k];
   if (FISH[k]) return FISH[k];
   const r = RECIPES.find(x => x.id === k);
-  return r || { n: k, e: '🎁', price: 20 };
+  return r || { n: k, e: '🎁', price: 15 };
 }
 
 function bonus() {
   if (!S) return 1;
-  let b = 1 + Math.min(.55, S.fans / 20000);
-  if (S.vietgap) b += .1;
-  if (S.up.sign) b += .12;
-  if (S.weather === 'snow') b += .1;
-  if (S.viral === S.day) b += .2;
-  if (S.miles.concert) b += .1;
-  if (S.miles.villa) b += .15;
-  if (S.miles.legend) b += .3;
-  b += ((S.fr?.chimmy || 1) - 1) * .03;
-  b += Object.keys(S.relics || {}).length * .04;
-  return b;
+  const diffMul = S.diff === 'chill' ? 1.12 : S.diff === 'hard' ? 0.88 : 1;
+  let b = 1 + Math.min(.22, S.fans / 25000);
+  if (S.up.sign) b += .08;
+  if (S.weather === 'snow') b += .08;
+  if (S.viral === S.day) b += .15;
+  if (S.exp?.cloudcafe) b += .12;
+  if (S.miles.barn) b += .04;
+  if (S.miles.sleigh) b += .05;
+  if (S.miles.concert) b += .06;
+  if (S.miles.train) b += .08;
+  if (S.miles.villa) b += .10;
+  if (S.miles.legend) b += .15;
+  b += ((S.fr?.chimmy || 1) - 1) * .02;
+  b += Object.keys(S.relics || {}).length * .01;
+  return b * diffMul;
 }
 
 function priceOf(k) {
@@ -340,8 +496,8 @@ function priceOf(k) {
 
 const hoeCost = () => S.up.hoe ? 2 : 4;
 const canCost = () => S.up.can ? 1 : 2;
-const plotCost = () => Math.max(45, Math.round((65 + S.bought * 18) * (1 - ((S.fr?.van || 1) - 1) * .05)));
-const allSellKeys = () => [...CK, 'rainbow', ...FK, ...RECIPES.map(r => r.id)].filter(k => S.inv[k] > 0);
+const plotCost = () => Math.max(30, Math.round((35 + Math.pow(S.bought, 1.32) * 14) * (1 - ((S.fr?.van || 1) - 1) * .05)));
+const allSellKeys = () => [...CK, 'rainbow', ...SK, ...FK, ...RECIPES.map(r => r.id)].filter(k => S.inv[k] > 0);
 const invKeys = (withR = true) => [...CK, ...(withR ? ['rainbow'] : [])].filter(k => S.inv[k] > 0);
 const invCount = () => allSellKeys().reduce((a, k) => a + S.inv[k], 0);
 const randInv = () => { const ks = invKeys(false); return ks.length ? pick(ks) : null; };
@@ -377,14 +533,15 @@ function harvestPlot(p) {
   if (p.rainbow) S.inv.rainbow++; else S.inv[p.crop]++;
   if (p.crop === 'snowfl') S.stats.snowfl = (S.stats.snowfl || 0) + 1;
   let extra = 0;
-  const fertMul = (p.fert ?? 100) >= 80 ? 1 : 0.4;
-  const dblChance = (.1 + (S.up.green ? .1 : 0) + ((S.fr?.shooky || 1) - 1) * .04) * fertMul;
+  const fert = p.fert ?? 100;
+  const fertMul = fert >= 80 ? 1 : 0.25;
+  const dblChance = (.04 + (S.up.green ? .06 : 0) + ((S.fr?.shooky || 1) - 1) * .02) * fertMul;
   if (!p.rainbow && Math.random() < dblChance) { S.inv[p.crop]++; extra = 1; }
   if (c.fans) addFans(c.fans);
   // Giảm độ màu mỡ đất sau mỗi vụ thu hoạch
-  p.fert = Math.max(30, (p.fert ?? 100) - (S.diff === 'chill' ? 12 : 22));
+  p.fert = Math.max(25, fert - (S.diff === 'chill' ? 14 : 22));
   S.today.harv++; S.stats.harv++;
-  progQuest('harv', 1); addXp(c.xp || 5);
+  progQuest('harv', 1); addXp(c.xp || 4);
   if (c.regrow && !p.rainbow) { p.ripe = false; p.rd = 0; p.g = c.days - c.regrow; p.w = false; }
   else clearPlot(p);
   return extra;
@@ -458,7 +615,7 @@ function heart(g, x, y, s, col) {
 function emo(g, e, x, y, size) { g.font = `${size}px ${EMOJI}`; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(e, x, y); }
 function txt(g, s, x, y, size, col, w = 700, align = 'center') { g.font = `${w} ${size}px ${FONT}`; g.textAlign = align; g.textBaseline = 'middle'; g.fillStyle = col; g.fillText(s, x, y); }
 
-/* ---------- Characters (Pastel Cooky & Friends) ---------- */
+/* ---------- Characters (Cooky & Accurate BT21 Friends on Canvas) ---------- */
 function drawCooky(g, x, y, s, o = {}) {
   const t = o.t || 0, f = o.face || 1, walk = o.walk;
   const P = '#ffb3cc', OL = '#b85d82', PL = '#fff4c8', INK = '#3b2030';
@@ -524,24 +681,72 @@ function drawCooky(g, x, y, s, o = {}) {
   g.restore();
 }
 
-function drawKoya(g, x, y, t, sleeping) {
-  g.save(); g.translate(x, y); g.lineWidth = 1.5;
-  const B = '#9cb4d8', OL = '#667ca3';
-  ell(g, 0, 0, 22, 5, 'rgba(0,0,0,.12)');
-  ell(g, 4, -9, 18, 10, B, OL);
-  ell(g, -20, -26, 7, 7, B, OL); ell(g, -2, -28, 7, 7, B, OL);
-  ell(g, -20, -26, 3.5, 3.5, '#dce6f7'); ell(g, -2, -28, 3.5, 3.5, '#dce6f7');
-  ell(g, -11, -17, 13, 11, B, OL);
-  ell(g, -11, -14, 4, 5, '#7c5fa0');
-  g.strokeStyle = '#2b2440'; g.beginPath();
-  if (sleeping) { g.arc(-17, -19, 2.5, 0, Math.PI); g.moveTo(-2.5, -19); g.arc(-5, -19, 2.5, 0, Math.PI); }
-  else { g.moveTo(-17, -20); g.lineTo(-17, -18); g.moveTo(-5, -20); g.lineTo(-5, -18); }
-  g.stroke();
-  if (sleeping) { const k = (t * .7) % 1; txt(g, 'z', 4 + k * 10, -32 - k * 18, 10 + k * 6, `rgba(110,120,180,${1 - k})`, 900); }
+// Vẽ chính xác tạo hình 7 thành viên BT21 trên bản đồ Canvas
+function drawBT21(g, id, x, y, t, scale = 0.85) {
+  g.save();
+  g.translate(x, y);
+  g.scale(scale, scale);
+  const bob = Math.sin(t * 2.6 + x * 0.1) * 1.5;
+  ell(g, 0, 2, 13, 4, 'rgba(60,30,50,.15)');
+  g.translate(0, bob);
+  g.lineWidth = 1.6; g.lineCap = 'round'; g.lineJoin = 'round';
+
+  if (id === 'koya') {
+    ell(g, 0, -10, 10, 9, '#6ec3f5', '#365c7d');
+    ell(g, -11, -28, 6.5, 6.5, '#6ec3f5', '#365c7d'); ell(g, -11, -28, 3.2, 3.2, '#fff');
+    ell(g, 11, -28, 6.5, 6.5, '#6ec3f5', '#365c7d'); ell(g, 11, -28, 3.2, 3.2, '#fff');
+    ell(g, 0, -23, 13, 11, '#6ec3f5', '#365c7d');
+    ell(g, 0, -21, 3.2, 4.2, '#6f52b8', '#2b2440');
+    g.strokeStyle = '#2b2440'; g.beginPath();
+    g.arc(-5.5, -24, 2.2, 0.1, Math.PI - 0.1); g.moveTo(7.7, -24); g.arc(5.5, -24, 2.2, 0.1, Math.PI - 0.1); g.stroke();
+  } else if (id === 'rj') {
+    ell(g, 0, -11, 11, 10, '#fff', '#5c4742');
+    ell(g, -5.5, -35, 3.2, 6, '#fff', '#5c4742', -0.2); ell(g, 5.5, -35, 3.2, 6, '#fff', '#5c4742', 0.2);
+    ell(g, 0, -24, 13.5, 11.5, '#fff', '#5c4742');
+    g.fillStyle = '#f2545b'; g.strokeStyle = '#5c4742'; rr(g, -10, -16, 20, 4.5, 2.2); g.fill(); g.stroke();
+    ell(g, -5, -25, 1.8, 2, '#2d2220'); ell(g, 5, -25, 1.8, 2, '#2d2220');
+    ell(g, -8, -22, 2.2, 1.2, '#ffb3c6'); ell(g, 8, -22, 2.2, 1.2, '#ffb3c6');
+    ell(g, 0, -23, 1.4, 1.2, '#2d2220');
+  } else if (id === 'shooky') {
+    ell(g, 0, -15, 12.5, 12, '#a66a38', '#4a2a10');
+    ell(g, -6, -21, 1.5, 1.5, '#593416'); ell(g, 6, -20, 1.4, 1.4, '#593416'); ell(g, -7, -10, 1.4, 1.4, '#593416');
+    ell(g, -4.5, -16, 1.8, 1.8, '#261305'); ell(g, 4.5, -16, 1.8, 1.8, '#261305');
+    g.fillStyle = '#fff'; rr(g, -4.5, -12, 9, 3, 1); g.fill();
+  } else if (id === 'mang') {
+    ell(g, 0, -10, 9.5, 9, '#7998f2', '#382466');
+    ell(g, -6, -34, 3, 5.5, '#7998f2', '#382466', -0.25); ell(g, 6, -34, 3, 5.5, '#7998f2', '#382466', 0.25);
+    ell(g, 0, -32, 5, 3.5, '#7b4ec4', '#382466');
+    ell(g, 0, -23, 12.5, 10.5, '#7998f2', '#382466');
+    ell(g, -5, -25, 2, 2, '#221838'); ell(g, 5, -25, 2, 2, '#221838');
+    heart(g, 0, -19, 6.5, '#e85d99');
+  } else if (id === 'chimmy') {
+    ell(g, 0, -10, 10.5, 9.5, '#ffd93d', '#594312');
+    ell(g, 0, -23, 13.5, 11.5, '#ffd93d', '#594312');
+    ell(g, -13, -22, 3.5, 7.5, '#2b262d', '#1a161b', 0.15);
+    ell(g, 13, -22, 3.5, 7.5, '#2b262d', '#1a161b', -0.15);
+    ell(g, 0, -22, 9.5, 8, '#fff', '#594312');
+    ell(g, -4, -23.5, 1.7, 1.8, '#2b262d'); ell(g, 4, -23.5, 1.7, 1.8, '#2b262d');
+    ell(g, 1.6, -18.2, 1.6, 2, '#ff6b8b');
+  } else if (id === 'tata') {
+    ell(g, 0, -9, 8.5, 8.5, '#2f66d0', '#2b1820');
+    ell(g, -3, -10, 1.6, 1.6, '#ffd166'); ell(g, 3, -7, 1.6, 1.6, '#ffd166');
+    heart(g, 0, -23, 18, '#f03a47');
+    ell(g, -4.5, -25, 1.8, 1.8, '#2b1820'); ell(g, 4.5, -25, 1.8, 1.8, '#2b1820');
+    ell(g, 0, -20, 4.2, 2, '#ffd166', '#2b1820');
+  } else if (id === 'van') {
+    ell(g, 0, -10, 9.5, 9, '#9aa5b8', '#363d4a');
+    g.save();
+    g.beginPath(); g.arc(0, -23, 12, Math.PI * 0.5, Math.PI * 1.5); g.fillStyle = '#f5f7fa'; g.fill();
+    g.beginPath(); g.arc(0, -23, 12, -Math.PI * 0.5, Math.PI * 0.5); g.fillStyle = '#9aa5b8'; g.fill();
+    g.strokeStyle = '#363d4a'; g.lineWidth = 1.8; g.beginPath(); g.arc(0, -23, 12, 0, Math.PI * 2); g.stroke();
+    g.beginPath(); g.arc(-4.5, -24, 2.2, 0, Math.PI * 2); g.stroke();
+    g.beginPath(); g.moveTo(2.5, -26); g.lineTo(6.5, -22); g.moveTo(6.5, -26); g.lineTo(2.5, -22); g.stroke();
+    g.restore();
+  }
   g.restore();
 }
 
-/* ---------- Pastel Noel Background (pre-render) ---------- */
+/* ---------- Da Lat Winter Background (pre-render) ---------- */
 let bg = document.createElement('canvas'), K = 1;
 function mulberry(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 function pine(g, x, y, h, dark) {
@@ -563,15 +768,14 @@ function drawBG() {
   const gr = g.createLinearGradient(0, 0, 0, H);
   gr.addColorStop(0, '#c8ecd9'); gr.addColorStop(.45, '#bfe6cf'); gr.addColorStop(1, '#cdebd6');
   g.fillStyle = gr; g.fillRect(0, 0, W, H);
-  for (let i = 0; i < 240; i++) {
+  for (let i = 0; i < 220; i++) {
     ell(g, R() * W, R() * H, 2 + R() * 4, 1.2 + R() * 2, i % 3 ? 'rgba(255,255,255,.45)' : 'rgba(255,220,235,.4)');
   }
-  for (let x = -10; x < W + 20; x += 34) pine(g, x + R() * 10, 66 + R() * 8, 70 + R() * 16, true);
-  for (let x = 8; x < W; x += 56) if (x < 20 || (x > 348 && x < 605)) pine(g, x + R() * 12, 126 + R() * 10, 64 + R() * 14, false);
+  for (let x = -10; x < W + 20; x += 36) pine(g, x + R() * 10, 64 + R() * 8, 68 + R() * 15, true);
   g.fillStyle = '#f7e7d0'; rr(g, 14, 198, W - 28, 30, 15); g.fill();
   for (let i = 0; i < 55; i++) ell(g, 26 + R() * (W - 52), 204 + R() * 18, 3 + R() * 3, 2 + R() * 1.5, i % 2 ? '#eed2dc' : '#dcd2f2');
 
-  // Nhà gỗ Pastel Noel
+  // Nhà gỗ Đà Lạt
   ell(g, 112, 202, 90, 8, 'rgba(90,50,80,.1)');
   g.fillStyle = '#fff5ea'; g.strokeStyle = '#d9b29c'; g.lineWidth = 2; rr(g, 36, 112, 152, 90, 6); g.fill(); g.stroke();
   g.fillStyle = '#e3a598'; g.fillRect(156, 68, 18, 32);
@@ -589,14 +793,14 @@ function drawBG() {
     rr(g, x, 134, 30, 26, 4); g.fill(); g.stroke();
     g.fillStyle = '#ffffff'; rr(g, x - 2, 159, 34, 5, 2.5); g.fill();
   });
-  // Đài Radio ARMY bên hiên nhà
+  // Đài Radio bên hiên nhà
   g.fillStyle = '#b392f0'; rr(g, 190, 168, 28, 22, 5); g.fill();
   emo(g, '📻', 204, 178, 17);
   pine(g, 212, 198, 92, false);
   [['#ff85a2', 206, 176], ['#ffee93', 220, 168], ['#b892ff', 209, 152], ['#7ce0c3', 218, 184]].forEach(([c, x, y]) => ell(g, x, y, 4, 4, c, '#fff'));
   emo(g, '⭐', 212, 124, 18);
 
-  // Góc tập Gym Pastel
+  // Góc tập Gym
   g.fillStyle = '#e5dcf2'; rr(g, 232, 152, 112, 48, 9); g.fill();
   g.fillStyle = '#f3edff'; rr(g, 236, 156, 104, 40, 7); g.fill();
   g.fillStyle = '#ff9ebb'; rr(g, 246, 166, 48, 8, 4); g.fill();
@@ -604,7 +808,7 @@ function drawBG() {
   g.fillStyle = '#68a8e8'; rr(g, 294, 144, 6, 16, 2); g.fill(); rr(g, 334, 144, 6, 16, 2); g.fill();
   g.fillStyle = '#b392f0'; rr(g, 224, 116, 48, 18, 4); g.fill(); txt(g, 'GYM 💪', 248, 125.5, 9.5, '#fff', 900);
 
-  // Xưởng Bếp Bánh & Trà Nóng Pastel
+  // Xưởng Bếp Bánh & Trà Nóng
   ell(g, 674, 202, 64, 7, 'rgba(90,50,80,.1)');
   g.fillStyle = '#fff3f8'; g.strokeStyle = '#e8acc4'; g.lineWidth = 2; rr(g, 616, 118, 116, 82, 8); g.fill(); g.stroke();
   for (let i = 0; i < 6; i++) {
@@ -612,9 +816,9 @@ function drawBG() {
     rr(g, 612 + i * 20, 106, 20, 22, 6); g.fill();
   }
   g.fillStyle = '#b392f0'; rr(g, 632, 86, 84, 20, 5); g.fill(); txt(g, '🧁 BẾP BÁNH', 674, 96.5, 10, '#fff', 900);
-  [['🍰', 642], ['☕', 674], ['🥤', 706]].forEach(([e, x]) => emo(g, e, x, 152, 18));
+  [['🍰', 642], ['🍵', 674], ['🥤', 706]].forEach(([e, x]) => emo(g, e, x, 152, 18));
 
-  // Sạp Giáng Sinh Pastel
+  // Sạp Nông Sản
   ell(g, 848, 202, 86, 8, 'rgba(90,50,80,.1)');
   g.fillStyle = '#c49072'; g.fillRect(772, 94, 6, 106); g.fillRect(922, 94, 6, 106);
   g.fillStyle = '#ffecf2'; g.strokeStyle = '#e0a2b8'; g.lineWidth = 2; rr(g, 774, 146, 150, 52, 6); g.fill(); g.stroke();
@@ -626,7 +830,7 @@ function drawBG() {
     g.fillStyle = '#f5d0de'; rr(g, x - 14, 132, 28, 16, 4); g.fill(); emo(g, e, x, 132, 16);
   });
 
-  // Hàng rào ruộng gỗ kem trắng
+  // Hàng rào ruộng gỗ kem
   const fx0 = FX - 14, fy0 = FY - 10, fw = COLS * T + 28, fh = ROWS * T + 22;
   g.fillStyle = 'rgba(130,95,115,.12)'; rr(g, fx0 + 4, fy0 + 4, fw - 8, fh - 8, 12); g.fill();
   g.strokeStyle = '#d9b29c'; g.lineWidth = 4;
@@ -635,20 +839,14 @@ function drawBG() {
   g.fillStyle = '#fff5ee';
   for (let x = fx0; x <= fx0 + fw; x += 36) { if (x > FX + 194 && x < FX + 286) continue; rr(g, x - 3, fy0 - 7, 6, 13, 2); g.fill(); rr(g, x - 3, fy0 + fh - 7, 6, 13, 2); g.fill(); }
 
-  // Hồ Tuyết Pastel & Cầu gỗ câu cá
+  // Hồ Tuyết & Cầu gỗ câu cá
   ell(g, 114, 528, 90, 44, '#92ccf0'); ell(g, 114, 524, 83, 38, '#b6e2ff');
   g.fillStyle = '#d9ae8e'; rr(g, 152, 496, 52, 18, 4); g.fill();
   txt(g, '🎣 Hồ Tuyết', 114, 476, 10, '#5a4266', 800);
   for (let i = 0; i < 10; i++) { const a = i / 10 * Math.PI * 2; ell(g, 114 + Math.cos(a) * 90, 528 + Math.sin(a) * 44, 8, 5.5, '#f2e9f0', '#cbbcd1'); }
-
-  // Hoa Cẩm Tú Cầu Pastel Đà Lạt
-  [[860, 305], [885, 525], [815, 565], [42, 305], [202, 596]].forEach(([x, y]) => {
-    ell(g, x, y + 6, 22, 7, 'rgba(90,50,80,.08)'); ell(g, x, y, 22, 15, '#7bc49e');
-    for (let i = 0; i < 16; i++) ell(g, x + (R() - .5) * 34, y - 3 + (R() - .5) * 20, 4.2, 4.2, ['#ffc2d9', '#d2b8ff', '#b5e2ff', '#fff0b8'][i % 4]);
-  });
 }
 
-/* ---------- Plot & World Objects ---------- */
+/* ---------- Plot, Expansion Zones & World Objects ---------- */
 function drawSprout(cx, cy, f, seedOnly) {
   if (seedOnly) { [[-8, 0], [0, -3], [8, 1]].forEach(([dx, dy]) => { ell(ctx, cx + dx, cy + dy, 3, 2, '#7a5438'); ell(ctx, cx + dx, cy + dy - 2, 1.5, 2.2, '#86d975'); }); return; }
   const h = 8 + f * 18;
@@ -680,7 +878,6 @@ function drawPlot(i, p) {
   } else {
     ctx.strokeStyle = edge; ctx.lineWidth = 2;
     [16, 29, 42].forEach(d => { ctx.beginPath(); ctx.moveTo(x + 9, y + d); ctx.quadraticCurveTo(cx, y + d + 2.5, x + T - 9, y + d); ctx.stroke(); });
-    // Thanh độ màu mỡ nhỏ góc dưới ô đất
     if (fert < 85) {
       ctx.fillStyle = 'rgba(0,0,0,.22)'; rr(ctx, x + 10, y + T - 10, T - 20, 4, 2); ctx.fill();
       ctx.fillStyle = fert >= 60 ? '#86d975' : '#ff9b85'; rr(ctx, x + 10, y + T - 10, (T - 20) * (fert / 100), 4, 2); ctx.fill();
@@ -709,6 +906,93 @@ function drawPlot(i, p) {
   }
 }
 
+// Vẽ 4 Khu Vực Mở Rộng trên bản đồ (Khi khóa và Khi đã mở)
+function drawExpansionZones() {
+  const t = ck.t;
+  EXPANSIONS.forEach(ex => {
+    const unlocked = S.exp && S.exp[ex.id];
+    const cx = ex.x + ex.w / 2, cy = ex.y + ex.h / 2;
+    if (!unlocked) {
+      ctx.save();
+      ctx.fillStyle = 'rgba(255,245,250,.32)';
+      ctx.strokeStyle = 'rgba(185,125,155,.65)';
+      ctx.setLineDash([6, 5]); ctx.lineWidth = 2;
+      rr(ctx, ex.x, ex.y, ex.w, ex.h, 12); ctx.fill(); ctx.stroke();
+      ctx.restore();
+      const canOpen = S.stats.earn >= ex.reqEarn && S.cash >= ex.cost;
+      ctx.fillStyle = canOpen ? '#6bc5a0' : 'rgba(98,58,84,.84)';
+      rr(ctx, cx - 78, cy - 18, 156, 36, 9); ctx.fill();
+      txt(ctx, `${canOpen ? '✨ Mở' : '🔒'} ${ex.e} ${ex.n.split(': ')[1]}`, cx, cy - 6, 9.5, '#fff', 900);
+      txt(ctx, `Mốc DT ${fmt(ex.reqEarn)} · Giá ${fmt(ex.cost)}`, cx, cy + 8, 8.5, '#ffeef5', 700);
+      return;
+    }
+
+    // Khi đã mở khóa khu vực: vẽ công trình chi tiết!
+    ctx.fillStyle = 'rgba(255,250,245,.55)';
+    ctx.strokeStyle = '#d9b29c'; ctx.lineWidth = 2;
+    rr(ctx, ex.x, ex.y, ex.w, ex.h, 12); ctx.fill(); ctx.stroke();
+
+    if (ex.id === 'highland') {
+      // Khu 1: Đồi Hoa & Dâu Cao Nguyên
+      ctx.fillStyle = '#e8f7f0'; ctx.strokeStyle = '#8ac4a8';
+      rr(ctx, ex.x + 12, ex.y + 18, ex.w - 24, ex.h - 32, 10); ctx.fill(); ctx.stroke();
+      for (let i = 0; i < 4; i++) {
+        const bx = ex.x + 26 + i * 48, by = ex.y + 42;
+        ctx.fillStyle = '#c48f74'; rr(ctx, bx, by, 38, 42, 6); ctx.fill();
+        emo(ctx, i % 2 ? '🌹' : '❄️', bx + 19, by + 18 + Math.sin(t * 2.5 + i) * 2, 20);
+      }
+      txt(ctx, '🍓 Đồi Hoa Cao Nguyên', cx, ex.y + 11, 9.5, '#63324d', 800);
+    } else if (ex.id === 'apiary') {
+      // Khu 2: Thung Lũng Ong Mật Hoa Thông
+      for (let i = 0; i < 3; i++) {
+        const hx = ex.x + 36 + i * 58, hy = ex.y + 78 + (i % 2) * 18;
+        ell(ctx, hx, hy + 18, 16, 5, 'rgba(80,45,60,.12)');
+        ctx.fillStyle = '#f5c76b'; ctx.strokeStyle = '#b57c2c'; ctx.lineWidth = 1.8;
+        rr(ctx, hx - 14, hy - 14, 28, 30, 8); gStripe(hx, hy);
+        emo(ctx, '🐝', hx + Math.cos(t * 4 + i * 2) * 14, hy - 18 + Math.sin(t * 5 + i) * 6, 13);
+      }
+      txt(ctx, '🐝 Thung Lũng Ong Mật', cx, ex.y + 14, 9.5, '#63324d', 800);
+    } else if (ex.id === 'orchard') {
+      // Khu 3: Vườn Hồng Treo Gió Đà Lạt
+      for (let i = 0; i < 3; i++) {
+        const tx = ex.x + 65 + i * 115, ty = ex.y + 72;
+        ctx.fillStyle = '#8a5a44'; ctx.fillRect(tx - 4, ty, 8, 26);
+        ell(ctx, tx, ty - 10, 28, 20, '#7bc49e', '#4d9470');
+        emo(ctx, '🍅', tx - 10, ty - 12, 13); emo(ctx, '🍅', tx + 10, ty - 6, 13);
+      }
+      // Giàn phơi hồng treo gió
+      ctx.strokeStyle = '#9c6644'; ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.moveTo(ex.x + 340, ex.y + 38); ctx.lineTo(ex.x + 455, ex.y + 38); ctx.stroke();
+      for (let i = 0; i < 5; i++) emo(ctx, '🏮', ex.x + 352 + i * 22, ex.y + 54 + Math.sin(t * 3 + i) * 1.5, 14);
+      txt(ctx, '🍑 Vườn Hồng Treo Gió', cx, ex.y + 14, 9.5, '#63324d', 800);
+    } else if (ex.id === 'cloudcafe') {
+      // Khu 4: Quán Cà Phê Săn Mây
+      ctx.fillStyle = '#f5e1d3'; ctx.strokeStyle = '#c4967a';
+      rr(ctx, ex.x + 14, ex.y + 28, ex.w - 28, ex.h - 42, 10); ctx.fill(); ctx.stroke();
+      emo(ctx, '⛱️', ex.x + 56, ex.y + 78, 30);
+      emo(ctx, '☕', ex.x + 98, ex.y + 88, 22);
+      emo(ctx, '🍰', ex.x + 138, ex.y + 88, 22);
+      txt(ctx, '☕ Cà Phê Săn Mây (+12%)', cx, ex.y + 14, 9.5, '#63324d', 800);
+    }
+
+    // Kiểm tra xem khu vực đã tới ngày thu hoạch đặc sản chưa
+    const nextDay = S.expDay?.[ex.id] || 1;
+    if (S.day >= nextDay) {
+      const sp = SPECIALS[ex.prod];
+      const by = cy - 8 + Math.sin(t * 4) * 3;
+      ctx.fillStyle = '#ff8fb1'; ctx.strokeStyle = '#fff'; ctx.lineWidth = 2;
+      rr(ctx, cx - 54, by - 12, 108, 24, 12); ctx.fill(); ctx.stroke();
+      txt(ctx, `${sp.e} Thu hoạch!`, cx, by + 0.5, 10, '#fff', 900);
+    } else {
+      txt(ctx, `Còn ${nextDay - S.day} ngày`, cx, ex.y + ex.h - 11, 8.5, '#7a4260', 800);
+    }
+  });
+}
+function gStripe(hx, hy) {
+  ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#593a18'; rr(ctx, hx - 6, hy - 2, 12, 5, 2.5); ctx.fill();
+}
+
 function drawWorldExtras() {
   const t = ck.t, nm = S.name || 'Cooky';
   ctx.fillStyle = '#ff9ebb'; rr(ctx, 76, 125, 72, 16, 4); ctx.fill();
@@ -716,13 +1000,11 @@ function drawWorldExtras() {
   ctx.fillStyle = '#ff85a8'; rr(ctx, 796, 166, 104, 22, 6); ctx.fill();
   txt(ctx, `SẠP ${nm.toUpperCase().slice(0, 8)}`, 848, 177.5, 10.5, '#fff', 900);
 
-  // Nốt nhạc bay lên từ Đài Radio ARMY
   const noteY = (t * 16) % 24;
   ctx.globalAlpha = 1 - noteY / 24;
   txt(ctx, '♪', 204 + Math.sin(t * 4) * 5, 162 - noteY, 12, '#8e5ec4', 900);
   ctx.globalAlpha = 1;
 
-  // Dây đèn LED Giáng Sinh Pastel
   const cols = ['#ffb3c6', '#ffee93', '#b8f2e6', '#d8c2ff'];
   for (let i = 0; i < 9; i++) {
     const c = cols[(i + Math.floor(t * 3)) % 4];
@@ -730,12 +1012,11 @@ function drawWorldExtras() {
     ell(ctx, 770 + i * 20, 86, 3, 3, c);
   }
 
-  if (S.up.heater) {
-    const x = FX + COLS * T + 28, y = FY + 50;
-    emo(ctx, '🔥', x, y, 24);
-  }
+  drawExpansionZones();
+
+  if (S.up.heater) emo(ctx, '🔥', FX + COLS * T + 18, FY + 44, 22);
   if (S.up.scare) {
-    const x = FX - 42, y = FY + 115;
+    const x = FX - 38, y = FY + 115;
     ell(ctx, x, y, 16, 5, 'rgba(90,50,80,.12)');
     ell(ctx, x, y - 12, 13, 12, '#fff', '#cbbcd1');
     ell(ctx, x, y - 28, 9.5, 9, '#fff', '#cbbcd1');
@@ -743,28 +1024,48 @@ function drawWorldExtras() {
     emo(ctx, '🎩', x, y - 39, 14);
   }
   if (S.up.sign) {
-    const x = FX + COLS * T + 48, y = FY + 130;
+    const x = FX - 42, y = FY + 48;
     ctx.fillStyle = '#d9a7be'; rr(ctx, x - 34, y - 32, 68, 28, 7); ctx.fill();
     txt(ctx, `${nm.slice(0, 8)}`, x, y - 22, 9.5, '#fff', 900);
-    txt(ctx, 'PASTEL FARM 🌸', x, y - 11, 7.5, '#fff', 800);
+    txt(ctx, 'ĐÀ LẠT FARM', x, y - 11, 7.5, '#fff', 800);
   }
-  // Thú cưng chạy quanh thảo nguyên
+
+  // Vẽ các thành viên BT21 chuẩn tạo hình đang ghé thăm hoặc đã thân thiết (Lv >= 2)
+  const btSpots = [
+    ['rj', 612, 216],
+    ['chimmy', 360, 216],
+    ['koya', 210, 340],
+    ['shooky', 735, 216],
+    ['mang', 180, 420],
+    ['tata', 205, 275],
+    ['van', 595, 216],
+  ];
+  btSpots.forEach(([id, bx, by], idx) => {
+    const lv = S.fr?.[id] || 1;
+    const isVisitor = ((S.day + idx) % 4 === 0);
+    if (lv >= 2 || (id === 'koya' && S.up.koya) || isVisitor) {
+      drawBT21(ctx, id, bx + Math.sin(t * 0.9 + idx) * 6, by, t, 0.85);
+    }
+  });
+
+  // Thú cưng chạy quanh bờ cỏ bên trái
   let pi = 0;
   PETS.forEach(p => {
     if (!S.pets[p.id]) return;
-    const px = 310 + pi * 115 + Math.sin(t * 1.4 + pi * 2) * 22;
-    const py = 548 + Math.cos(t * 2 + pi) * 6;
+    const px = 42 + (pi % 2) * 76 + Math.sin(t * 1.4 + pi * 2) * 10;
+    const py = 330 + Math.floor(pi / 2) * 62 + Math.cos(t * 2 + pi) * 4;
     ell(ctx, px, py + 10, 14, 4, 'rgba(90,50,80,.1)');
-    emo(ctx, p.e, px, py, 26);
-    if (S.petFed[p.id] === S.day) emo(ctx, '💜', px + 12, py - 14, 11);
+    emo(ctx, p.e, px, py, 24);
+    if (S.petFed[p.id] === S.day) emo(ctx, '💜', px + 11, py - 13, 10);
     pi++;
   });
-  if (S.miles.cafe) { emo(ctx, '☕', 420, 165, 28); txt(ctx, 'Tiệm Trà', 420, 186, 9, '#7a3b5e', 800); }
-  if (S.miles.villa) { emo(ctx, '🏰', 112, 48, 28); }
-  if (S.miles.park) { emo(ctx, '🎡', 525, 155, 34); txt(ctx, 'Wonderland', 525, 184, 9, '#7a3b5e', 800); }
-  if (S.miles.legend) { emo(ctx, '👑', FX + COLS * T / 2, FY - 24, 26); }
 
-  // Sao băng Mikrokosmos lúc 06:13 hoặc 18:13
+  if (S.miles.barn) emo(ctx, '🪵', 34, 244, 24);
+  if (S.miles.sleigh) emo(ctx, '🛷', 930, 212, 24);
+  if (S.miles.train) emo(ctx, '🚂', 480, 42, 26);
+  if (S.miles.villa) emo(ctx, '🏰', 112, 48, 28);
+  if (S.miles.legend) emo(ctx, '👑', FX + COLS * T / 2, FY - 24, 26);
+
   if (star613.active) {
     ctx.save();
     ctx.strokeStyle = 'rgba(210,170,255,.75)'; ctx.lineWidth = 3;
@@ -800,7 +1101,6 @@ function render() {
     ell(ctx, x, y, 7, 7, '#ff8fb1', '#fff'); txt(ctx, String(n + 1), x, y + .5, 8.5, '#fff', 900);
   });
 
-  if (S.up.koya) drawKoya(ctx, 795, 486, t, (Math.floor(t / 9) % 3) !== 0);
   drawCooky(ctx, ck.x, ck.y, .95, { t, face: ck.face, walk: ck.walk, hop: ck.act > 0 ? Math.sin((.35 - ck.act) / .35 * Math.PI) * 8 : 0, lift: ck.lift > 0, eat: ck.eat > 0, fish: ck.fish > 0, tired: S.st < 15 });
   ctx.font = `800 10px ${FONT}`;
   const nw = ctx.measureText(S.name).width + 12;
@@ -863,11 +1163,19 @@ function render() {
         const z = ZONES[k];
         if (hover.x > z.x && hover.x < z.x + z.w && hover.y > z.y && hover.y < z.y + z.h) { label = z.n; lx = z.x + z.w / 2; ly = z.y + 8; }
       }
+      if (!label) {
+        EXPANSIONS.forEach(ex => {
+          if (hover.x > ex.x && hover.x < ex.x + ex.w && hover.y > ex.y && hover.y < ex.y + ex.h) {
+            label = S.exp?.[ex.id] ? `${ex.e} ${ex.n}` : `🔒 Mở khóa ${ex.n} (${fmt(ex.cost)})`;
+            lx = ex.x + ex.w / 2; ly = ex.y + 12;
+          }
+        });
+      }
     }
     if (label) {
       ctx.font = `800 11px ${FONT}`; const w = ctx.measureText(label).width + 14, bx = clamp(lx - w / 2, 4, W - w - 4);
-      ctx.fillStyle = 'rgba(82,50,68,.9)'; rr(ctx, bx, ly - 20, w, 19, 8); ctx.fill();
-      txt(ctx, label, bx + w / 2, ly - 10, 11, '#fff', 800);
+      ctx.fillStyle = 'rgba(82,50,68,.9)'; rr(ctx, bx, Math.max(4, ly - 20), w, 19, 8); ctx.fill();
+      txt(ctx, label, bx + w / 2, Math.max(13.5, ly - 10), 11, '#fff', 800);
     }
     cv.style.cursor = label ? 'pointer' : 'default';
   }
@@ -890,23 +1198,82 @@ function hint(i) {
   return `${c.n}: còn ${c.days - p.g} ngày ✓ đã tưới (đất ${p.fert ?? 100}%)`;
 }
 
-/* ---------- Gameplay Actions ---------- */
+/* ---------- Gameplay Actions & Expansion Zones ---------- */
 function jobPos(j) {
   if (j.type === 'tile') return { x: tcx(j.i), y: tcy(j.i) + T / 2 - 5 };
+  if (j.type === 'exp') { const ex = EXPANSIONS.find(x => x.id === j.id); return ex ? ex.pos : { x: ck.x, y: ck.y }; }
   if (j.type === 'walk') return { x: j.x, y: j.y };
   return ZONES[j.type].pos;
 }
-function need(c) { if (S.st >= c) return true; say('Hết sức rồi… ăn 🥕 hoặc uống sinh tố thôi!'); SFX.err(); queue = []; return false; }
+function need(c) { if (S.st >= c) return true; say('Hết sức rồi… ăn 🥕 hoặc món bếp thôi!'); SFX.err(); queue = []; return false; }
 function spend(c, mins) { S.st -= c; S.min += mins; }
 
 function perform(j) {
   if (j.type === 'tile') return doTile(j.i);
+  if (j.type === 'exp') return doExpansion(j.id);
   if (j.type === 'stall') return openShop('sell');
   if (j.type === 'cook') return openShop('cook');
   if (j.type === 'house') return askSleep();
   if (j.type === 'gym') return doGym();
   if (j.type === 'lake') return doFish();
   if (j.type === 'radio') return openRadio();
+}
+
+function doExpansion(id) {
+  const ex = EXPANSIONS.find(x => x.id === id);
+  if (!ex) return;
+  if (!S.exp?.[id]) {
+    askUnlockExpansion(id);
+    return;
+  }
+  const nextDay = S.expDay?.[id] || 1;
+  if (S.day < nextDay) {
+    toast(`${ex.e} <b>${ex.n}</b> đang phát triển, còn <b>${nextDay - S.day} ngày</b> nữa sẽ thu hoạch được ${SPECIALS[ex.prod].e} ${SPECIALS[ex.prod].n}!`);
+    return;
+  }
+  if (id === 'apiary' && growing().length + ripes().length < 2) {
+    toast('🐝 Đàn ong cần ít nhất <b>2 ô cây/hoa đang trồng trên ruộng</b> để lấy mật! Hãy trồng thêm cây nhé.');
+    return;
+  }
+  if (!need(3)) return;
+  spend(3, 15);
+  S.expDay[id] = S.day + ex.cd;
+  S.inv[ex.prod] = (S.inv[ex.prod] || 0) + 1;
+  const sp = SPECIALS[ex.prod];
+  addXp(10); progQuest('harv', 1);
+  SFX.harvest(); puff(ck.x, ck.y - 20, '#ffee93', 14);
+  float(ck.x, ck.y - 85, `+1 ${sp.e} ${sp.n}`, '#d95b88');
+  say(`Thu hoạch ${sp.e} ${sp.n} từ ${ex.n.split(': ')[1]}!`);
+  save();
+}
+
+function askUnlockExpansion(id) {
+  const ex = EXPANSIONS.find(x => x.id === id);
+  if (!ex || S.exp?.[id]) return;
+  const earnOk = S.stats.earn >= ex.reqEarn;
+  const cashOk = S.cash >= ex.cost;
+  modal({
+    ic: ex.e + '🗺️',
+    t: `Mở Rộng Khu Vực: ${ex.n}`,
+    d: `<p>${ex.d}</p>
+        <hr style="border:0;border-top:1px dashed #f3b8ce;margin:.5em 0">
+        <p>📊 <b>Tổng doanh thu nông trại:</b> <span class="${earnOk ? 'up' : 'dn'}">${fmt(S.stats.earn)} / ${fmt(ex.reqEarn)} ${earnOk ? '✓' : '(Chưa đủ)'}</span></p>
+        <p>💰 <b>Chi phí đầu tư mở khu vực:</b> <span class="${cashOk ? 'up' : 'dn'}">${fmt(S.cash)} / ${fmt(ex.cost)} ${cashOk ? '✓' : '(Chưa đủ)'}</span></p>`,
+    b: [
+      [`🌱 Đầu tư mở khu vực (${fmt(ex.cost)})`, () => {
+        if (!earnOk) { toast(`Cần đạt tổng doanh thu nông trại <b>${fmt(ex.reqEarn)}</b> (hiện tại: ${fmt(S.stats.earn)})!`); SFX.err(); return; }
+        if (!cashOk) { toast(`Cần đủ <b>${fmt(ex.cost)}</b> tiền mặt để xây dựng khu vực này!`); SFX.err(); return; }
+        S.cash -= ex.cost;
+        S.exp = S.exp || {}; S.exp[id] = true;
+        S.expDay = S.expDay || {}; S.expDay[id] = S.day + 1;
+        addXp(25); addFans(40); SFX.jingle();
+        puff(ex.x + ex.w / 2, ex.y + ex.h / 2, '#a8e6cf', 20);
+        toast(`🎉 Đã mở khóa <b>${ex.e} ${ex.n}</b>! Ngày mai có thể thu hoạch đợt đầu tiên!`, 4200);
+        checkBadges(); renderShop(); updateHud(); save();
+      }, (earnOk && cashOk) ? 'g' : ''],
+      ['Để sau', null, 'o']
+    ]
+  });
 }
 
 function doTile(i) {
@@ -918,23 +1285,23 @@ function doTile(i) {
     puff(x, y, '#86d975', 10); SFX.plant(); float(x, y - 20, 'Đất 100% màu mỡ! 🌿', '#3b9e66'); return;
   }
   if (p.crow > 0) {
-    p.crow = 0; earn(15); addXp(6); puff(x, y - 10, '#63324d', 8); SFX.pop();
-    float(x, y - 22, 'Đuổi quạ! +15k', '#8e5ec4'); say('Bay đi chỗ khác nha quạ ơi! 🐦‍⬛'); return;
+    p.crow = 0; earn(5); addXp(2); puff(x, y - 10, '#63324d', 8); SFX.pop();
+    float(x, y - 22, 'Đuổi quạ! +5k', '#8e5ec4'); say('Bay đi chỗ khác nha quạ ơi! 🐦‍⬛'); return;
   }
   if (p.ice) {
     if (!need(2)) return; spend(2, 6); p.ice = false; puff(x, y, '#b6e2ff', 10); SFX.till();
     act('🔥'); float(x, y - 20, 'Tan băng!', '#4888cc'); progQuest('water', 1); return;
   }
-  if (p.weed) { if (!need(2)) return; spend(2, 8); p.weed = false; puff(x, y, '#7bc49e', 10); SFX.till(); act('🌿'); progQuest('water', 1); addXp(2); return; }
-  if (p.s === 'crop' && p.bug) { if (!need(2)) return; spend(2, 5); p.bug = false; puff(x, y, '#a8e6cf', 6); SFX.pop(); act('🫳'); float(x, y - 20, 'Bắt sâu!', '#3b9e66'); progQuest('water', 1); addXp(3); return; }
-  if (p.s === 'grass') { const c = hoeCost(); if (!need(c)) return; spend(c, 12); p.s = 'tilled'; p.fert = p.fert ?? 100; puff(x, y + 10, '#ba8870', 10); SFX.till(); act('⛏️'); addXp(2); return; }
+  if (p.weed) { if (!need(2)) return; spend(2, 8); p.weed = false; puff(x, y, '#7bc49e', 10); SFX.till(); act('🌿'); progQuest('water', 1); addXp(1); return; }
+  if (p.s === 'crop' && p.bug) { if (!need(2)) return; spend(2, 5); p.bug = false; puff(x, y, '#a8e6cf', 6); SFX.pop(); act('🫳'); float(x, y - 20, 'Bắt sâu!', '#3b9e66'); progQuest('water', 1); addXp(2); return; }
+  if (p.s === 'grass') { const c = hoeCost(); if (!need(c)) return; spend(c, 12); p.s = 'tilled'; p.fert = p.fert ?? 100; puff(x, y + 10, '#ba8870', 10); SFX.till(); act('⛏️'); addXp(1); return; }
   if (p.s === 'tilled') {
     const k = S.sel;
     if (!S.seeds[k]) { toast(`Hết hạt ${CROPS[k].e} ${CROPS[k].n}! Chọn hạt khác hoặc vào 🛒 Sạp mua.`); SFX.err(); queue = queue.filter(q => q.type !== 'tile' || S.plots[q.i].s !== 'tilled'); return; }
     if (!need(1)) return; spend(1, 5); S.seeds[k]--;
     const autoWet = S.weather === 'rain' || S.weather === 'snow';
     Object.assign(p, { s: 'crop', crop: k, g: 0, w: autoWet, dry: 0, ripe: false, rd: 0, dead: false, bug: false, ice: false, rainbow: false });
-    SFX.plant(); act('🌱'); puff(x, y + 8, '#d9bc9c', 5); addXp(2); return;
+    SFX.plant(); act('🌱'); puff(x, y + 8, '#d9bc9c', 5); addXp(1); return;
   }
   if (p.s === 'crop') {
     const c = CROPS[p.crop];
@@ -944,13 +1311,13 @@ function doTile(i) {
       const e = p.rainbow ? 'rainbow' : p.crop;
       const extra = harvestPlot(p);
       float(x, y - 22, `+${1 + extra} ${itemInfo(e).e}`, '#d95b88');
-      if (extra) say('Được mùa, thêm 1 trái! ✨');
+      if (extra) say('Được mùa, thêm 1 nông sản! ✨');
       puff(x, y - 6, '#ffee93', 12); SFX.harvest(); act('✨'); return;
     }
     if (!p.w) {
       const cc = canCost(); if (!need(cc)) return; spend(cc, 5); p.w = true;
       for (let k = 0; k < 10; k++) parts.push({ x: x + rnd(-16, 16), y: y - 18, vx: rnd(-10, 10), vy: rnd(40, 100), life: .35, col: '#92ccf0', r: 2.2 });
-      SFX.water(); act('💧'); progQuest('water', 1); addXp(2); return;
+      SFX.water(); act('💧'); progQuest('water', 1); addXp(1); return;
     }
     toast(`${c.e} ${c.n}: còn ${c.days - p.g} ngày nữa là chín (độ màu mỡ đất: ${p.fert ?? 100}%).`);
   }
@@ -958,39 +1325,29 @@ function doTile(i) {
 
 function doGym() {
   if (S.gymDay === S.day) { say('Hôm nay tập rồi, nghỉ cơ mai tập tiếp! 💪'); return; }
-  if (!need(10)) return;
-  spend(10, 50); S.maxSt += 5; S.gymDay = S.day; ck.lift = 2.0; SFX.gym(); progQuest('gym', 1); addXp(10);
-  setTimeout(() => { say('Sức tối đa +5! Khỏe khoắn quá 💪'); float(ck.x, ck.y - 90, '+5 ⚡ tối đa', '#d95b88'); checkRelics(); }, 1200);
+  if (!need(12)) return;
+  spend(12, 55); S.maxSt += 4; S.gymDay = S.day; ck.lift = 2.0; SFX.gym(); progQuest('gym', 1); addXp(6);
+  setTimeout(() => { say('Sức tối đa +4! Khỏe khoắn quá 💪'); float(ck.x, ck.y - 90, '+4 ⚡ tối đa', '#d95b88'); checkRelics(); }, 1200);
 }
 
 function doFish() {
-  const cost = S.up.rod ? 4 : 6;
+  const cost = S.up.rod ? 6 : 9;
   if (!need(cost)) return;
-  spend(cost, 25); ck.face = -1; ck.fish = 1.5; SFX.water();
+  spend(cost, 35); ck.face = -1; ck.fish = 1.5; SFX.water();
   setTimeout(() => {
     if (!S) return;
     S.today.fish = (S.today.fish || 0) + 1; S.stats.fish = (S.stats.fish || 0) + 1;
-    progQuest('fish', 1); addXp(8);
-    // Easter Egg Whalien 52: Câu cá sau 18:00 (min >= 1080) ngày sương mù hoặc tuyết
+    progQuest('fish', 1); addXp(4);
     if (S.min >= 1080 && (S.weather === 'fog' || S.weather === 'snow')) unlockRelic('whale');
-    // Easter Egg Super Tuna (참치!)
-    if (Math.random() < (S.up.rod ? .12 : .06)) {
+    if (Math.random() < (S.up.rod ? .06 : .03)) {
       S.inv.tuna = (S.inv.tuna || 0) + 1;
-      addFans(80); SFX.supertuna();
+      addFans(25); SFX.supertuna();
       float(ck.x, ck.y - 95, '🦈 SUPER TUNA! 참치!', '#d95b88');
       say('팔딱팔딱! Câu trúng Cá Ngừ Super Tuna của Jin rồi!! 🦈💜');
       unlockRelic('tuna');
       return;
     }
-    if (Math.random() < (S.up.rod ? .2 : .14)) {
-      const cash = ri(65, 140), sd = pick(CK);
-      earn(cash); S.seeds[sd] += 2; addFans(25);
-      SFX.win();
-      float(ck.x, ck.y - 90, `🎁 +${fmt(cash)} & +2 ${CROPS[sd].e}`, '#8e5ec4');
-      say('Vớt được Hộp Quà Giáng Sinh dưới hồ! 🎁');
-      return;
-    }
-    const fk = S.up.rod ? pick(['salmon', 'shrimp', 'star', 'carp']) : pick(['carp', 'carp', 'shrimp', 'salmon', 'star']);
+    const fk = S.up.rod ? pick(['salmon', 'shrimp', 'carp', 'carp', 'star']) : pick(['carp', 'carp', 'carp', 'shrimp', 'salmon']);
     const fi = FISH[fk];
     S.inv[fk] = (S.inv[fk] || 0) + 1;
     if (fi.fans) addFans(fi.fans);
@@ -1002,23 +1359,23 @@ function doFish() {
 
 function eatCarrot() {
   if (blocked()) return;
-  if (S.inv.carrot <= 0) { toast('Hết cà rốt trong kho rồi! Trồng thêm 🥕 hoặc vào 🧁 Bếp bánh dùng món nhé.'); SFX.err(); return; }
+  if (S.inv.carrot <= 0) { toast('Hết cà rốt trong kho rồi! Trồng thêm 🥕 hoặc vào 🧁 Bếp dùng món nhé.'); SFX.err(); return; }
   if (S.st >= S.maxSt) { say('Đang tràn trề năng lượng rồi!'); return; }
-  const heal = 20 + ((S.fr?.rj || 1) - 1) * 4;
+  const heal = 16 + ((S.fr?.rj || 1) - 1) * 3;
   S.inv.carrot--; S.st = Math.min(S.maxSt, S.st + heal); S.min += 10; ck.eat = 1.0; SFX.pop();
-  float(ck.x, ck.y - 90, `+${heal} ⚡`, '#e07a5f'); say(pick(['Cà rốt Đà Lạt ngọt lịm~ 🥕', 'Nạp đầy năng lượng! ✨']));
+  float(ck.x, ck.y - 90, `+${heal} ⚡`, '#e07a5f'); say(pick(['Cà rốt Đà Lạt ngọt lịm~ 🥕', 'Nạp lại năng lượng làm vườn! ✨']));
 }
 
-/* ---------- ARMY Radio, Trivia & Secret Codes ---------- */
+/* ---------- Radio 06.13 FM, Trivia & Secret Codes (Symbolic Rewards) ---------- */
 function openRadio() {
   SFX.dynamite();
   const doneToday = S.triviaDay === S.day;
   const tv = TRIVIA[(S.day - 1) % TRIVIA.length];
   let html = `<p class="c">🎶 Đang phát giai điệu Chiptune: <b>Dynamite × Jingle Bells</b> 💜</p>`;
   if (!doneToday) {
-    html += `<hr style="border:0;border-top:1px dashed #f3b8ce;margin:.5em 0"><p><b>🎤 Đố vui ARMY hôm nay (+90k & +45💜):</b></p><p>${tv.q}</p>`;
+    html += `<hr style="border:0;border-top:1px dashed #f3b8ce;margin:.5em 0"><p><b>🎤 Đố vui ARMY hôm nay (Quà kỷ niệm +12k & +15💜):</b></p><p>${tv.q}</p>`;
   } else {
-    html += `<p class="c">✅ Bạn đã hoàn thành câu đố ARMY của hôm nay. Quay lại vào ngày mai nhé!</p>`;
+    html += `<p class="c">✅ Bạn đã hoàn thành câu đố hôm nay. Quay lại vào ngày mai nhé!</p>`;
   }
   const btns = [];
   if (!doneToday) {
@@ -1027,12 +1384,12 @@ function openRadio() {
         S.triviaDay = S.day;
         if (idx === tv.ok) {
           S.stats.trivia = (S.stats.trivia || 0) + 1;
-          earn(90); addFans(45); addXp(15); SFX.win();
-          toast('🎉 Chính xác! Chuẩn ARMY chính hiệu: <b>+90k & +45💜</b>!');
+          earn(12); addFans(15); addXp(5); SFX.win();
+          toast('🎉 Chính xác! Quà khích lệ tinh thần: <b>+12k & +15💜</b>!');
           checkRelics();
         } else {
-          addFans(10); SFX.err();
-          toast(`Chưa đúng rồi! Đáp án là: <b>${tv.a[tv.ok]}</b> (+10💜 khích lệ).`);
+          addFans(5); SFX.err();
+          toast(`Chưa đúng rồi! Đáp án là: <b>${tv.a[tv.ok]}</b> (+5💜 khích lệ).`);
         }
         save();
       }, idx === 0 ? '' : 'b']);
@@ -1045,29 +1402,29 @@ function openRadio() {
 
 function askSecretCode() {
   modal({
-    ic: '🔑💜', t: 'Nhập Mật Mã Bí Mật ARMY',
-    d: `<p class="c">Nhập các từ khóa quen thuộc của BTS & ARMY (VD: <i>BORAHAE, 0613, SUPERTUNA, JUNGKOOK, INTHESOOP, OT7</i>):</p>
+    ic: '🔑💜', t: 'Nhập Mật Mã Kỷ Niệm ARMY',
+    d: `<p class="c">Nhập từ khóa quen thuộc của BTS & ARMY để nhận quà lưu niệm nhỏ xinh (VD: <i>BORAHAE, 0613, SUPERTUNA, JUNGKOOK, INTHESOOP, OT7</i>):</p>
         <input id="codeInp" class="modal-inp" type="text" maxlength="20" placeholder="Nhập mã bí mật...">`,
     b: [
       ['Kích hoạt Mã ✨', () => {
         const raw = ($('#codeInp')?.value || '').trim().toUpperCase().replace(/\s+/g, '');
         if (!raw) return;
         S.codes = S.codes || {};
-        if (S.codes[raw]) { toast('Mã bí mật này bạn đã nhận quà rồi nhé! 💜'); return; }
+        if (S.codes[raw]) { toast('Mã bí mật này bạn đã nhận quà lưu niệm rồi nhé! 💜'); return; }
         const rewards = {
-          BORAHAE:   () => { earn(250); addFans(130); S.fert = (S.fert || 0) + 3; return '💜 I Purple You! +250k, +130💜 & +3 Phân hữu cơ!'; },
-          '0613':    () => { earn(130); addFans(613); S.seeds.snowfl += 3; return '🎉 13/06 Huyền Thoại! +130k, +613💜 & +3 hạt Hoa Tuyết!'; },
-          SUPERTUNA: () => { S.inv.tuna = (S.inv.tuna || 0) + 1; SFX.supertuna(); unlockRelic('tuna'); return '🦈 참치! Tặng ngay 1 Cá Ngừ Super Tuna vào kho!'; },
-          JUNGKOOK:  () => { S.maxSt += 15; S.st = S.maxSt; S.seeds.straw += 4; return '🐰 Golden Maknae tiếp sức: +15⚡ Sức tối đa & +4 hạt Dâu Đà Lạt!'; },
-          INTHESOOP: () => { S.fert = (S.fert || 0) + 5; earn(180); return '🌲 Chữa lành giữa rừng thông: +180k & +5 Phân hữu cơ!'; },
-          OT7:       () => { FRIENDS.forEach(f => S.fr[f.id] = Math.min(5, (S.fr[f.id] || 1) + 1)); checkRelics(); return '💜 Tình bạn 7 thành viên tăng thêm +1 Cấp!'; },
-          ARMY:      () => { addFans(300); earn(150); return '💣 Cảm ơn ARMY! +300💜 Fan & +150k!'; },
+          BORAHAE:   () => { earn(15); addFans(25); S.fert = (S.fert || 0) + 1; return '💜 I Purple You! Quà lưu niệm: +15k, +25💜 & +1 Phân hữu cơ!'; },
+          '0613':    () => { earn(13); addFans(30); S.seeds.carrot += 2; return '🎉 Kỷ niệm 13/06! Tặng +13k, +30💜 & +2 hạt Cà rốt!'; },
+          SUPERTUNA: () => { S.inv.carp = (S.inv.carp || 0) + 1; addFans(20); SFX.supertuna(); return '🦈 참치! Tặng +1 Cá chép suối & +20💜!'; },
+          JUNGKOOK:  () => { S.st = S.maxSt; S.seeds.carrot += 2; return '🐰 Golden Maknae tiếp sức: Hồi đầy 100% ⚡ Sức lực & +2 hạt Cà rốt!'; },
+          INTHESOOP: () => { S.fert = (S.fert || 0) + 2; addFans(15); return '🌲 Chữa lành giữa rừng thông: +2 Phân hữu cơ & +15💜!'; },
+          OT7:       () => { addFans(35); earn(10); return '💜 Tình bạn 7 thành viên: +35💜 Fan & +10k!'; },
+          ARMY:      () => { addFans(30); earn(10); return '💣 Cảm ơn ARMY! +30💜 Fan & +10k!'; },
         };
         if (rewards[raw]) {
           S.codes[raw] = true;
           const msg = rewards[raw]();
-          SFX.jingle(); puff(ck.x, ck.y - 40, '#b392f0', 20);
-          toast(msg, 4200); updateHud(); save();
+          SFX.jingle(); puff(ck.x, ck.y - 40, '#b392f0', 16);
+          toast(msg, 4000); updateHud(); save();
         } else {
           SFX.err(); toast('Mã chưa đúng! Thử nhập: BORAHAE, 0613, SUPERTUNA, JUNGKOOK, INTHESOOP, OT7 nhé!');
         }
@@ -1091,8 +1448,9 @@ function applyViewMode(m) {
 function openInstallZoomModal() {
   const btns = [
     ['🖥️ Chế độ Tràn Viền 100% Cửa Sổ (Rõ nét hơn)', () => applyViewMode(1)],
-    ['🔎 Chế độ Phóng To Cận Cảnh 1.24x (Dễ bấm ô đất)', () => applyViewMode(2)],
-    ['⛶ Bật / Tắt Toàn Màn Hình (Fullscreen F11)', () => toggleFullscreen(), 'b'],
+    ['🔎 Chế độ Phóng To Cận Cảnh 1.24x (Dễ bấm trên điện thoại)', () => applyViewMode(2)],
+    ['🖼️ Chế độ Khung Chuẩn 3:2', () => applyViewMode(0), 'b'],
+    ['⛶ Bật / Tắt Toàn Màn Hình (Fullscreen)', () => toggleFullscreen(), 'b'],
   ];
   if (deferredPrompt) {
     btns.unshift(['📲 Cài đặt App Cooky Farm ra Màn Hình Chính ngay!', async () => {
@@ -1104,11 +1462,11 @@ function openInstallZoomModal() {
   btns.push(['Đóng', null, 'o']);
   modal({
     ic: '📲🖥️',
-    t: 'Thêm vào Màn Hình Chính & Phóng To Game',
-    d: `<p>Để quan sát nông trại to, rõ ràng và không bị vướng thanh địa chỉ của trình duyệt, bạn có thể:</p>
-        <p>1️⃣ <b>Trên Máy tính (Edge / Chrome):</b> Nhìn lên góc phải thanh địa chỉ trình duyệt, bấm biểu tượng <b>📲 Cài đặt Cooky Farm (App Available)</b> hoặc vào menu <b>⋯ → Ứng dụng (Apps) → Cài đặt trang này làm ứng dụng</b>. Game sẽ mở ra một cửa sổ riêng biệt và có icon ngoài Desktop!</p>
-        <p>2️⃣ <b>Trên Điện thoại (iPhone / Android):</b> Bấm nút <b>Chia sẻ (Share)</b> hoặc menu <b>⋮</b> → Chọn <b>"Thêm vào Màn hình chính" (Add to Home Screen)</b>.</p>
-        <p>3️⃣ <b>Ngay tại đây:</b> Chọn chế độ <b>Tràn viền 100%</b> hoặc <b>Phóng to cận cảnh 1.24x</b> bên dưới!</p>`,
+    t: 'Thêm vào Màn Hình Chính & Phóng To Giao Diện',
+    d: `<p>Để quan sát nông trại to, rõ ràng nhất trên điện thoại và máy tính:</p>
+        <p>1️⃣ <b>Trên Điện thoại (iPhone / Android):</b> Bấm nút <b>Chia sẻ (Share)</b> hoặc menu <b>⋮</b> → Chọn <b>"Thêm vào Màn hình chính" (Add to Home Screen)</b> và xoay ngang màn hình.</p>
+        <p>2️⃣ <b>Trên Máy tính (Edge / Chrome):</b> Bấm biểu tượng <b>📲 Cài đặt Cooky Farm</b> trên thanh địa chỉ để mở cửa sổ riêng biệt.</p>
+        <p>3️⃣ <b>Đổi nhanh góc nhìn:</b> Chọn <b>Tràn viền 100%</b> hoặc <b>Phóng to cận cảnh 1.24x</b> ngay bên dưới!</p>`,
     b: btns
   });
 }
@@ -1128,9 +1486,9 @@ function enqueue(j) {
 
 function buyPlot(i) {
   const c = plotCost();
-  modal({ ic: '🌸', t: 'Mở rộng ô đất mới?', d: `<p class="c">Khai hoang thêm 1 ô đất màu mỡ với giá <b>${fmt(c)}</b>.<br><small>(Lưu ý: Mở thêm ô đất sẽ tăng nhẹ tiền thuế điện sưởi mỗi tuần)</small></p>`, b: [
-    [`Mở ô (${fmt(c)})`, () => {
-      if (S.cash < c) { toast('Chưa đủ tiền rồi! 💸'); SFX.err(); return; }
+  modal({ ic: '🌱', t: 'Khai hoang ô đất mới?', d: `<p class="c">Mở rộng thêm 1 ô đất canh tác với chi phí <b>${fmt(c)}</b>.<br><small>(Mở thêm đất sẽ tăng nhẹ chi phí bảo trì nông trại mỗi tuần)</small></p>`, b: [
+    [`Khai hoang (${fmt(c)})`, () => {
+      if (S.cash < c) { toast('Chưa đủ tiền rồi! Hãy trồng và bán thêm nông sản nhé 💸'); SFX.err(); return; }
       S.cash -= c; S.bought++; S.plots[i].s = 'grass'; S.plots[i].fert = 100; puff(tcx(i), tcy(i), '#ffee93', 14); SFX.coin(); checkRelics(); checkBadges(); save();
     }],
     ['Để sau', null, 'o']] });
@@ -1157,15 +1515,15 @@ function askSleep() {
 }
 function passOut() {
   queue = []; cur = null;
-  modal({ ic: '😵', t: `${S.name} ngủ gục ngoài sương lạnh!`, d: '<p class="c">Đã quá 0 giờ đêm… Sáng mai thức dậy chỉ còn <b>50% sức lực</b> và tốn 30k tiền thuốc cảm.</p>', b: [['Ôi thương quá… 🥲', () => { S.cash = Math.max(0, S.cash - 30); endDay(true); }]] });
+  modal({ ic: '😵', t: `${S.name} ngủ gục ngoài sương lạnh!`, d: '<p class="c">Đã quá 0 giờ đêm… Sáng mai thức dậy chỉ còn <b>50% sức lực</b> và tốn 20k tiền thuốc cảm.</p>', b: [['Ôi thương quá… 🥲', () => { S.cash = Math.max(0, S.cash - 20); endDay(true); }]] });
 }
 
 /* ---------- Day Cycle & Challenges ---------- */
 function rollWx() {
   const r = Math.random();
-  const frostRate = S?.diff === 'hard' ? .24 : S?.diff === 'chill' ? .08 : .16;
+  const frostRate = S?.diff === 'hard' ? .25 : S?.diff === 'chill' ? .08 : .17;
   if (r < frostRate) return 'frost';
-  if (r < frostRate + .26) return 'snow';
+  if (r < frostRate + .25) return 'snow';
   if (r < frostRate + .62) return 'sun';
   if (r < frostRate + .82) return 'rain';
   return 'fog';
@@ -1177,42 +1535,40 @@ function endDay(passed) {
   L.push(`<p>💰 Doanh thu hôm nay: <b>${fmt(S.today.earn)}</b> · Thu hoạch: <b>${S.today.harv}</b> · Câu cá: <b>${S.today.fish || 0}</b></p>`);
 
   if (S.up.koya) {
-    if (S.cash >= 35) {
-      S.cash -= 35;
+    if (S.cash >= 25) {
+      S.cash -= 25;
       if (Math.random() < .75) {
         let n = 0; S.plots.forEach(p => { if (p.s === 'crop' && p.ripe && !p.dead && !p.ice) { harvestPlot(p); n++; } });
-        L.push(n ? `<p>🐨 Koya hái giúp <b>${n}</b> ô chín (lương 35k).</p>` : '<p>🐨 Koya đi dạo quanh vườn canh sương đêm.</p>');
-      } else L.push('<p>🐨 Koya ôm gối ngủ quên mất tiêu… (vẫn trả 35k 💤)</p>');
-    } else { S.up.koya = false; L.push('<p>🐨 Chưa đủ 35k trả lương, Koya tạm nghỉ.</p>'); }
+        L.push(n ? `<p>🐨 Koya hái giúp <b>${n}</b> ô chín (phí 25k).</p>` : '<p>🐨 Koya đi tuần quanh vườn canh sương đêm.</p>');
+      } else L.push('<p>🐨 Koya ôm gối ngủ quên mất tiêu… (vẫn tốn 25k 💤)</p>');
+    } else { S.up.koya = false; L.push('<p>🐨 Chưa đủ 25k trả lương, Koya tạm nghỉ.</p>'); }
   }
 
-  // Thú cưng chỉ tặng quà khi được cho ăn trong ngày!
+  // Thú cưng chỉ tặng lợi tức vừa phải khi được cho ăn trong ngày
   let pCash = 0, pFan = 0, unfed = 0;
   PETS.forEach(p => {
     if (!S.pets[p.id]) return;
     if (S.petFed[p.id] === d) {
-      if (p.id === 'chick') pCash += 40;
-      if (p.id === 'sheep') { pCash += 75; pFan += 15; }
-      if (p.id === 'cat') pFan += 25;
-      if (p.id === 'deer') { pCash += 115; const sk = pick(CK); S.seeds[sk] += 2; L.push(`<p>🦌 Tuần lộc Mũi Hồng tặng 2 hạt ${CROPS[sk].e} ${CROPS[sk].n}!</p>`); }
+      if (p.id === 'chick') pCash += 18;
+      if (p.id === 'sheep') { pCash += 32; pFan += 6; }
+      if (p.id === 'cat') pFan += 10;
+      if (p.id === 'deer') { pCash += 45; const sk = pick(['carrot', 'cabbage', 'sweet', 'tomato']); S.seeds[sk]++; L.push(`<p>🦌 Tuần lộc Mũi Hồng tặng 1 hạt ${CROPS[sk].e} ${CROPS[sk].n}!</p>`); }
     } else unfed++;
   });
-  if (unfed > 0) L.push(`<p>🥣 Có <b>${unfed} thú cưng</b> chưa được cho ăn hôm nay nên không tặng quà sáng mai.</p>`);
-
-  if (S.up.scare) pFan += 10;
-  MILES.forEach(m => { if (S.miles[m.id]) { pCash += m.income; pFan += m.fans; } });
+  if (unfed > 0) L.push(`<p>🥣 Có <b>${unfed} thú cưng</b> chưa được cho ăn nên không tạo sản phẩm sáng mai.</p>`);
+  if (S.miles.train) pFan += 20;
   if (pCash || pFan) {
     earn(pCash); addFans(pFan);
-    L.push(`<p>🐣✨ Lợi tức từ Thú cưng & Công trình: <b>+${fmt(pCash)}</b> & <b>+${pFan}💜</b></p>`);
+    L.push(`<p>🐣✨ Thu hoạch phụ từ Thú cưng & Du khách: <b>+${fmt(pCash)}</b> & <b>+${pFan}💜</b></p>`);
   }
 
   // Kiểm tra hạn chót Đơn Hàng Chuyến Xe (mỗi 5 ngày)
   if (S.order && d >= S.order.due) {
     if (!S.order.done && S.diff !== 'chill') {
-      const pen = S.diff === 'hard' ? 280 : 190;
+      const pen = S.diff === 'hard' ? 140 : 85;
       S.cash = Math.max(0, S.cash - pen);
-      addFans(-120);
-      L.push(`<p style="color:#d9385a">📦 <b>Trễ Đơn Hàng Tuần (${S.order.n})</b>: Phạt đền hợp đồng <b>-${fmt(pen)}</b> & <b>-120💜</b>!</p>`);
+      addFans(-50);
+      L.push(`<p style="color:#d9385a">📦 <b>Trễ Đơn Hàng Tuần (${S.order.n})</b>: Phạt đền hợp đồng <b>-${fmt(pen)}</b> & <b>-50💜</b>!</p>`);
     } else if (S.order.done) {
       L.push(`<p style="color:#2e9d5b">📦 Đã hoàn thành xuất sắc Đơn hàng tuần!</p>`);
     }
@@ -1225,13 +1581,14 @@ function endDay(passed) {
       S.cash -= bill;
       L.push(`<p>🧾 Đã thanh toán Thuế đất & Điện sưởi tuần: <b>-${fmt(bill)}</b>.</p>`);
     } else {
-      const rem = S.cash; S.cash = 0; addFans(-150);
-      L.push(`<p style="color:#d9385a">🧾 Thiếu tiền đóng Thuế tuần (${fmt(bill)}): Thu hết ${fmt(rem)} và trừ <b>-150💜 uy tín</b>!</p>`);
+      const rem = S.cash; S.cash = 0; addFans(-80);
+      L.push(`<p style="color:#d9385a">🧾 Thiếu tiền đóng Thuế tuần (${fmt(bill)}): Thu hết ${fmt(rem)} và trừ <b>-80💜 uy tín</b>!</p>`);
     }
   }
 
   let grown = 0, died = 0, rot = 0;
-  const rChance = .02 + ((S.fr?.tata || 1) - 1) * .02;
+  const rChance = .015 + ((S.fr?.tata || 1) - 1) * .015;
+  const maxRotDays = S.miles?.barn ? 5 : 3;
   S.plots.forEach(p => {
     p.crow = 0;
     if (p.s !== 'crop' || p.dead) return;
@@ -1239,21 +1596,20 @@ function endDay(passed) {
     if (p.ice) {
       p.dry++; if (p.dry >= 2) { p.dead = true; died++; }
     } else if (p.ripe) {
-      p.rd++; if (p.rd >= 4) { p.dead = true; rot++; }
+      p.rd++; if (p.rd >= maxRotDays) { p.dead = true; rot++; }
     } else if (p.w && !p.weed && !p.bug) {
-      // Nếu đất bạc màu (<55%), có 40% nguy cơ cây chậm lớn 1 đêm
-      if ((p.fert ?? 100) < 55 && Math.random() < .4) {
-        // chậm lớn
+      if ((p.fert ?? 100) < 55 && Math.random() < .45) {
+        // đất bạc màu làm chậm lớn 1 đêm
       } else {
         p.g++; p.dry = 0;
         if (p.g >= c.days) { p.ripe = true; p.rd = 0; grown++; if (Math.random() < rChance) p.rainbow = true; }
       }
     } else if (!p.w) {
-      p.dry++; if (p.dry >= 3) { p.dead = true; died++; }
+      p.dry++; if (p.dry >= 2) { p.dead = true; died++; }
     }
     p.w = false;
   });
-  if (grown) L.push(`<p>🌸 <b>${grown}</b> ô cây đã chín rộ!</p>`);
+  if (grown) L.push(`<p>🌾 <b>${grown}</b> ô cây đã chín rộ!</p>`);
   if (died) L.push(`<p>🥀 ${died} ô bị héo vì khô hạn hoặc đóng băng.</p>`);
   if (rot) L.push(`<p>🍂 ${rot} ô chín để quá lâu bị hỏng.</p>`);
 
@@ -1265,18 +1621,21 @@ function endDay(passed) {
   if (S.day > DAYS && S.miles.concert && !S.endless) S.endless = true;
 
   S.weather = S.tmr; S.tmr = rollWx();
-  CK.forEach(k => { S.prev[k] = S.price[k]; S.price[k] = clamp(+(S.price[k] + rnd(-.22, .22) + (1 - S.price[k]) * .25).toFixed(2), .6, 1.7); });
+  CK.forEach(k => {
+    const fertPenalty = S.plots.some(p => p.s === 'crop' && p.crop === k && (p.fert ?? 100) < 60) ? 0.85 : 1;
+    S.prev[k] = S.price[k];
+    S.price[k] = clamp(+((S.price[k] + rnd(-.18, .18) + (1 - S.price[k]) * .25) * fertPenalty).toFixed(2), .65, 1.55);
+  });
   S.st = Math.round(S.maxSt * (passed ? .5 : 1)); S.min = 360;
   S.today = { earn: 0, harv: 0, fish: 0, cook: 0 };
   rollQuests(S);
   ck.x = ZONES.house.pos.x; ck.y = ZONES.house.pos.y; ck.face = 1;
 
   const M = [];
-  if (S.weather === 'snow') { waterAll(); M.push('❄️ Tuyết Giáng Sinh rơi – cả cánh đồng được tưới mát & giá bán +10%!'); }
+  if (S.weather === 'snow') { waterAll(); M.push('❄️ Tuyết rơi – cả cánh đồng được tưới mát & giá bán +8%!'); }
   else if (S.weather === 'rain') { waterAll(); M.push('🌧️ Mưa phùn Đà Lạt – cả ruộng đã được tưới.'); }
-  else if (S.up.sprk) { waterAll(); M.push('💦 Hệ thống phun sương đã tưới đẫm cả ruộng.'); }
+  else if (S.up.sprk) { waterAll(); M.push('💦 Hệ thống tưới tự động đã tưới đẫm cả ruộng.'); }
 
-  // Thử thách Sương muối đóng băng
   if (S.weather === 'frost' && !S.up.green) {
     let iceN = 0;
     const freezeRate = S.up.heater ? .22 : .45;
@@ -1287,12 +1646,12 @@ function endDay(passed) {
   }
 
   let w = 0, b = 0;
-  const weedRate = Math.max(.01, .06 - ((S.fr?.koya || 1) - 1) * .01);
+  const weedRate = Math.max(.015, .07 - ((S.fr?.koya || 1) - 1) * .01);
   const catFed = S.pets.cat && S.petFed.cat === d;
   S.plots.forEach(p => {
     if (p.s === 'locked') return;
     if (!p.weed && Math.random() < weedRate) { p.weed = true; w++; }
-    if (!catFed && p.s === 'crop' && !p.ripe && !p.dead && !p.bug && Math.random() < (S.up.green ? .025 : .065)) { p.bug = true; b++; }
+    if (!catFed && p.s === 'crop' && !p.ripe && !p.dead && !p.bug && Math.random() < (S.up.green ? .025 : .07)) { p.bug = true; b++; }
   });
   if (catFed) M.push('🐱 Mèo Tuyết Lil Meow đã được ăn no nên bắt sạch sâu bọ!');
   if (w) M.push(`🌿 ${w} bụi cỏ dại mọc lên.`);
@@ -1301,26 +1660,17 @@ function endDay(passed) {
   const cm = curMile();
   modal({
     ic: '🌙', t: `Khép lại Ngày ${d}`,
-    d: L.join('') + `<hr style="border:0;border-top:1px dashed #f3b8ce;margin:.5em 0"><p><b>☀️ Ngày ${S.day}</b> · ${WX[S.weather].e} ${WX[S.weather].n} · mai ${WX[S.tmr].e}</p>` + M.map(m => `<p>${m}</p>`).join('') + `<p>🎯 Cột mốc: <b>${cm.e} ${cm.n}</b> (${fmt(Math.min(S.cash, cm.cost))}/${fmt(cm.cost)} · ⭐ ${S.stars || 0}/${cm.stars})</p>`,
-    b: [['Bắt đầu ngày mới 🌸', () => { maybeEvent(); save(); }]]
+    d: L.join('') + `<hr style="border:0;border-top:1px dashed #f3b8ce;margin:.5em 0"><p><b>☀️ Ngày ${S.day}</b> · ${WX[S.weather].e} ${WX[S.weather].n} · mai ${WX[S.tmr].e}</p>` + M.map(m => `<p>${m}</p>`).join('') + `<p>🎯 Cột mốc tiếp theo: <b>${cm.e} ${cm.n}</b> (${fmt(Math.min(S.cash, cm.cost))}/${fmt(cm.cost)} · ⭐ ${S.stars || 0}/${cm.stars})</p>`,
+    b: [['Bắt đầu ngày mới 🌱', () => { maybeEvent(); save(); }]]
   });
 }
 
 function finalEnding() {
-  if ((S.cash >= 5000 && (S.stars || 0) >= 1) || S.miles.concert) return unlockMilestone('concert');
-  if (S.fans >= 4500) {
-    S.miles.concert = true; S.endless = true; SFX.win();
-    modal({
-      ic: '📱💜', t: `Fan góp tặng vé Concert cho ${S.name}!`,
-      d: `<p>Nhờ <b>${fmtFans(S.fans)} Fan</b> yêu mến kênh nông trại của <b>${S.name}</b>, cộng đồng ARMY đã chung tay tặng bạn tấm vé bay sang Seoul dự BTS Winter Concert! 🥹🎄</p><p>✨ <b>Mở khóa Chế Độ Tự Do Vĩnh Cửu (Endless Mode)</b>: Tiếp tục chinh phục 5 Cột Mốc Lớn và sưu tầm trọn bộ 10 Kỷ Vật ARMY!</p>`,
-      b: [['🌸 Chơi tiếp Chế độ Vĩnh Cửu!', () => save()], ['Về màn hình chính', () => backToTitle(), 'o']]
-    });
-    return;
-  }
+  if ((S.cash >= 2200 && (S.stars || 0) >= 3) || S.miles.concert) return unlockMilestone('concert');
   modal({
-    ic: '🎄💜', t: 'Đêm Giáng Sinh Ấm Áp',
-    d: `<p>Đã hết 30 ngày đầu tiên nhưng bạn chưa đủ điều kiện mở khóa Vé Concert (cần 5tr & 1⭐ Sao Tím). Bạn có muốn <b>Chơi tiếp không giới hạn ngày</b> để hoàn thành mục tiêu không?</p>`,
-    b: [['🌸 Chơi tiếp cho tới khi đạt mục tiêu!', () => { S.endless = true; save(); }], ['🌱 Chơi lại từ đầu', () => startNew(S.name, S.diff), 'o']]
+    ic: '🎄💜', t: 'Đêm Giáng Sinh Đà Lạt',
+    d: `<p>Đã khép lại 30 ngày đầu tiên trên nông trại. Bạn có muốn <b>Chơi tiếp không giới hạn ngày</b> để mở khóa toàn bộ <b>4 Khu vực mở rộng</b> và <b>6 Cột mốc lớn</b> không?</p>`,
+    b: [['🌱 Chơi tiếp Chế độ Vĩnh Cửu!', () => { S.endless = true; save(); }], ['🔄 Chơi lại từ đầu', () => startNew(S.name, S.diff), 'o']]
   });
 }
 
@@ -1331,50 +1681,46 @@ function unlockMilestone(id) {
     toast(`Cần đủ <b>${fmt(m.cost)}</b> và <b>${m.stars}⭐ Sao Tím</b> (từ Đơn hàng tuần) để mở khóa ${m.n}!`);
     SFX.err(); return;
   }
-  S.cash -= m.cost; S.miles[id] = true; S.endless = true;
-  if (id === 'villa') { S.maxSt += 50; S.st += 50; }
-  SFX.jingle(); checkBadges(); save(); updateHud();
+  S.cash -= m.cost; S.miles[id] = true;
+  if (id === 'concert') S.endless = true;
+  if (id === 'villa') { S.maxSt += 35; S.st = S.maxSt; }
+  addXp(30); SFX.jingle(); checkBadges(); save(); updateHud();
   modal({
-    ic: m.e + '🎉', t: `Chúc mừng mở khóa ${m.n}!`,
-    d: `<p>${m.d}</p><p>✨ <b>Đặc quyền nhận được:</b> Thu nhập thụ động <b>+${fmt(m.income)}/ngày</b> & <b>+${m.fans}💜/ngày</b>!</p><p>🌸 Bạn đang ở <b>Chế độ Tự Do Vĩnh Cửu</b> — hãy tiếp tục chinh phục các cột mốc tiếp theo và săn đủ 10 Kỷ vật ARMY nhé!</p>`,
-    b: [['Borahae! Tuyệt vời quá! 💜', () => { renderShop(); save(); }]]
+    ic: m.e + '🎉', t: `Chúc mừng đạt ${m.n}!`,
+    d: `<p>${m.d}</p><p>🌾 Hãy tiếp tục phát triển nông trại, mở rộng 4 Khu vực bản đồ và chinh phục các Cột mốc tiếp theo nhé!</p>`,
+    b: [['Tuyệt vời quá! 💜', () => { renderShop(); save(); }]]
   });
 }
 
-/* ---------- Events ---------- */
+/* ---------- Events (Balanced around Farming) ---------- */
 const EVS = [
-  { id: 'santa_rj', w: 3, c: () => true, f: () => ({ ic: '🎅🦙', t: 'Ông già Noel RJ ghé thăm!', d: `RJ đội nón Noel mang theo túi quà bánh nóng hổi tới thăm <b>${S.name}</b> giữa sương lạnh Đà Lạt!`, b: [
-    ['Nhận quà Giáng Sinh 🎁', () => { S.st += 30; S.seeds.snowfl += 2; S.fert = (S.fert || 0) + 2; SFX.jingle(); return '+30⚡, +2 Phân hữu cơ và 2 hạt ❄️ Hoa Tuyết!'; }],
-    ['Cùng RJ phát quà (+160💜)', () => { addFans(160); S.fr.rj = Math.min(5, (S.fr.rj || 1) + 1); return 'Cả xóm yêu quý: +160💜 & tăng thân thiết RJ!'; }, 'b']] }) },
-  { id: 'chimmy', w: 3, c: () => invCount() > 0, f: () => ({ ic: '🐶', t: 'Chimmy đặt giỏ quà Noel', d: `Chimmy chạy tới vẫy đuôi: “${S.name} ơi, bán cho tớ ít nông sản giá gấp đôi để làm giỏ quà Giáng Sinh nha!”`, b: [
-    ['Bán ngay giá x2 💰', () => { let v = 0, n = 0; for (let i = 0; i < 4; i++) { const k = randInv(); if (!k) break; v += sell(k, 1, 2); n++; } SFX.coin(); return `Thu về ${fmt(v)} cho ${n} món!`; }],
-    ['Tặng Chimmy luôn 💜', () => { for (let i = 0; i < 2; i++) { const k = randInv(); if (k) S.inv[k]--; } addFans(150); S.fr.chimmy = Math.min(5, (S.fr.chimmy || 1) + 1); return '+150💜 & tăng cấp thân thiết Chimmy!'; }, 'b']] }) },
-  { id: 'shooky', w: 2.5, c: () => ripes().length > 0, f: () => S.up.scare ? { ic: '🍪', t: 'Shooky sợ Người Tuyết!', d: 'Shooky định lẻn vào vườn nhưng thấy Người Tuyết Canh Vườn dễ thương quá nên đứng chụp hình rồi về! 😆', b: [['Đáng yêu ghê (+60💜)', () => { addFans(60); return '+60💜 từ ảnh check-in của Shooky!'; }]] } :
-    { ic: '🍪', t: 'Shooky nghịch tuyết trong vườn!', d: 'Shooky dẫn đội bánh quy lăn cầu tuyết qua luống rau chín!', b: [
-      ['Chơi ném tuyết cùng (-10⚡)', () => { S.st = Math.max(0, S.st - 10); S.seeds.straw += 2; S.fr.shooky = Math.min(5, (S.fr.shooky || 1) + 1); return 'Shooky khoái chí tặng lại 2 hạt 🍓 & tăng thân thiết!'; }],
-      ['Nhắc Shooky cẩn thận', () => `Mất ${stealRipe(1)} ô chín. (Sắm Người Tuyết ở mục Nâng cấp nhé!)`, 'o']] } },
-  { id: 'tata', w: 2.5, c: () => growing().length > 0, f: () => ({ ic: '💜', t: 'Phép màu Giáng Sinh của Tata', d: `Tata hóa thành tuần lộc mũi tim hồng, rắc bụi sao pastel lên cánh đồng của <b>${S.name}</b>!`, b: [
-    ['Ước cây lớn nhanh 🌱', () => { growing().forEach(p => { if (!p.weed && !p.bug && !p.ice) { p.g++; if (p.g >= CROPS[p.crop].days) { p.ripe = true; p.rd = 0; } } }); return 'Toàn bộ cây trên ruộng lớn thêm 1 ngày!'; }],
-    ['Ước Cà rốt Cầu Vồng 🌈', () => { const p = pick(growing()); p.ripe = true; p.rd = 0; p.rainbow = true; return '1 ô biến thành 🌈 Cà rốt cầu vồng (420k)!'; }, 'b']] }) },
-  { id: 'mang', w: 2.5, c: () => true, f: () => ({ ic: '🐴', t: 'Mang rủ nhảy Run BTS Challenge', d: 'Mang bật nhạc vũ đạo cực cháy ngay trước hiên nhà gỗ hồng pastel!', b: [
-    ['Nhảy cùng Mang (-10⚡)', () => { S.st = Math.max(0, S.st - 10); const f = ri(250, 580); addFans(f); S.viral = S.day; S.fr.mang = Math.min(5, (S.fr.mang || 1) + 1); return `🔥 Video lên xu hướng! +${f}💜 & giá bán +20% hôm nay!`; }],
-    ['Đứng cổ vũ quay clip', () => { const f = ri(100, 220); addFans(f); return `+${f}💜 theo dõi mới!`; }, 'o']] }) },
-  { id: 'jk', w: 3, c: () => !S.jk && S.inv.straw >= 1, f: () => ({ ic: '🧢', t: 'Vị khách đêm Giáng Sinh', d: `Một chàng trai đội mũ bucket đen ấm áp ghé sạp mua hết dâu tây với giá gấp 3, kèm tấm thiệp: “Giáng Sinh an lành nhé <b>${S.name}</b>! – JK 🐰💜”`, b: [
-    ['Cảm động quá!!! 😭💜', () => { S.jk = true; const v = sell('straw', S.inv.straw, 3); addFans(600); SFX.jingle(); return `Thu ${fmt(v)} và +600💜!`; }]] }) },
-  { id: 'market', w: 2.5, c: () => true, f: () => { const k = pick(CK), c = CROPS[k], up = Math.random() < .55; return up ?
-    { ic: '📈', t: `Lễ hội ẩm thực Đà Lạt săn đón ${c.n}!`, d: `Chợ đêm Đà Lạt đang đặt mua ${c.e} ${c.n} số lượng lớn phục vụ du khách. Giá thu mua hôm nay tăng vọt!`, b: [['Tuyệt vời!', () => { S.price[k] = 1.85; return `${c.e} ${c.n} hôm nay tăng giá x1.85!`; }]] } :
-    { ic: '📉', t: `${c.n} dội chợ mùa đông`, d: `Nguồn cung ${c.e} ${c.n} đang dư thừa, giá thu mua thô giảm mạnh. Hãy giữ trong kho hoặc mang vào 🧁 Bếp Bánh chế biến nhé!`, b: [['Đã rõ!', () => { S.price[k] = .55; return `${c.e} giá bán thô hôm nay x0.55.`; }]] }; } },
+  { id: 'santa_rj', w: 3, c: () => true, f: () => ({ ic: '🎅', t: 'RJ mang giỏ bánh nóng ghé thăm!', d: `RJ quàng khăn đỏ mang theo bánh nướng ấm áp tới thăm <b>${S.name}</b> giữa sương sớm Đà Lạt!`, b: [
+    ['Thưởng thức bánh (+25⚡ & +1 Phân)', () => { S.st = Math.min(S.maxSt, S.st + 25); S.fert = (S.fert || 0) + 1; SFX.jingle(); return '+25⚡ Sức lực & +1 🌿 Phân hữu cơ!'; }],
+    ['Cùng RJ chia sẻ bánh (+35💜)', () => { addFans(35); S.fr.rj = Math.min(5, (S.fr.rj || 1) + 1); return '+35💜 & tăng cấp thân thiết với RJ!'; }, 'b']] }) },
+  { id: 'chimmy', w: 3, c: () => invCount() > 0, f: () => ({ ic: '💛', t: 'Chimmy thu mua nông sản tươi', d: `Chimmy mặc áo hoodie vàng vẫy tay: “${S.name} ơi, để lại cho tớ vài món nông sản với giá +40% để làm quà nhé!”`, b: [
+    ['Bán 3 món giá +40% 💰', () => { let v = 0, n = 0; for (let i = 0; i < 3; i++) { const k = randInv(); if (!k) break; v += sell(k, 1, 1.4); n++; } SFX.coin(); return `Thu về ${fmt(v)} cho ${n} nông sản!`; }],
+    ['Tặng Chimmy 2 món 💜', () => { for (let i = 0; i < 2; i++) { const k = randInv(); if (k) S.inv[k]--; } addFans(40); S.fr.chimmy = Math.min(5, (S.fr.chimmy || 1) + 1); return '+40💜 & tăng cấp thân thiết Chimmy!'; }, 'b']] }) },
+  { id: 'shooky', w: 2.5, c: () => ripes().length > 0, f: () => S.up.scare ? { ic: '🍪', t: 'Shooky nể Người Tuyết!', d: 'Shooky định lăn qua luống rau nhưng thấy Người Tuyết Canh Vườn nên đứng cười toe toét chụp ảnh rồi về! 😆', b: [['Dễ thương ghê (+20💜)', () => { addFans(20); return '+20💜 từ bức ảnh của Shooky!'; }]] } :
+    { ic: '🍪', t: 'Shooky lăn cầu tuyết qua ruộng!', d: 'Shooky tinh nghịch dẫn đội bánh quy lăn cầu tuyết qua luống cây chín!', b: [
+      ['Chơi cùng Shooky (-8⚡)', () => { S.st = Math.max(0, S.st - 8); S.seeds.carrot += 2; return 'Shooky tặng lại 2 hạt 🥕 Cà rốt!'; }],
+      ['Nhắc Shooky cẩn thận', () => `Hỏng mất ${stealRipe(1)} ô chín. (Sắm Người Tuyết ở mục Nâng cấp nhé!)`, 'o']] } },
+  { id: 'tata', w: 2.5, c: () => growing().length > 0, f: () => ({ ic: '❤️', t: 'Tia nắng ấm của Tata', d: `Tata ghé thăm và chiếu tia sáng ấm áp giúp cánh đồng của <b>${S.name}</b> vượt qua sương lạnh!`, b: [
+    ['Giúp cây lớn thêm 1 ngày 🌱', () => { growing().forEach(p => { if (!p.weed && !p.bug && !p.ice) { p.g++; if (p.g >= CROPS[p.crop].days) { p.ripe = true; p.rd = 0; } } }); return 'Các ô cây đang trồng lớn thêm 1 ngày!'; }],
+    ['Bồi bổ đất đai (+2 Phân bón)', () => { S.fert = (S.fert || 0) + 2; return 'Nhận thêm +2 🌿 Phân hữu cơ!'; }, 'b']] }) },
+  { id: 'market', w: 3, c: () => true, f: () => { const k = pick(CK.filter(x => canUseSeed(x))), c = CROPS[k], up = Math.random() < .52; return up ?
+    { ic: '📈', t: `Chợ Đà Lạt hút hàng ${c.n}!`, d: `Thương lái đang tìm mua ${c.e} ${c.n} số lượng lớn. Giá thu mua hôm nay tăng cao!`, b: [['Tốt quá!', () => { S.price[k] = 1.45; return `${c.e} ${c.n} hôm nay tăng giá x1.45!`; }]] } :
+    { ic: '📉', t: `${c.n} dội chợ mùa đông`, d: `Nguồn cung ${c.e} ${c.n} đang nhiều, giá bán thô giảm nhẹ. Bạn có thể trữ trong kho hoặc đưa vào 🧁 Bếp chế biến nhé!`, b: [['Đã rõ!', () => { S.price[k] = .7; return `${c.e} giá bán thô hôm nay x0.70.`; }]] }; } },
 ];
 
 function maybeEvent() {
-  if (Math.random() > .68) return;
+  if (Math.random() > .45) return;
   const pool = EVS.filter(e => e.id !== S.lastEv && e.c());
   if (!pool.length) return;
   let r = Math.random() * pool.reduce((a, e) => a + e.w, 0), ev = pool[0];
   for (const e of pool) { r -= e.w; if (r <= 0) { ev = e; break; } }
   S.lastEv = ev.id; S.stats.ev++;
   const o = ev.f(); SFX.ev();
-  modal({ ic: o.ic, t: o.t, d: `<p>${o.d}</p>`, b: o.b.map(([label, fn, cls]) => [label, () => { const m = fn ? fn() : null; if (m) toast(m, 3800); save(); }, cls]) });
+  modal({ ic: o.ic, t: o.t, d: `<p>${o.d}</p>`, b: o.b.map(([label, fn, cls]) => [label, () => { const m = fn ? fn() : null; if (m) toast(m, 3600); save(); }, cls]) });
 }
 
 /* ---------- Modal ---------- */
@@ -1394,11 +1740,11 @@ function nextModal() {
 }
 const blocked = () => titleOpen || !!modalCur || shopOpen || !S || S.over;
 
-/* ---------- Multi-Tab Pastel Hub ---------- */
+/* ---------- Multi-Tab Hub ---------- */
 function openShop(tab) {
   if (tab) shopTab = tab;
   shopOpen = true; $('#shop').hidden = false;
-  $('#shopTitle').textContent = `🌸 Sạp của ${S.name}`;
+  $('#shopTitle').textContent = `🏡 Sạp của ${S.name}`;
   renderShop(); SFX.pop();
 }
 function closeShop() { shopOpen = false; $('#shop').hidden = true; save(); }
@@ -1413,26 +1759,33 @@ function renderShop() {
   document.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === shopTab));
   const B = $('#shopBody'), F = $('#shopFoot'); let h = '', f = '';
   if (shopTab === 'sell') {
-    const keys = [...CK, 'rainbow', ...FK, ...RECIPES.map(r => r.id)].filter(k => CK.includes(k) || S.inv[k] > 0);
+    const keys = [...CK, 'rainbow', ...SK, ...FK, ...RECIPES.map(r => r.id)].filter(k => CK.includes(k) || S.inv[k] > 0);
     keys.forEach(k => {
       const it = itemInfo(k), n = S.inv[k] || 0;
       h += `<div class="li"><span class="e">${it.e}</span><div class="nm"><b>${it.n}</b><small>Trong kho: ${n}</small></div><div class="pr"><b>${fmt(priceOf(k))}</b>${trend(k)}</div>
         <button class="btn o" data-a="s1" data-k="${k}" ${n ? '' : 'disabled'}>Bán 1</button><button class="btn g" data-a="sa" data-k="${k}" ${n ? '' : 'disabled'}>Bán hết</button></div>`;
     });
     const tot = allSellKeys().reduce((a, k) => a + priceOf(k) * S.inv[k], 0), bn = Math.round((bonus() - 1) * 100);
-    f = `<span class="note">Bonus giá bán: <b>+${bn}%</b> (Fan, Cột mốc, Kỷ vật ARMY, BT21).</span>
+    f = `<span class="note">Hệ số giá hiện tại: <b>${bn >= 0 ? '+' + bn : bn}%</b> · Kinh nghiệm cấp Lv.${S.lv}: <b>${S.xp}/${xpNeed(S.lv)} XP</b></span>
       <button class="btn g" data-a="sell-all" ${tot ? '' : 'disabled'}>Bán tất cả (${fmt(tot)})</button>
-      <button class="btn b" data-a="live" ${S.liveDay === S.day || !tot ? 'disabled' : ''}>📱 Livestream +35%</button>`;
+      <button class="btn b" data-a="live" ${S.liveDay === S.day || !tot ? 'disabled' : ''}>📱 Livestream +20%</button>`;
   } else if (shopTab === 'seed') {
     h += `<div class="li"><span class="e">🌿</span><div class="nm"><b>Phân hữu cơ Đà Lạt <small>(có ${S.fert || 0})</small></b><small>Bón vào ô đất bạc màu để khôi phục 100% độ màu mỡ</small></div>
-      <button class="btn g" data-a="buy-fert" data-k="1" ${S.cash >= 18 ? '' : 'disabled'}>+1 (18k)</button>
-      <button class="btn b" data-a="buy-fert" data-k="5" ${S.cash >= 80 ? '' : 'disabled'}>+5 (80k)</button></div>`;
+      <button class="btn g" data-a="buy-fert" data-k="1" ${S.cash >= 14 ? '' : 'disabled'}>+1 (14k)</button>
+      <button class="btn b" data-a="buy-fert" data-k="5" ${S.cash >= 62 ? '' : 'disabled'}>+5 (62k)</button></div>`;
     CK.forEach(k => {
-      const c = CROPS[k];
-      h += `<div class="li"><span class="e">${c.e}</span><div class="nm"><b>${c.n} <small>(có ${S.seeds[k]})</small></b><small>Hạt ${fmt(c.seed)} · ${c.days} ngày · bán ~${fmt(priceOf(k))}${c.regrow ? ` · hái lặp ${c.regrow} ngày` : ''}</small></div>
-        <button class="btn o" data-a="b1" data-k="${k}" ${S.cash >= c.seed ? '' : 'disabled'}>+1</button><button class="btn" data-a="b5" data-k="${k}" ${S.cash >= c.seed * 5 ? '' : 'disabled'}>+5</button><button class="btn b" data-a="b10" data-k="${k}" ${S.cash >= c.seed * 10 ? '' : 'disabled'}>+10</button></div>`;
+      const c = CROPS[k], unlocked = canUseSeed(k);
+      let reqTxt = '';
+      if (!unlocked) {
+        const partsReq = [];
+        if ((S.lv || 1) < (c.reqLv || 1)) partsReq.push(`Cần Lv.${c.reqLv}`);
+        if (c.reqZone && !(S.exp && S.exp[c.reqZone])) partsReq.push('Cần mở Đồi Hoa');
+        reqTxt = `<span class="lk-tag">🔒 ${partsReq.join(' & ')}</span>`;
+      }
+      h += `<div class="li"><span class="e">${c.e}</span><div class="nm"><b>${c.n} <small>(có ${S.seeds[k]})</small></b><small>Hạt ${fmt(c.seed)} · ${c.days} ngày · bán ~${fmt(priceOf(k))} · +${c.xp}XP${c.regrow ? ` · hái lặp ${c.regrow}N` : ''}</small></div>
+        ${!unlocked ? reqTxt : `<button class="btn o" data-a="b1" data-k="${k}" ${S.cash >= c.seed ? '' : 'disabled'}>+1</button><button class="btn" data-a="b5" data-k="${k}" ${S.cash >= c.seed * 5 ? '' : 'disabled'}>+5</button><button class="btn b" data-a="b10" data-k="${k}" ${S.cash >= c.seed * 10 ? '' : 'disabled'}>+10</button>`}</div>`;
     });
-    f = `<span class="note">💡 Đất thu hoạch nhiều lần sẽ giảm độ màu mỡ — nhớ dùng 🌿 Phân hữu cơ nhé!</span>`;
+    f = `<span class="note">🌾 Lên cấp Nông trại (thu hoạch nhiều vụ) và mở Khu Đồi Hoa để mở khóa hạt giống cao cấp!</span>`;
   } else if (shopTab === 'cook') {
     RECIPES.forEach(r => {
       const reqStr = Object.entries(r.req).map(([k, q]) => `${q} ${itemInfo(k).e} (có ${S.inv[k] || 0})`).join(' + ');
@@ -1442,22 +1795,22 @@ function renderShop() {
         <button class="btn" data-a="cook" data-k="${r.id}" ${canMake ? '' : 'disabled'}>Chế biến</button>
         <button class="btn g" data-a="eat-dish" data-k="${r.id}" ${have ? '' : 'disabled'}>Dùng (+${r.st}⚡)</button></div>`;
     });
-    f = `<span class="note">🧁 Chế biến 7 món bánh/trà sẽ mở khóa Kỷ vật <b>🎂 Bánh Kem 7WithYou</b>!</span>`;
+    f = `<span class="note">🧁 Chế biến nông sản thành món ăn giúp tăng giá trị bán ra và hồi nhiều ⚡ Sức lực!</span>`;
   } else if (shopTab === 'pet') {
-    h += `<div class="subhead"><span>🐣 Thú Cưng Pastel (Nhớ cho ăn mỗi ngày!)</span><span>Thức ăn: 1 🥕 hoặc 20k</span></div>`;
+    h += `<div class="subhead"><span>💜 Hội Bạn Thân BT21 (Chuẩn Tạo Hình)</span><span>Tặng quà (65k) kết thân</span></div>`;
+    FRIENDS.forEach(fr => {
+      const lv = S.fr[fr.id] || 1, gifted = S.frGiftDay[fr.id] === S.day;
+      h += `<div class="li"><div class="bt21-av">${bt21Svg(fr.id)}</div><div class="nm"><b>${fr.n} · Cấp ${lv}/5</b><small>${fr.role}</small><small style="color:#7b4bb3;font-weight:700">${fr.buff}</small></div>
+        ${lv >= 5 ? '<span class="own">♥ Thân thiết tối đa</span>' : `<button class="btn b" data-a="gift" data-k="${fr.id}" ${gifted || S.cash < 65 ? 'disabled' : ''}>${gifted ? 'Đã tặng hôm nay' : '🎁 Tặng quà (65k)'}</button>`}</div>`;
+    });
+    h += `<div class="subhead"><span>🐣 Thú Cưng Nông Trại (Cho ăn mỗi ngày)</span><span>Thức ăn: 1 🥕 hoặc 12k</span></div>`;
     PETS.forEach(p => {
       const own = S.pets[p.id], fed = S.petFed[p.id] === S.day;
       h += `<div class="li"><span class="e">${p.e}</span><div class="nm"><b>${p.n}</b><small>${p.d}</small></div>
         ${!own ? `<button class="btn" data-a="pet" data-k="${p.id}" ${S.cash >= p.cost ? '' : 'disabled'}>Nhận nuôi (${fmt(p.cost)})</button>` :
-          fed ? '<span class="own">💜 Đã no bụng</span>' : `<button class="btn g" data-a="feed-pet" data-k="${p.id}" ${(S.inv.carrot > 0 || S.cash >= 20) ? '' : 'disabled'}>🥣 Cho ăn (${S.inv.carrot > 0 ? '1🥕' : '20k'})</button>`}</div>`;
+          fed ? '<span class="own">💜 Đã no bụng</span>' : `<button class="btn g" data-a="feed-pet" data-k="${p.id}" ${(S.inv.carrot > 0 || S.cash >= 12) ? '' : 'disabled'}>🥣 Cho ăn (${S.inv.carrot > 0 ? '1🥕' : '12k'})</button>`}</div>`;
     });
-    h += `<div class="subhead"><span>💜 Hội Bạn Thân BT21</span><span>Tặng quà (85k) tăng cấp buff</span></div>`;
-    FRIENDS.forEach(fr => {
-      const lv = S.fr[fr.id] || 1, gifted = S.frGiftDay[fr.id] === S.day;
-      h += `<div class="li"><span class="e">${fr.e}</span><div class="nm"><b>${fr.n} · Cấp ${lv}/5</b><small>${fr.buff}</small></div>
-        ${lv >= 5 ? '<span class="own">♥ Tối đa</span>' : `<button class="btn b" data-a="gift" data-k="${fr.id}" ${gifted || S.cash < 85 ? 'disabled' : ''}>${gifted ? 'Đã tặng hôm nay' : '🎁 Tặng quà (85k)'}</button>`}</div>`;
-    });
-    f = `<span class="note">🥣 Nhớ bấm "Cho ăn" cho thú cưng mỗi ngày để sáng mai nhận tiền, hạt giống & bắt sâu!</span>`;
+    f = `<span class="note">💜 Khi thành viên BT21 đạt Cấp 2 trở lên, họ sẽ thường xuyên xuất hiện dạo chơi ngay trên bản đồ nông trại!</span>`;
   } else if (shopTab === 'up') {
     UPS.forEach(u => {
       const own = S.up[u.id];
@@ -1469,38 +1822,50 @@ function renderShop() {
     if (S.order) {
       const o = S.order;
       const reqStr = Object.entries(o.req).map(([k, q]) => `${itemInfo(k).e} ${itemInfo(k).n}: <b>${S.inv[k] || 0}/${q}</b>`).join(' · ');
-      h += `<div class="subhead"><span>📦 Đơn Hàng Khẩn (Hạn: hết Ngày ${o.due})</span><span>Thưởng +1⭐ Sao Tím</span></div>`;
+      h += `<div class="subhead"><span>📦 Đơn Hàng Chuyến Xe (Hạn: Ngày ${o.due})</span><span>Thưởng +1⭐ Sao Tím</span></div>`;
       h += `<div class="li"><span class="e">🚚</span><div class="nm"><b>${o.n}</b><small>Yêu cầu: ${reqStr}</small><small>Thưởng: <b>+${fmt(o.cash)}, +${o.fan}💜 & +1⭐ Sao Tím</b> (Trễ hạn bị phạt!)</small></div>
         ${o.done ? '<span class="own">✓ Đã giao</span>' : `<button class="btn g" data-a="deliver" ${canDeliverOrder() ? '' : 'disabled'}>Giao đơn</button>`}</div>`;
     }
-    h += `<div class="subhead"><span>📋 3 Nhiệm Vụ Hàng Ngày (Ngày ${S.day})</span><span>Làm mới mỗi sáng</span></div>`;
-    S.quests.forEach(q => {
-      h += `<div class="li"><span class="e">${q.e}</span><div class="nm"><b>${q.n} (${q.cur}/${q.goal})</b><small>Thưởng: +${fmt(q.rCash)} & +${q.rFan}💜</small></div>
-        ${q.done ? '<span class="own">✓ Hoàn thành</span>' : `<span class="sm">${Math.round(q.cur / q.goal * 100)}%</span>`}</div>`;
+
+    h += `<div class="subhead"><span>🗺️ Mở Rộng 4 Khu Vực Mới (Tổng DT: ${fmt(S.stats.earn)})</span><span>Mở khi đạt mốc doanh thu</span></div>`;
+    EXPANSIONS.forEach(ex => {
+      const own = S.exp && S.exp[ex.id];
+      const ok = S.stats.earn >= ex.reqEarn && S.cash >= ex.cost;
+      const nextD = S.expDay?.[ex.id] || 1;
+      h += `<div class="li"><span class="e">${ex.e}</span><div class="nm"><b>${ex.n}</b><small>${ex.d}</small></div>
+        ${own ? (S.day >= nextD ? `<button class="btn g" data-a="harv-exp" data-k="${ex.id}">🧺 Thu hoạch</button>` : `<span class="own">Còn ${nextD - S.day} ngày</span>`) :
+          `<button class="btn ${ok ? 'g' : 'b'}" data-a="unlock-exp" data-k="${ex.id}">${fmt(ex.cost)} (DT ${fmt(ex.reqEarn)})</button>`}</div>`;
     });
-    h += `<div class="subhead"><span>🏆 5 Cột Mốc Lớn (Đang có: ⭐ ${S.stars || 0} Sao Tím)</span><span>Chơi tự do vĩnh cửu</span></div>`;
+
+    h += `<div class="subhead"><span>🏆 6 Cột Mốc Phát Triển (Đang có: ⭐ ${S.stars || 0} Sao Tím)</span><span>Chinh phục dài hạn</span></div>`;
     MILES.forEach(m => {
       const own = S.miles[m.id], ok = S.cash >= m.cost && (S.stars || 0) >= m.stars;
       h += `<div class="li"><span class="e">${m.e}</span><div class="nm"><b>${m.n}</b><small>${m.d}</small></div>
         ${own ? '<span class="own">✓ Đã đạt</span>' : `<button class="btn g" data-a="mile" data-k="${m.id}" ${ok ? '' : 'disabled'}>${fmt(m.cost)} + ${m.stars}⭐</button>`}</div>`;
     });
-    f = `<span class="note">🧾 Thuế đất & Điện sưởi tuần tiếp theo (Ngày ${Math.ceil(S.day / 7) * 7}): <b>${fmt(weeklyBill())}</b>.</span>`;
+
+    h += `<div class="subhead"><span>📋 3 Nhiệm Vụ Hàng Ngày (Ngày ${S.day})</span><span>Làm mới mỗi sáng</span></div>`;
+    S.quests.forEach(q => {
+      h += `<div class="li"><span class="e">${q.e}</span><div class="nm"><b>${q.n} (${q.cur}/${q.goal})</b><small>Thưởng: +${fmt(q.rCash)} & +${q.rFan}💜</small></div>
+        ${q.done ? '<span class="own">✓ Hoàn thành</span>' : `<span class="sm">${Math.round(q.cur / q.goal * 100)}%</span>`}</div>`;
+    });
+    f = `<span class="note">🧾 Chi phí bảo trì & điện sưởi tuần tiếp theo (Ngày ${Math.ceil(S.day / 7) * 7}): <b>${fmt(weeklyBill())}</b>.</span>`;
   } else if (shopTab === 'army') {
     const rCount = Object.keys(S.relics || {}).length;
-    h += `<div class="subhead"><span>💎 10 Kỷ Vật Bí Mật ARMY (${rCount}/10)</span><span>Mỗi kỷ vật: +4% giá & +10⚡</span></div><div class="badge-grid">`;
+    h += `<div class="subhead"><span>💎 10 Kỷ Vật Bí Mật ARMY (${rCount}/10)</span><span>Mỗi kỷ vật: +1% giá & +3⚡</span></div><div class="badge-grid">`;
     RELICS.forEach(r => {
       const ok = S.relics[r.id];
       h += `<div class="badge-card ${ok ? '' : 'locked'}"><span class="be">${r.e}</span><div><b>${r.n}</b><br><small>${r.d}</small></div></div>`;
     });
     h += `</div>`;
-    h += `<div class="subhead"><span>🏅 12 Huy Hiệu Thành Tựu (${Object.keys(S.badges).length}/12)</span><span>Thưởng tự động</span></div><div class="badge-grid">`;
+    h += `<div class="subhead"><span>🏅 12 Huy Hiệu Thành Tựu (${Object.keys(S.badges).length}/12)</span><span>Thưởng mốc khám phá</span></div><div class="badge-grid">`;
     BADGES.forEach(b => {
       const ok = S.badges[b.id];
       h += `<div class="badge-card ${ok ? '' : 'locked'}"><span class="be">${b.e}</span><div><b>${b.n}</b><br><small>${b.d} (+${fmt(b.reward)})</small></div></div>`;
     });
     h += `</div>`;
-    f = `<button class="btn b" data-a="open-radio">📻 Mở Đài Radio 06.13 FM & Đố Vui</button>
-         <button class="btn g" data-a="open-code">🔑 Nhập Mật Mã ARMY</button>`;
+    f = `<button class="btn b" data-a="open-radio">📻 Mở Đài Radio 06.13 FM</button>
+         <button class="btn g" data-a="open-code">🔑 Nhập Mã Kỷ Niệm ARMY</button>`;
   }
   B.innerHTML = h; F.innerHTML = f;
 }
@@ -1511,22 +1876,23 @@ function shopAction(a, k) {
     if (v) { SFX.coin(); float(ck.x, ck.y - 90, '+' + fmt(v), '#3b9e66'); }
   } else if (a === 'sell-all') {
     let v = 0; allSellKeys().forEach(x => { if (x !== 'carrot' || S.inv.carrot > 2) v += sell(x, S.inv[x]); });
-    if (v) { SFX.coin(); float(ck.x, ck.y - 90, '+' + fmt(v), '#3b9e66'); toast(`Bán hàng thu về <b>+${fmt(v)}</b> 💰`); }
+    if (v) { SFX.coin(); float(ck.x, ck.y - 90, '+' + fmt(v), '#3b9e66'); toast(`Bán nông sản thu về <b>+${fmt(v)}</b> 💰`); }
   } else if (a === 'live') {
-    if (S.st < 10) { toast('Cần ít nhất 10⚡ để Livestream!'); SFX.err(); return; }
-    const n = invCount(); S.st -= 10; S.min += 75; S.liveDay = S.day;
-    let v = 0; allSellKeys().forEach(x => v += sell(x, S.inv[x], 1.35));
-    const mangMul = 1 + ((S.fr?.mang || 1) - 1) * .15;
-    let f = Math.round((ri(45, 95) + n * 10) * mangMul);
+    if (S.st < 12) { toast('Cần ít nhất 12⚡ để Livestream!'); SFX.err(); return; }
+    const n = invCount(); S.st -= 12; S.min += 75; S.liveDay = S.day;
+    let v = 0; allSellKeys().forEach(x => v += sell(x, S.inv[x], 1.2));
+    const mangMul = 1 + ((S.fr?.mang || 1) - 1) * .1;
+    let f = Math.round((ri(18, 38) + n * 4) * mangMul);
     let m = `📱 Livestream thành công! Thu <b>${fmt(v)}</b> · <b>+${f}💜</b>`;
-    if (Math.random() < .25) { f += 750; S.viral = S.day + 1; m = `🔥 LÊN XU HƯỚNG! Thu <b>${fmt(v)}</b>, <b>+${f}💜</b>, ngày mai giá +20%!`; }
-    addFans(f); addXp(15); SFX.win(); toast(m, 3800);
+    if (Math.random() < .18) { f += 90; S.viral = S.day + 1; m = `🔥 LÊN XU HƯỚNG! Thu <b>${fmt(v)}</b>, <b>+${f}💜</b>, ngày mai giá bán +15%!`; }
+    addFans(f); addXp(8); SFX.win(); toast(m, 3800);
   } else if (a === 'buy-fert') {
-    const n = +k, cost = n === 1 ? 18 : 80;
+    const n = +k, cost = n === 1 ? 14 : 62;
     if (S.cash < cost) return;
     S.cash -= cost; S.fert = (S.fert || 0) + n; SFX.coin();
     toast(`Đã mua +${n} 🌿 Phân hữu cơ! Bấm nút 🌿 dưới thanh công cụ rồi chạm ô đất để bón.`);
   } else if (a[0] === 'b') {
+    if (!canUseSeed(k)) return;
     const n = +a.slice(1), c = CROPS[k].seed * n;
     if (S.cash < c) return; S.cash -= c; S.seeds[k] += n; S.sel = k; SFX.coin();
   } else if (a === 'cook') {
@@ -1535,38 +1901,43 @@ function shopAction(a, k) {
     Object.entries(r.req).forEach(([ik, q]) => S.inv[ik] -= q);
     S.inv[r.id] = (S.inv[r.id] || 0) + 1;
     S.today.cook = (S.today.cook || 0) + 1; S.stats.cook = (S.stats.cook || 0) + 1;
-    addFans(r.fans); progQuest('cook', 1); addXp(12); SFX.win();
+    addFans(r.fans); progQuest('cook', 1); addXp(6); SFX.win();
     toast(`🧁 Đã chế biến <b>${r.e} ${r.n}</b> (+${r.fans}💜)!`);
   } else if (a === 'eat-dish') {
     const r = RECIPES.find(x => x.id === k);
     if (!r || !S.inv[r.id]) return;
-    S.inv[r.id]--; S.st = Math.min(S.maxSt + 20, S.st + r.st); SFX.pop();
-    toast(`Thưởng thức ${r.e} ${r.n}: <b>+${r.st}⚡</b>!`);
+    const bonusHeal = ((S.fr?.rj || 1) - 1) * 3;
+    S.inv[r.id]--; S.st = Math.min(S.maxSt + 15, S.st + r.st + bonusHeal); SFX.pop();
+    toast(`Thưởng thức ${r.e} ${r.n}: <b>+${r.st + bonusHeal}⚡</b>!`);
   } else if (a === 'pet') {
     const p = PETS.find(x => x.id === k);
     if (!p || S.cash < p.cost || S.pets[k]) return;
-    S.cash -= p.cost; S.pets[k] = true; S.petFed[k] = S.day; addFans(50); addXp(20); SFX.jingle();
-    toast(`🐣 Chào mừng <b>${p.e} ${p.n}</b> về với nông trại Pastel!`);
+    S.cash -= p.cost; S.pets[k] = true; S.petFed[k] = S.day; addFans(25); addXp(12); SFX.jingle();
+    toast(`🐣 Chào mừng <b>${p.e} ${p.n}</b> về với nông trại!`);
   } else if (a === 'feed-pet') {
     if (S.petFed[k] === S.day) return;
     if (S.inv.carrot > 0) S.inv.carrot--;
-    else if (S.cash >= 20) S.cash -= 20;
+    else if (S.cash >= 12) S.cash -= 12;
     else return;
-    S.petFed[k] = S.day; SFX.pop(); addXp(5);
+    S.petFed[k] = S.day; SFX.pop(); addXp(2);
     const p = PETS.find(x => x.id === k);
-    toast(`💜 Đã cho <b>${p.e} ${p.n}</b> ăn no! Sáng mai bé sẽ tặng quà cho bạn.`);
+    toast(`💜 Đã cho <b>${p.e} ${p.n}</b> ăn no!`);
   } else if (a === 'gift') {
-    if (S.cash < 85 || S.frGiftDay[k] === S.day || S.fr[k] >= 5) return;
-    S.cash -= 85; S.frGiftDay[k] = S.day; S.fr[k] = (S.fr[k] || 1) + 1;
-    addFans(40); addXp(15); SFX.win(); checkRelics();
+    if (S.cash < 65 || S.frGiftDay[k] === S.day || S.fr[k] >= 5) return;
+    S.cash -= 65; S.frGiftDay[k] = S.day; S.fr[k] = (S.fr[k] || 1) + 1;
+    addFans(20); addXp(8); SFX.win(); checkRelics();
     const fr = FRIENDS.find(x => x.id === k);
-    toast(`💜 Đã tặng quà cho <b>${fr.e} ${fr.n}</b>! Lên <b>Cấp thân thiết ${S.fr[k]}/5</b>!`);
+    toast(`💜 Đã tặng quà cho <b>${fr.n}</b>! Lên <b>Cấp thân thiết ${S.fr[k]}/5</b> và xuất hiện trên nông trại!`);
   } else if (a === 'up') {
     const u = UPS.find(x => x.id === k);
     if (!u || S.cash < u.cost || S.up[k]) return;
-    S.cash -= u.cost; S.up[k] = true; addXp(15); SFX.win();
+    S.cash -= u.cost; S.up[k] = true; addXp(10); SFX.win();
     toast(`Đã sắm <b>${u.e} ${u.n}</b>!`);
     if (k === 'sprk') waterAll();
+  } else if (a === 'unlock-exp') {
+    closeShop(); askUnlockExpansion(k); return;
+  } else if (a === 'harv-exp') {
+    closeShop(); enqueue({ type: 'exp', id: k }); return;
   } else if (a === 'deliver') {
     deliverOrder(); return;
   } else if (a === 'mile') {
@@ -1586,7 +1957,7 @@ function buildBar() {
 function updateHud() {
   if (!S) return;
   $('#hClock').textContent = hhmm(S.min);
-  $('#hDay').textContent = S.endless ? `Ngày ${S.day} · Vĩnh Cửu 🌸` : `Ngày ${S.day}/${DAYS} 🎄`;
+  $('#hDay').textContent = S.endless ? `Ngày ${S.day} · Vĩnh Cửu 🎄` : `Ngày ${S.day}/${DAYS} 🎄`;
   $('#hWx').textContent = `${WX[S.weather].e} ${WX[S.weather].n}`;
   $('#hName').textContent = S.name;
   $('#hLv').textContent = `Lv.${S.lv || 1}`;
@@ -1615,10 +1986,11 @@ function updateHud() {
   if (canUnlockMile) bt.textContent = `✨ Mở khóa ${cm.e} ${cm.n.split(':')[0]}!`;
 
   document.querySelectorAll('.seed').forEach(b => {
-    const k = b.dataset.k;
-    b.querySelector('.n').textContent = S.seeds[k] || 0;
+    const k = b.dataset.k, ok = canUseSeed(k);
+    b.querySelector('.n').textContent = ok ? (S.seeds[k] || 0) : '🔒';
     b.classList.toggle('sel', !fertMode && S.sel === k);
-    b.classList.toggle('zero', !S.seeds[k]);
+    b.classList.toggle('zero', ok && !S.seeds[k]);
+    b.classList.toggle('lk', !ok);
   });
   $('#eatN').textContent = S.inv.carrot || 0;
   $('#fertN').textContent = S.fert || 0;
@@ -1646,7 +2018,6 @@ function update(dt) {
   S.min += sdt * 4.5;
   if (S.min >= 1440) { S.min = 1440; passOut(); return; }
 
-  // Sao băng 06:13 (min 370..395) hoặc 18:13 (min 1090..1115)
   const in613 = (S.min >= 370 && S.min <= 400) || (S.min >= 1090 && S.min <= 1120);
   if (in613 && S.starDay !== S.day && !star613.active) {
     star613.active = true; star613.x = 180; star613.y = 75;
@@ -1656,13 +2027,12 @@ function update(dt) {
     if (star613.x > W - 140) star613.active = false;
   }
 
-  // Thử thách Quạ Đen ban ngày
   if (S.diff !== 'chill') {
     crowT -= sdt;
     if (crowT <= 0) {
       crowT = rnd(24, 42);
       const catGuard = S.pets.cat && S.petFed.cat === S.day;
-      const scareChance = S.up.scare ? .35 : .85;
+      const scareChance = S.up.scare ? .32 : .85;
       const targets = S.plots.filter(p => p.s === 'crop' && !p.dead && !p.crow);
       if (!catGuard && targets.length >= 3 && Math.random() < scareChance) {
         const tp = pick(targets);
@@ -1707,9 +2077,11 @@ function drawTitle() {
   g.fillStyle = gr; g.fillRect(0, 0, 280, 280);
   ell(g, 140, 250, 112, 18, '#b5e3ca'); ell(g, 140, 248, 100, 14, '#d0f2de');
   emo(g, '🎄', 42, 204, 42); emo(g, '⛄', 238, 214, 34);
-  emo(g, '🥕', 68, 242, 22); emo(g, '🍓', 214, 242, 22);
   const t = ck.t;
-  drawCooky(g, 140, 246, 2.85, { t, face: Math.sin(t * .6) > 0 ? 1 : -1, hop: Math.max(0, Math.sin(t * 3)) * 5 });
+  // Vẽ RJ và Chimmy đứng hai bên Cooky ngay trên màn hình chính!
+  drawBT21(g, 'rj', 68, 244, t, 1.05);
+  drawBT21(g, 'chimmy', 212, 244, t, 1.05);
+  drawCooky(g, 140, 246, 2.75, { t, face: Math.sin(t * .6) > 0 ? 1 : -1, hop: Math.max(0, Math.sin(t * 3)) * 5 });
   const nm = ($('#inpName')?.value || 'Cooky').trim() || 'Cooky';
   g.fillStyle = 'rgba(255,255,255,.9)'; g.strokeStyle = '#f3b8ce'; g.lineWidth = 1.5;
   rr(g, 90, 18, 100, 22, 11); g.fill(); g.stroke();
@@ -1718,7 +2090,13 @@ function drawTitle() {
 
 /* ---------- Save / Load & Input ---------- */
 function save() { try { if (S && !S.over) localStorage.setItem(SAVE, JSON.stringify(S)); } catch (e) { } }
-function load() { try { const s = JSON.parse(localStorage.getItem(SAVE) || localStorage.getItem('cookyFarm.pastel.v2')); if (s && s.plots && s.plots.length === COLS * ROWS) return s; } catch (e) { } return null; }
+function load() {
+  try {
+    const s = JSON.parse(localStorage.getItem(SAVE) || localStorage.getItem('cookyFarm.pastel.v3'));
+    if (s && s.plots && s.plots.length === COLS * ROWS) return s;
+  } catch (e) { }
+  return null;
+}
 
 function enterGame() {
   titleOpen = false; $('#title').hidden = true; $('#hud').hidden = false; $('#bar').hidden = false;
@@ -1731,19 +2109,14 @@ function startNew(nameOverride, diffOverride) {
   const chosenName = nameOverride || ($('#inpName')?.value || 'Cooky').trim() || 'Cooky';
   const d = diffOverride || selDiff || 'normal';
   S = newState(chosenName, d); enterGame(); save(); SFX.jingle();
-  // Nếu đặt tên trùng từ khóa ARMY thì tặng quà khởi đầu
-  const upName = chosenName.toUpperCase();
-  if (['COOKY', 'KOOKIE', 'JUNGKOOK', 'JK', 'ARMY', 'BORAHAE'].some(w => upName.includes(w))) {
-    S.seeds.straw += 1;
-  }
-  const diffLabel = d === 'chill' ? '🌸 Chill Thư Giãn' : d === 'hard' ? '💜 Hardcore Borahae' : '🔥 Thử Thách ARMY';
+  const diffLabel = d === 'chill' ? '🌸 Thư Giãn' : d === 'hard' ? '💜 Khó (Hardcore)' : '🔥 Thử Thách';
   modal({
-    ic: '🌸🎄', t: `Chào mừng ${S.name} (${diffLabel})!`,
-    d: `<p>Chào mừng đến đồi thông Đà Lạt mùa Giáng Sinh Pastel! Để chiến thắng ở chế độ <b>${diffLabel}</b>, bạn hãy lưu ý:</p>
-      <p>📦 <b>Đơn hàng Chuyến Xe (mỗi 5 ngày):</b> Giao đủ hàng để nhận <b>⭐ Sao Tím</b> mở khóa 5 Cột Mốc Lớn (Trễ hạn sẽ bị phạt hợp đồng!).</p>
-      <p>🧾 <b>Thuế & Điện sưởi (mỗi 7 ngày) + Độ màu mỡ đất:</b> Đất thu hoạch nhiều lần sẽ bạc màu, nhớ bón <b>🌿 Phân hữu cơ</b> và cho <b>🐣 Thú cưng ăn</b> mỗi ngày.</p>
-      <p>💜 <b>Easter Egg ARMY:</b> Canh sao băng lúc <b>06:13</b>, bấm vào <b>📻 Đài Radio</b> cạnh nhà để đố vui BTS & nhập mật mã bí mật, hoặc bấm nút <b>🔍 / 📲</b> trên thanh công cụ để phóng to toàn màn hình!</p>`,
-    b: [['Bắt đầu chinh phục thôi! 💜', () => say(`Fighting ${S.name}! Borahae 💜`)]]
+    ic: '🎄🐰', t: `Chào mừng ${S.name} (${diffLabel})!`,
+    d: `<p>Chào mừng bạn đến với nông trại Đà Lạt mùa đông! Lộ trình phát triển dành cho bạn:</p>
+      <p>🌾 <b>Làm nông là cốt lõi:</b> Bạn khởi đầu với <b>6 ô đất</b>. Hãy trồng trọt, bón <b>🌿 Phân hữu cơ</b> giữ độ màu mỡ và tích lũy XP lên cấp mở hạt giống mới.</p>
+      <p>🗺️ <b>Mở 4 Khu Vực Mới:</b> Khi tổng doanh thu đạt mốc (350k, 950k, 2.4tr, 5.5tr), hãy bấm trực tiếp vào các khu đất rào gỗ trên bản đồ hoặc mục <b>🗺️ Khu vực & Mốc</b> để mở <b>Đồi Hoa, Tổ Ong Mật, Vườn Hồng Treo Gió & Quán Cà Phê Săn Mây</b>!</p>
+      <p>💜 <b>Hội bạn thân BT21:</b> Vào mục <b>🐣 Thú & BT21</b> để kết thân với Koya, RJ, Shooky, Mang, Chimmy, Tata & Van chuẩn tạo hình!</p>`,
+    b: [['Bắt đầu canh tác thôi! 🌱', () => say(`Cố lên ${S.name}! Fighting 💜`)]]
   });
 }
 
@@ -1754,30 +2127,35 @@ function refreshCont() {
 }
 function showHelp() {
   modal({
-    ic: '📖💜', t: 'Cẩm nang Thử Thách & Bí Mật ARMY',
-    d: `<p>🖥️ <b>Phóng to / Thêm vào MH chính:</b> Bấm nút <b>📲</b> hoặc <b>🔍 (phím Z)</b> ở thanh trên cùng để chuyển sang chế độ <b>Tràn viền 100%</b> hoặc <b>Zoom cận cảnh 1.24x</b>.</p>
-      <p>📦 <b>Đơn hàng tuần & Thuế:</b> Mỗi 5 ngày có chuyến xeรับ đơn hàng (thưởng ⭐ Sao Tím để mở Cột mốc). Mỗi 7 ngày đóng tiền điện sưởi Đà Lạt.</p>
-      <p>🥶 <b>Sương muối, Quạ đen & Đất bạc màu:</b> Phá băng khi cây đóng băng, bấm đuổi Quạ đen kịp thời, và bón 🌿 Phân hữu cơ khi đất dưới 60%.</p>
-      <p>💜 <b>Bí mật ARMY:</b> Canh đồng hồ điểm <b>06:13</b> hoặc <b>18:13</b> bấm Sao băng trên trời; bấm <b>7 lần vào nút 💜 Fan</b>; mở <b>📻 Đài Radio</b> trả lời câu hỏi BTS & nhập mã code (<i>BORAHAE, 0613, SUPERTUNA, JUNGKOOK, INTHESOOP, OT7</i>)!</p>`,
-    b: [['📲 Mở Cài đặt Phóng To / Thêm MH Chính', () => openInstallZoomModal(), 'g'], ['Đã hiểu!', null], ['Về màn hình chính', () => backToTitle(), 'o']]
+    ic: '📖💜', t: 'Cẩm nang Nông Trại & Khám Phá',
+    d: `<p>🌾 <b>Kinh tế Nông trại:</b> Thu nhập chính đến từ trồng trọt, chế biến bếp, thu hoạch <b>4 Khu vực mở rộng</b> và giao <b>Đơn hàng tuần</b>. Hãy giữ độ màu mỡ đất trên 60% để không bị giảm giá bán!</p>
+      <p>🗺️ <b>4 Khu Vực Mở Rộng:</b> Chạm vào các khu vực có biển khóa 🔒 trên bản đồ (Đồi Hoa, Thung Lũng Ong Mật, Vườn Hồng Treo Gió, Quán Cà Phê) để xem điều kiện doanh thu và mở khóa.</p>
+      <p>💜 <b>Hội bạn thân BT21 & Easter Egg:</b> Kết thân với 7 thành viên BT21 để nhận buff nông trại. Các Easter Egg (Sao băng 06:13, Radio 06.13 FM, Mã Code) tặng quà lưu niệm nhỏ xinh và mở khóa 10 Kỷ vật sưu tầm.</p>`,
+    b: [['📲 Cài đặt Màn Hình Chính / Đổi Góc Nhìn', () => openInstallZoomModal(), 'g'], ['Đã hiểu!', null], ['Về màn hình chính', () => backToTitle(), 'o']]
   });
 }
 
 function toLogical(e) { const r = cv.getBoundingClientRect(); return { x: (e.clientX - r.left) / r.width * W, y: (e.clientY - r.top) / r.height * H }; }
 cv.addEventListener('pointerdown', e => {
   if (blocked()) return; const { x, y } = toLogical(e);
-  // Bấm vào Sao băng 06:13
   if (star613.active && Math.hypot(x - star613.x, y - star613.y) < 42) {
     star613.active = false; S.starDay = S.day;
-    earn(61); addFans(61); S.seeds.snowfl += 1;
+    earn(10); addFans(15);
     SFX.jingle(); puff(star613.x, star613.y, '#d8c2ff', 16);
-    toast('🌠 <b>Điều ước 06:13 thành hiện thực!</b> Nhận +61k, +61💜 & +1 hạt Hoa Tuyết!');
+    toast('🌠 <b>Điều ước 06:13!</b> Nhận quà may mắn +10k & +15💜!');
     unlockRelic('mikro');
     return;
   }
   const i = tileAt(x, y);
   if (i >= 0) { if (S.plots[i].s === 'locked') { if (canBuy(i)) buyPlot(i); else toast('Hãy mở ô sát cạnh ruộng trước nhé!'); return; } enqueue({ type: 'tile', i }); return; }
   for (const k in ZONES) { const z = ZONES[k]; if (x > z.x && x < z.x + z.w && y > z.y && y < z.y + z.h) { enqueue({ type: k }); return; } }
+  for (const ex of EXPANSIONS) {
+    if (x > ex.x && x < ex.x + ex.w && y > ex.y && y < ex.y + ex.h) {
+      if (!S.exp?.[ex.id]) askUnlockExpansion(ex.id);
+      else enqueue({ type: 'exp', id: ex.id });
+      return;
+    }
+  }
   if (y > 190) enqueue({ type: 'walk', x: clamp(x, 20, W - 20), y: clamp(y, 200, H - 10) });
 });
 cv.addEventListener('pointermove', e => { hover = toLogical(e); });
@@ -1785,7 +2163,13 @@ cv.addEventListener('pointerleave', () => { hover = null; });
 
 $('#seeds').addEventListener('click', e => {
   const b = e.target.closest('.seed'); if (!b || !S) return;
-  fertMode = false; S.sel = b.dataset.k; SFX.click(); updateHud();
+  const k = b.dataset.k;
+  if (!canUseSeed(k)) {
+    const c = CROPS[k];
+    toast(`🔒 Hạt <b>${c.e} ${c.n}</b> yêu cầu đạt <b>Cấp Lv.${c.reqLv}</b>${c.reqZone ? ' và mở <b>🍓 Khu Đồi Hoa Cao Nguyên</b>' : ''}!`);
+    SFX.err(); return;
+  }
+  fertMode = false; S.sel = k; SFX.click(); updateHud();
   if (!S.seeds[S.sel]) toast(`Chưa có hạt ${CROPS[S.sel].n}, vào 🛒 Sạp mua nhé.`);
 });
 $('#bEat').onclick = eatCarrot;
@@ -1836,17 +2220,21 @@ $('#bNew').onclick = () => {
   SFX.click();
   const chosen = ($('#inpName')?.value || 'Cooky').trim() || 'Cooky';
   if (load()) {
-    modal({ ic: '🌸', t: 'Bắt đầu mùa Noel mới?', d: `<p class="c">Tạo nông trại mới với tên <b>${chosen}</b> sẽ ghi đè tiến trình cũ. Tiếp tục nhé?</p>`, b: [['Bắt đầu luôn!', () => startNew(chosen, selDiff)], ['Huỷ', null, 'o']] });
+    modal({ ic: '🌱', t: 'Bắt đầu nông trại mới?', d: `<p class="c">Tạo nông trại mới với tên <b>${chosen}</b> sẽ ghi đè tiến trình cũ. Tiếp tục nhé?</p>`, b: [['Bắt đầu luôn!', () => startNew(chosen, selDiff)], ['Huỷ', null, 'o']] });
     return;
   }
   startNew(chosen, selDiff);
 };
 $('#bCont').onclick = () => {
   const s = load(); if (!s) return;
-  S = Object.assign(newState(s.name, s.diff || 'normal'), s);
+  const def = newState(s.name, s.diff || 'normal');
+  S = Object.assign(def, s);
+  S.seeds = Object.assign(def.seeds, s.seeds || {});
+  S.inv = Object.assign(def.inv, s.inv || {});
+  S.exp = s.exp || {}; S.expDay = s.expDay || {};
   if (!S.quests || !S.quests.length) rollQuests(S);
   if (!S.order) makeOrder(S);
-  SFX.click(); enterGame(); say(`Chào mừng ${S.name} quay lại! 🌸`);
+  SFX.click(); enterGame(); say(`Chào mừng ${S.name} quay lại! 🌱`);
 };
 
 addEventListener('keydown', e => {
@@ -1854,7 +2242,10 @@ addEventListener('keydown', e => {
   if (e.key === 'Escape') { if (fertMode) { fertMode = false; updateHud(); return; } if (shopOpen) { closeShop(); return; } }
   if (modalCur) return;
   if (e.code === 'Space') { e.preventDefault(); paused = !paused; updateHud(); }
-  else if (e.key >= '1' && e.key <= '8') { fertMode = false; S.sel = CK[+e.key - 1]; SFX.click(); updateHud(); }
+  else if (e.key >= '1' && e.key <= '9') {
+    const k = CK[+e.key - 1];
+    if (k && canUseSeed(k)) { fertMode = false; S.sel = k; SFX.click(); updateHud(); }
+  }
   else if (e.key === 'e' || e.key === 'E') eatCarrot();
   else if (e.key === 'z' || e.key === 'Z') applyViewMode(viewMode + 1);
   else if (e.key === 'f' || e.key === 'F') toggleFullscreen();
@@ -1877,11 +2268,19 @@ function resize() {
   const w = full ? innerWidth : Math.min(innerWidth, innerHeight * 1.5);
   const h = full ? innerHeight : w / 1.5;
   fr.style.width = w + 'px'; fr.style.height = h + 'px';
-  fr.style.fontSize = (Math.min(w, h * 1.5) / 960 * 16) + 'px';
+  // Tự động tăng kích thước chữ trên màn hình nhỏ / điện thoại để dễ quan sát
+  const isSmall = innerWidth <= 920 || innerHeight <= 540;
+  const basePx = (Math.min(w, h * 1.5) / 960) * (isSmall ? 18.2 : 16);
+  fr.style.fontSize = Math.max(isSmall ? 12.2 : 11, basePx) + 'px';
   const dpr = Math.min(devicePixelRatio || 1, 2); K = w / W * dpr;
   cv.width = Math.round(W * K); cv.height = Math.round(H * K); drawBG();
 }
 addEventListener('resize', resize);
+// Trên màn hình điện thoại tự động bật chế độ tràn viền để dễ quan sát nhất
+if (innerWidth <= 920) {
+  viewMode = 1;
+  $('#frame')?.classList.add('fill-mode');
+}
 S = newState('Cooky', 'normal'); buildBar(); resize(); refreshCont();
 if (document.fonts) document.fonts.ready.then(drawBG);
 requestAnimationFrame(loop);
